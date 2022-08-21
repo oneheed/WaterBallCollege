@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingSystem", "MatchmakingSystem\MatchmakingSystem.csproj", "{EDF5B826-220D-4141-BDE2-2A38B8187573}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDF5B826-220D-4141-BDE2-2A38B8187573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF5B826-220D-4141-BDE2-2A38B8187573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF5B826-220D-4141-BDE2-2A38B8187573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF5B826-220D-4141-BDE2-2A38B8187573}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE822DAA-43F1-4681-B0C0-66159E9D8064}
+	EndGlobalSection
+EndGlobal
