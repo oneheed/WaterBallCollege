@@ -10,7 +10,7 @@
 
         public Hand Hand { get; private set; } = new();
 
-        public void Namehimself(string name)
+        public void NameHimself(string name)
         {
             this.Name = name;
         }

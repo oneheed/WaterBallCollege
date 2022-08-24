@@ -2,6 +2,8 @@
 {
     public class ShowdownGame
     {
+        private readonly int _drawNumber = 13;
+
         public int Round { get; private set; } = 1;
 
         private readonly Deck _deck;
@@ -16,51 +18,17 @@
 
         public void Start()
         {
-            for (int i = 0; i < _players.Count; i++)
-            {
-                _players[i].Namehimself($"player {i}");
-            }
+            NameHimselfStage();
 
-            _deck.Shuffle();
+            ShuffleStage();
 
-            var index = 0;
-            while (_deck.Any())
-            {
-                index %= _players.Count;
-                _players[index].Hand.AddCard(_deck.DrawCard());
-                index++;
-            }
+            DrawStage();
 
-            while (Round <= 13)
+            while (NextRound())
             {
                 Console.WriteLine($"==== 回合 {Round} ====");
 
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    var player = _players[i];
-
-                    if (player.ExchangeHands != null)
-                    {
-                        var exchangeEvnt = player.ExchangeHands.Countdown();
-
-                        if (exchangeEvnt.isFinish)
-                        {
-                            var exchanger = exchangeEvnt.Exchanger;
-                            var exchangee = exchangeEvnt.Exchangee;
-
-                            Console.WriteLine($"將 {exchanger.Name} 跟 {exchangee.Name} 交換回來");
-                        }
-                    }
-                }
-
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    var player = _players[i];
-                    if (player.ExchangeHands == null)
-                    {
-                        player.Exchange(_players.Where(p => p != player).ToList());
-                    }
-                }
+                ExchangeHandStage();
 
                 var showCards = new List<(int, Card)>();
                 for (int i = 0; i < _players.Count; i++)
@@ -85,7 +53,69 @@
             GameOver();
         }
 
-        public void GameOver()
+        private void NameHimselfStage()
+        {
+            for (int i = 0; i < _players.Count; i++)
+            {
+                _players[i].NameHimself($"player {i}");
+            }
+        }
+
+        private void ShuffleStage()
+        {
+            _deck.Shuffle();
+        }
+
+        private void DrawStage()
+        {
+            for (int i = 0; i < _drawNumber * _players.Count; i++)
+            {
+                if(_deck.Any())
+                {
+                    var index = i % _players.Count;
+                    _players[index].Hand.AddCard(_deck.DrawCard());
+                }
+            }
+        }
+
+        private bool NextRound()
+        {
+            return Round <= 13;
+        }
+
+        private void ExchangeHandStage()
+        {
+            // Check Exchange Hand
+            for (int i = 0; i < _players.Count; i++)
+            {
+                var player = _players[i];
+
+                if (player.ExchangeHands != null)
+                {
+                    var exchangeEvnt = player.ExchangeHands.Countdown();
+
+                    if (exchangeEvnt.isFinish)
+                    {
+                        var exchanger = exchangeEvnt.Exchanger;
+                        var exchangee = exchangeEvnt.Exchangee;
+
+                        Console.WriteLine($"將 {exchanger.Name} 跟 {exchangee.Name} 交換回來");
+                    }
+                }
+            }
+
+            // Exchange Hand
+            for (int i = 0; i < _players.Count; i++)
+            {
+                var player = _players[i];
+                if (player.ExchangeHands == null)
+                {
+                    player.Exchange(_players.Where(p => p != player).ToList());
+                }
+            }
+        }
+
+        private void GameOver()
         {
             var finishWinner = _players.Max();
 
