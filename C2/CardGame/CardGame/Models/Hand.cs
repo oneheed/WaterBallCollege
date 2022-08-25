@@ -10,11 +10,6 @@
             _cards.Add(card);
         }
 
-        public IList<Card> GetCards()
-        {
-            return _cards;
-        }
-
         public string ShowAllCard()
         {
             return string.Join(", ", _cards.Select((c, i) => $"[{i}]{c}"));
@@ -30,6 +25,11 @@
         public void RemoveCard(Card card)
         {
             _cards.Remove(card);
+        }
+
+        public Card ContainsHomogeneity(Card card)
+        {
+            return _cards.FirstOrDefault(c => c.CompareTo(card) == 0);
         }
 
         public int Count => _cards.Count;

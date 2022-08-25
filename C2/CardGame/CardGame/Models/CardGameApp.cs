@@ -10,7 +10,7 @@
 
         public int Round { get; private set; } = 1;
 
-        public CardGameApp(Deck deck, IList<Player> players)
+        protected CardGameApp(Deck deck, IList<Player> players)
         {
             this._deck = deck;
             this._players = players;

@@ -22,17 +22,14 @@
             return deck;
         }
 
-        public IEnumerable<Card> GetCards()
+        public void SetCards(Deck deck)
         {
-            return _cards;
-        }
-
-        public void SetCards(IEnumerable<Card> cards)
-        {
-            foreach (var card in cards)
+            foreach (var card in deck._cards)
             {
                 _cards.Push(card);
             }
+
+            deck._cards.Clear();
         }
 
         public void Shuffle()
@@ -42,11 +39,6 @@
             _cards.Clear();
 
             cards.ForEach(card => _cards.Push(card));
-        }
-
-        public bool Any()
-        {
-            return _cards.Any();
         }
 
         public void Push(Card card)
@@ -64,9 +56,8 @@
             return _cards.Pop();
         }
 
-        public void Clear()
-        {
-            _cards.Clear();
-        }
+        public int Count => this._cards.Count;
+
+        public bool Any() => _cards.Any();
     }
 }

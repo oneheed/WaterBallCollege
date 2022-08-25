@@ -22,8 +22,9 @@ namespace CardGame.Models
                 _topDeck.Push(_deck.DrawCard());
 
             var topCard = _topDeck.ShowCard();
-            Console.WriteLine($"Top: {_topDeck.GetCards().Count()}, Deck: {_deck.GetCards().Count()}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
-            Console.WriteLine($"{_topDeck.GetCards().Count() + _deck.GetCards().Count() + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
+
+            //Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
+            //Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
 
             ShowCard("頂牌為", (UnoCard)topCard);
 
@@ -40,6 +41,8 @@ namespace CardGame.Models
 
                     showCards.Add((i, card));
 
+                    topCard = card;
+
                     ShowCard($"{player.Name} 出 ", (UnoCard)card);
                 }
                 else
@@ -51,11 +54,11 @@ namespace CardGame.Models
                         Console.WriteLine($"重新洗牌");
 
                         topCard = _topDeck.DrawCard();
-                        _deck.SetCards(_topDeck.GetCards());
-                        _topDeck.Clear();
-                        _topDeck.Push(topCard);
+                        _deck.SetCards(_topDeck);
                     }
                 }
+
+                _topDeck.Push(topCard);
 
                 if (player.Hand.Count == 0)
                     break;
