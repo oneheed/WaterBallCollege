@@ -2,11 +2,17 @@
 {
     public class AIPlayer : Player
     {
-        public override Card ShowCard(Card card = null)
-        {
-            var index = new Random().Next(0, this.Hand.Count - 1);
+        private readonly AIStrategy strategy;
 
-            return this.Hand.ShowCard(index);
+        public AIPlayer(AIStrategy strategy = null)
+        {
+            this.strategy = strategy ?? new RandomAIStrategy();
+            this.strategy.SetAIPlayer(this);
+        }
+
+        public override Card ShowCard()
+        {
+            return this.strategy.ShowCard();
         }
     }
 }

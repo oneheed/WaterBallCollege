@@ -4,30 +4,24 @@ using CardGame.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-//var deck = Deck.Standard52ProkerCards();
-
-//var players = new Player[4]
-//{
-//    new AIPlayer(),
-//    new AIPlayer(),
-//    new AIPlayer(),
-//    new AIPlayer(),
-//};
-
-//var showdownGame = new ShowdownGame(deck, players);
-//showdownGame.Start();
-
-
-var deck = Deck.Standard40UnoCards();
+var prokerDeck = Deck.Standard52ProkerCards();
 
 var players = new Player[4]
 {
-    new UnoAIPlayer(),
-    new UnoAIPlayer(),
-    new UnoAIPlayer(),
-    new UnoAIPlayer(),
+    new AIPlayer(),
+    new AIPlayer(new HomogeneityAIStrategy()),
+    new AIPlayer(new HomogeneityAIStrategy()),
+    new AIPlayer(),
 };
 
-var showdownGame = new UnoGame(deck, players);
+var showdownGame = new ShowdownGame(prokerDeck, players);
 showdownGame.Start();
+
+
+Console.WriteLine("================================================");
+
+var unoDeck = Deck.Standard40UnoCards();
+
+var unoGame = new UnoGame(unoDeck, players);
+unoGame.Start();
 

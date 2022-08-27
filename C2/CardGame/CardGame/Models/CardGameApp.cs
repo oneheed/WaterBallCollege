@@ -10,6 +10,8 @@
 
         public int Round { get; private set; } = 1;
 
+        public Card TopCard { get; protected set; }
+
         protected CardGameApp(Deck deck, IList<Player> players)
         {
             this._deck = deck;
@@ -41,6 +43,7 @@
             for (int i = 0; i < _players.Count; i++)
             {
                 _players[i].NameHimself($"player {i}");
+                _players[i].SetCradGame(this);
             }
         }
 
@@ -65,12 +68,12 @@
 
         protected abstract void TakeRound();
 
-        protected abstract Player WinerPlayer();
+        protected abstract Player WinnerPlayer();
 
         private void GameOver()
         {
             Console.WriteLine($"==== 最終 ====");
-            Console.WriteLine($"最終勝利者 : {this.WinerPlayer().Name}");
+            Console.WriteLine($"最終勝利者 : {this.WinnerPlayer()?.Name}");
         }
     }
 }

@@ -3,7 +3,7 @@ using CardGame.Extensions;
 
 namespace CardGame.Models
 {
-    internal class UnoCard : Card
+    public class UnoCard : Card
     {
         public Color Color { get; private set; }
 
@@ -25,14 +25,13 @@ namespace CardGame.Models
 
         public override int CompareTo(Card other)
         {
-            var card = other as UnoCard;
-
-            if (Color == card.Color || Number == card.Number)
+            if (other is UnoCard unoCard &&
+                (Color == unoCard.Color || Number == unoCard.Number))
             {
                 return 0;
             }
 
-            return -1;
+            return 1;
         }
     }
 }

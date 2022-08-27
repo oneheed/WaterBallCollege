@@ -25,14 +25,18 @@ namespace CardGame.Models
 
         public override int CompareTo(Card other)
         {
-            var card = other as ProkerCard;
-
-            if (Rank == card.Rank)
+            if (other is ProkerCard card)
             {
-                return Suit - card.Suit;
+                if (Rank == card.Rank)
+                {
+                    return Suit - card.Suit;
+                }
+
+                return Rank - card.Rank;
+
             }
 
-            return Rank - card.Rank;
+            return 1;
         }
     }
 }

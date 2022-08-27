@@ -4,7 +4,9 @@ namespace CardGame.Models
 {
     public class UnoGame : CardGameApp
     {
-        private readonly Deck _topDeck = new Deck();
+        private readonly Deck _topDeck = new();
+
+        private bool _nextRound = true;
 
         public UnoGame(Deck deck, IList<Player> players) : base(deck, players)
         {
@@ -13,7 +15,7 @@ namespace CardGame.Models
 
         protected sealed override bool NextRound()
         {
-            return !this._players.Any(p => p.Hand.Count == 0);
+            return _nextRound;
         }
 
         protected override void TakeRound()
@@ -21,55 +23,59 @@ namespace CardGame.Models
             if (Round == 1)
                 _topDeck.Push(_deck.DrawCard());
 
-            var topCard = _topDeck.ShowCard();
+            this.TopCard = _topDeck.ShowCard();
 
-            //Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
-            //Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
+            Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
+            Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
 
-            ShowCard("頂牌為", (UnoCard)topCard);
+            ShowCard("頂牌為", this.TopCard);
 
             var showCards = new List<(int, Card)>();
             for (int i = 0; i < _players.Count; i++)
             {
                 var player = _players[i];
-                var card = player.ShowCard(topCard);
+                var card = player.ShowCard();
 
-                if (topCard.CompareTo(card) == 0)
+                if (this.TopCard.CompareTo(card) == 0)
                 {
                     player.Hand.RemoveCard(card);
                     _topDeck.Push(card);
 
                     showCards.Add((i, card));
 
-                    topCard = card;
+                    this.TopCard = card;
 
                     ShowCard($"{player.Name} 出 ", (UnoCard)card);
                 }
                 else
                 {
+                    Console.WriteLine($"{player.Name} 抽牌");
                     player.Hand.AddCard(_deck.DrawCard());
 
-                    if (!_deck.Any())
+                    if (!_deck.Any() && _topDeck.Count > 1)
                     {
-                        Console.WriteLine($"重新洗牌");
-
-                        topCard = _topDeck.DrawCard();
-                        _deck.SetCards(_topDeck);
+                        Reshuffle();
                     }
                 }
 
-                _topDeck.Push(topCard);
-
-                if (player.Hand.Count == 0)
+                if (player.Hand.Count == 0 || (!_deck.Any() && _topDeck.Count == 1))
+                {
+                    _nextRound = false;
                     break;
+                }
             }
         }
 
-        private void ShowCard(string context, UnoCard card)
+        protected override Player WinnerPlayer()
+        {
+            return this._players.SingleOrDefault(p => p.Hand.Count == 0);
+        }
+
+        private void ShowCard(string context, Card card)
         {
             Console.Write($"{context}");
 
-            switch (card.Color)
+            switch ((card as UnoCard).Color)
             {
                 case Color.BLUE:
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -90,9 +96,15 @@ namespace CardGame.Models
             Console.ResetColor();
         }
 
-        protected override Player WinerPlayer()
+        private void Reshuffle()
         {
-            return this._players.SingleOrDefault(p => p.Hand.Count == 0);
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"重新洗牌");
+            Console.ResetColor();
+
+            var card = _topDeck.DrawCard();
+            _deck.SetCards(_topDeck);
+            _topDeck.Push(card);
         }
     }
 }

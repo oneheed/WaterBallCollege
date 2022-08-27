@@ -2,7 +2,7 @@
 {
     public class HumanPlayer : Player
     {
-        public override Card ShowCard(Card card = null)
+        public override Card ShowCard()
         {
             Console.WriteLine(this.Hand.ShowAllCard());
 
