@@ -25,8 +25,8 @@ namespace CardGame.Models
 
             this.TopCard = _topDeck.ShowCard();
 
-            Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
-            Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
+            //Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
+            //Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
 
             ShowCard("頂牌為", this.TopCard);
 
