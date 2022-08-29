@@ -4,13 +4,20 @@
     {
         public override IList<Card> Play()
         {
-            Console.WriteLine(this.Hand.ShowAllCard());
-
             var command = Console.ReadLine();
+            var indexs = new List<int>();
 
-            if (int.TryParse(command, out int index) && index < this.Hand.Count)
+            if (!string.IsNullOrWhiteSpace(command))
             {
-                return this.Hand.ShowCard(index);
+                indexs = command.Split(" ")
+                    .Where(i => int.TryParse(i, out _))
+                    .Select(i => int.Parse(i))
+                    .ToList();
+            }
+
+            if (indexs.Any())
+            {
+                return this.Hand.Play(indexs);
             }
             else
             {

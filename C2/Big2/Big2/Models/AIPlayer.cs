@@ -1,18 +1,21 @@
-﻿namespace Big2.Models
+﻿using Big2.Strategies;
+
+namespace Big2.Models
 {
     public class AIPlayer : Player
     {
-        //private readonly AIStrategy strategy;
+        private readonly AIStrategy strategy;
 
-        //public AIPlayer(AIStrategy strategy = null)
-        //{
-        //    this.strategy = strategy ?? new RandomAIStrategy();
-        //    this.strategy.SetAIPlayer(this);
-        //}
+        public AIPlayer(string name = null, AIStrategy strategy = null)
+        {
+            this.Name = name;
+            this.strategy = strategy ?? new RandomAIStrategy();
+            this.strategy.SetAIPlayer(this);
+        }
 
         public override IList<Card> Play()
         {
-            return this.strategy.ShowCard();
+            return this.strategy.Play();
         }
     }
 }

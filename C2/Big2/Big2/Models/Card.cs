@@ -18,6 +18,12 @@ namespace Big2.Models
             Rank = (Rank)(number % 13);
         }
 
+        public Card(Suit suit, Rank rank)
+        {
+            Suit = suit;
+            Rank = rank;
+        }
+
         public override string ToString()
         {
             return $"{Suit.GetDisplayName()}[{Rank.GetDisplayName()}]";

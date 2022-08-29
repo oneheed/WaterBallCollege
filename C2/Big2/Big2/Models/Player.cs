@@ -4,7 +4,7 @@
     {
         public int Index { get; private set; }
 
-        public string? Name { get; private set; }
+        public string? Name { get; protected set; }
 
         public Big2Game? Game { get; private set; }
 
@@ -17,7 +17,7 @@
 
         public void NameHimself(string name)
         {
-            this.Name = name;
+            this.Name = this.Name ?? name;
         }
 
         public void SetGame(Big2Game game)
