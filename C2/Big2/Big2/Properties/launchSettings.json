@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Big2": {
+      "commandName": "Project",
+      "commandLineArgs": "< Resource\\fullhouse.in"
+    }
+  }
+}

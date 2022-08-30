@@ -1,19 +1,17 @@
 ﻿using Big2.Enums;
+using Big2.Strategies;
 
 namespace Big2.Handlers
 {
     public class SingleHandler : CardHandler
     {
-        public SingleHandler(CardHandler next) : base(next)
+        public SingleHandler(CompareStrategy compareStrategy, CardHandler next) : base(compareStrategy, next)
         {
         }
 
-        protected override Pattern DoHandling()
-        {
-            return Pattern.Single;
-        }
+        protected override Pattern MacthPattern => Pattern.Single;
 
-        protected override bool Match()
+        protected override bool PatternMatch()
         {
             return this._playcards.Count() == 1;
         }

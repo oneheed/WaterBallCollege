@@ -1,0 +1,6 @@
+﻿chcp 65001 && Big2.exe < Resource\always-play-first-card.in > Resource\always-play-first-card.out
+chcp 65001 && Big2.exe < Resource\fullhouse.in > Resource\fullhouse.out
+chcp 65001 && Big2.exe < Resource\illegal-actions.in > Resource\illegal-actions.out
+chcp 65001 && Big2.exe < Resource\normal-no-error-play1.in > Resource\normal-no-error-play1.out
+chcp 65001 && Big2.exe < Resource\normal-no-error-play2.in > Resource\normal-no-error-play2.out
+chcp 65001 && Big2.exe < Resource\straight.in > Resource\straight.out

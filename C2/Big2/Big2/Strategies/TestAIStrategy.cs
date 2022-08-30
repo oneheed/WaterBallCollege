@@ -16,7 +16,8 @@ namespace Big2.Strategies
             if (_commands.MoveNext())
             {
                 var command = _commands.Current;
-                var indexs = command.Split(" ").Select(c => int.Parse(c)).ToList();
+                Console.WriteLine(command);
+                var indexs = command.Trim().Split(" ").Select(c => int.Parse(c)).ToList();
 
                 return this.aiPlayer.Hand.Play(indexs);
             }

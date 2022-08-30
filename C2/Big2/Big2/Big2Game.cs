@@ -96,7 +96,6 @@ namespace Big2
                 }
 
                 Console.WriteLine($"輪到{player.Name}了");
-                Console.WriteLine(player.Hand.ShowAllCard());
 
                 Play(player);
 
@@ -110,11 +109,12 @@ namespace Big2
 
         private void Play(Player player)
         {
+            Console.WriteLine(player.Hand.ShowAllCard());
             var cards = player.Play();
 
             if (cards.Any())
             {
-                var pattern = this._cardHandler.Compare(TopPlay.Cards, cards);
+                var pattern = this._cardHandler.Excute(TopPlay, cards);
 
                 if (pattern == Pattern.Illegal)
                 {
@@ -128,12 +128,14 @@ namespace Big2
 
                     player.Hand.RemoveCard(cards);
 
-                    TopPlay.SetTopPlay(player, cards);
+                    TopPlay.SetTopPlay(player, cards, pattern);
                 }
             }
             else if (!TopPlay.Cards.Any())
             {
                 Console.WriteLine($"你不能在新的回合中喊 PASS");
+
+                Play(player);
             }
             else
             {
