@@ -3,7 +3,7 @@ using Big2.Extensions;
 
 namespace Big2.Models
 {
-    public class Card : IComparable<Card>
+    public class Card : IComparable<Card>, IEquatable<Card>
     {
         public Suit Suit { get; private set; }
 
@@ -29,19 +29,29 @@ namespace Big2.Models
             return $"{Suit.GetDisplayName()}[{Rank.GetDisplayName()}]";
         }
 
-        public int CompareTo(Card? card)
+        public int CompareTo(Card? other)
         {
-            if (card != null)
+            if (other != null)
             {
-                if (Rank == card.Rank)
+                if (Rank == other.Rank)
                 {
-                    return Suit - card.Suit;
+                    return Suit - other.Suit;
                 }
 
-                return Rank - card.Rank;
+                return Rank - other.Rank;
             }
 
             return 1;
+        }
+
+        public bool Equals(Card? other)
+        {
+            if (other != null)
+            {
+                return Rank == other.Rank && Suit == other.Suit;
+            }
+
+            return false;
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Big2.Enums;
-using Big2.Strategies;
+using Big2.Strategies.CardCompare;
 
 namespace Big2.Handlers
 {
     public class StraightHandler : CardHandler
     {
-        public StraightHandler(CompareStrategy compareStrategy, CardHandler next) : base(compareStrategy, next)
+        public StraightHandler(CompareStrategy compareStrategy, CardHandler? next) : base(compareStrategy, next)
         {
         }
 

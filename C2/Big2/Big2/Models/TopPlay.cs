@@ -4,7 +4,7 @@ namespace Big2.Models
 {
     public class TopPlay
     {
-        public Player Player { get; private set; } = new AIPlayer();
+        public Player? Player { get; private set; }
 
         public IList<Card> Cards { get; private set; } = new List<Card>();
 
@@ -19,7 +19,7 @@ namespace Big2.Models
 
         public void ResetTopPlay()
         {
-            this.Player = new AIPlayer();
+            this.Player = default;
             this.Cards = new List<Card>();
             this.Pattern = default;
         }

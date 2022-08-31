@@ -7,21 +7,21 @@ namespace Big2
 {
     public class Big2Game
     {
-        private int _drawNumber = 13;
-
-        private Deck _deck;
-
-        private IList<Player> _players;
+        private readonly int _drawNumber = 13;
 
         private int _playPlayerIndex = 0;
 
-        private bool _nextRound = true;
+        private bool _isNextRound = true;
 
-        private CardHandler _cardHandler;
+        private readonly Deck _deck;
+
+        private readonly IList<Player> _players;
+
+        private readonly CardHandler _cardHandler;
+
+        private TopPlay TopPlay { get; } = new TopPlay();
 
         public int Round { get; private set; } = 1;
-
-        public TopPlay TopPlay { get; private set; } = new TopPlay();
 
         public Big2Game(Deck deck, IList<Player> players, CardHandler cardHandler)
         {
@@ -38,7 +38,7 @@ namespace Big2
 
             DealStage();
 
-            while (this._nextRound)
+            while (this._isNextRound)
             {
                 Console.WriteLine($"新的回合開始了。");
 
@@ -76,7 +76,7 @@ namespace Big2
                 }
             }
 
-            _playPlayerIndex = _players.Single(p => p.Hand.ContainClubsThree()).Index;
+            _playPlayerIndex = GetIndexHandContainClubsThree();
         }
 
         private void TakeRound()
@@ -85,14 +85,10 @@ namespace Big2
             {
                 var player = _players[_playPlayerIndex];
 
-                if (TopPlay.Player.Equals(player))
+                if (TopPlay.Player != null && TopPlay.Player.Equals(player))
                 {
                     TopPlay.ResetTopPlay();
                     break;
-                }
-                else
-                {
-                    _playPlayerIndex = (_playPlayerIndex + 1) % _players.Count;
                 }
 
                 Console.WriteLine($"輪到{player.Name}了");
@@ -101,47 +97,59 @@ namespace Big2
 
                 if (player.Hand.Count == 0)
                 {
-                    _nextRound = false;
+                    _isNextRound = false;
                     break;
                 }
             }
         }
 
+
+        private int GetIndexHandContainClubsThree()
+        {
+            var card = new Card(Suit.Club, Rank.Three);
+
+            return _players.Single(p => p.Hand.ContainsCard(card))
+                .Index;
+        }
+
         private void Play(Player player)
         {
-            Console.WriteLine(player.Hand.ShowAllCard());
-            var cards = player.Play();
-
-            if (cards.Any())
+            while (_playPlayerIndex == player.Index)
             {
-                var pattern = this._cardHandler.Excute(TopPlay, cards);
+                Console.WriteLine(player.Hand.ShowAllCard());
+                var cards = player.Play();
 
-                if (pattern == Pattern.Illegal)
+                try
                 {
-                    Console.WriteLine($"此牌型不合法，請再嘗試一次。");
+                    if (!cards.Any() && !TopPlay.Cards.Any())
+                    {
+                        throw new NewRoundMustNotPassException();
+                    }
 
-                    Play(player);
+                    if (cards.Any())
+                    {
+                        var pattern = this._cardHandler.Excute(TopPlay, cards);
+
+                        Console.WriteLine($"玩家 {player.Name} 打出了 {pattern.GetDisplayName()} {string.Join(" ", cards)}");
+
+                        player.Hand.RemoveCard(cards);
+
+                        TopPlay.SetTopPlay(player, cards, pattern);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"玩家 {player.Name} PASS.");
+                    }
+
+                    _playPlayerIndex = (_playPlayerIndex + 1) % _players.Count;
                 }
-                else
+                catch (NotSupportedException ex)
                 {
-                    Console.WriteLine($"玩家 {player.Name} 打出了 {pattern.GetDisplayName()} {string.Join(" ", cards)}");
-
-                    player.Hand.RemoveCard(cards);
-
-                    TopPlay.SetTopPlay(player, cards, pattern);
+                    Console.WriteLine(ex.Message);
                 }
-            }
-            else if (!TopPlay.Cards.Any())
-            {
-                Console.WriteLine($"你不能在新的回合中喊 PASS");
-
-                Play(player);
-            }
-            else
-            {
-                Console.WriteLine($"玩家 {player.Name} PASS.");
             }
         }
+
 
         private Player? WinnerPlayer()
         {

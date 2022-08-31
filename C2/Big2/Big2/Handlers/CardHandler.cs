@@ -1,20 +1,21 @@
 ﻿using Big2.Enums;
 using Big2.Models;
-using Big2.Strategies;
+using Big2.Strategies.CardCompare;
 
 namespace Big2.Handlers
 {
     public abstract class CardHandler
     {
-        private CardHandler _next;
+        private readonly CardHandler? _next;
 
-        protected TopPlay _topPlay;
+        private readonly CompareStrategy _compareStrategy;
 
-        protected IEnumerable<Card> _playcards;
+        protected TopPlay _topPlay = new TopPlay();
 
-        protected CompareStrategy _compareStrategy;
+        protected IEnumerable<Card> _playcards = new List<Card>();
 
-        public CardHandler(CompareStrategy compareStrategy, CardHandler next)
+
+        protected CardHandler(CompareStrategy compareStrategy, CardHandler? next)
         {
             _next = next;
             _compareStrategy = compareStrategy;
@@ -25,7 +26,6 @@ namespace Big2.Handlers
             _topPlay = topPlay;
             _playcards = playcards;
 
-
             if (TopPlayPatternMatch() && PatternMatch())
             {
                 if (!this._topPlay.Pattern.HasValue)
@@ -34,7 +34,7 @@ namespace Big2.Handlers
                 }
                 else
                 {
-                    return _compareStrategy.Compare(this._topPlay.Cards, this._playcards) > 0 ? MacthPattern : Pattern.Illegal;
+                    return _compareStrategy.Compare(this._topPlay.Cards, this._playcards) > 0 ? MacthPattern : throw new IllegalPatternException();
                 }
             }
             else if (_next != null)
@@ -42,7 +42,7 @@ namespace Big2.Handlers
                 return _next.Excute(topPlay, playcards);
             }
 
-            return Pattern.Illegal;
+            throw new IllegalPatternException();
         }
 
         protected virtual bool TopPlayPatternMatch()

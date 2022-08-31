@@ -1,4 +1,4 @@
-﻿using Big2.Strategies;
+﻿using Big2.Strategies.AI;
 
 namespace Big2.Models
 {
@@ -6,7 +6,7 @@ namespace Big2.Models
     {
         private readonly AIStrategy strategy;
 
-        public AIPlayer(string name = null, AIStrategy strategy = null)
+        public AIPlayer(string? name = null, AIStrategy? strategy = null)
         {
             this.Name = name;
             this.strategy = strategy ?? new RandomAIStrategy();

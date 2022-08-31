@@ -1,6 +1,6 @@
 ﻿using Big2.Models;
 
-namespace Big2.Strategies
+namespace Big2.Strategies.AI
 {
     public class RandomAIStrategy : AIStrategy
     {
@@ -8,10 +8,10 @@ namespace Big2.Strategies
         {
             var indexs = new List<int>
             {
-                 new Random().Next(0, this.aiPlayer.Hand.Count - 1),
+                 new Random().Next(0, aiPlayer.Hand.Count - 1),
             };
 
-            return this.aiPlayer.Hand.Play(indexs);
+            return aiPlayer.Hand.Play(indexs);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Big2.Enums;
-
-namespace Big2.Models
+﻿namespace Big2.Models
 {
     public class Hand
     {
@@ -54,9 +52,9 @@ namespace Big2.Models
             }
         }
 
-        public bool ContainClubsThree()
+        public bool ContainsCard(Card card)
         {
-            return _cards.Any(c => c.Suit == Suit.Club && c.Rank == Rank.Three);
+            return this._cards.Contains(card);
         }
 
         public int Count => _cards.Count;

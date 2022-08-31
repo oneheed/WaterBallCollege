@@ -1,8 +1,8 @@
 ﻿using Big2.Models;
 
-namespace Big2.Strategies
+namespace Big2.Strategies.AI
 {
-    public class FirstAIStrategy : AIStrategy
+    public class AlwaysPlayFirstAIStrategy : AIStrategy
     {
         public override IList<Card> Play()
         {
@@ -11,7 +11,7 @@ namespace Big2.Strategies
                  0,
             };
 
-            return this.aiPlayer.Hand.Play(indexs);
+            return aiPlayer.Hand.Play(indexs);
         }
     }
 }

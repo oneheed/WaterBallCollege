@@ -1,6 +1,6 @@
 ﻿using Big2.Models;
 
-namespace Big2.Strategies
+namespace Big2.Strategies.CardCompare
 {
     public abstract class CompareStrategy
     {

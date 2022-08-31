@@ -1,12 +1,12 @@
 ﻿using Big2.Models;
 
-namespace Big2.Strategies
+namespace Big2.Strategies.AI
 {
-    public class TestAIStrategy : AIStrategy
+    public class InputCommandAIStrategy : AIStrategy
     {
         private IEnumerator<string> _commands;
 
-        public TestAIStrategy(IEnumerator<string> commands)
+        public InputCommandAIStrategy(IEnumerator<string> commands)
         {
             _commands = commands;
         }
@@ -19,7 +19,7 @@ namespace Big2.Strategies
 
                 var indexs = command.Trim().Split(" ").Select(c => int.Parse(c)).ToList();
 
-                return this.aiPlayer.Hand.Play(indexs);
+                return aiPlayer.Hand.Play(indexs);
             }
             else
             {

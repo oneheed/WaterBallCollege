@@ -4,9 +4,6 @@ namespace Big2.Enums
 {
     public enum Pattern
     {
-        [Display(Name = "不合法")]
-        Illegal = -1,
-
         [Display(Name = "單張")]
         Single = 0,
 
