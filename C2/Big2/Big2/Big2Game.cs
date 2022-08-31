@@ -76,7 +76,7 @@ namespace Big2
                 }
             }
 
-            _playPlayerIndex = GetIndexHandContainClubsThree();
+            GetIndexHandContainClubsThree();
         }
 
         private void TakeRound()
@@ -103,12 +103,12 @@ namespace Big2
             }
         }
 
-
-        private int GetIndexHandContainClubsThree()
+        private void GetIndexHandContainClubsThree()
         {
             var card = new Card(Suit.Club, Rank.Three);
 
-            return _players.Single(p => p.Hand.ContainsCard(card))
+            _playPlayerIndex = _players
+                .Single(p => p.Hand.ContainsCard(card))
                 .Index;
         }
 
