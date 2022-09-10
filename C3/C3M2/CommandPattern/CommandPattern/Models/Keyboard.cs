@@ -8,7 +8,7 @@ namespace CommandPattern.Models
 
         private Buttons _undoButtons;
 
-        public bool Bind(ConsoleKey key, ICommand command)
+        public bool Bind(ConsoleKey key, ICommand? command)
         {
             return _buttons.Bind(key, command);
         }
@@ -18,7 +18,7 @@ namespace CommandPattern.Models
             return _buttons.Click(key);
         }
 
-        public IEnumerable<KeyValuePair<ConsoleKey, ICommand>> GetBind()
+        public IDictionary<ConsoleKey, ICommand?> GetBind()
         {
             return _buttons.GetBind();
         }

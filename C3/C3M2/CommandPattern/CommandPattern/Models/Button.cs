@@ -12,7 +12,7 @@ namespace CommandPattern.Models
             _bindCommands = Enumerable.Range(65, 26).ToDictionary(v => (ConsoleKey)v, _ => default(ICommand));
         }
 
-        public bool Bind(ConsoleKey key, ICommand command)
+        public bool Bind(ConsoleKey key, ICommand? command)
         {
             if (_bindCommands.ContainsKey(key))
             {
@@ -23,9 +23,9 @@ namespace CommandPattern.Models
             return false;
         }
 
-        public IEnumerable<KeyValuePair<ConsoleKey, ICommand>> GetBind()
+        public IDictionary<ConsoleKey, ICommand?> GetBind()
         {
-            return _bindCommands.Where(c => c.Value != null);
+            return _bindCommands.Where(c => c.Value != null).ToDictionary(c => c.Key, c => c.Value);
         }
 
         public ICommand Click(ConsoleKey key)
@@ -37,7 +37,7 @@ namespace CommandPattern.Models
                 return command;
             }
 
-            throw new Exception();
+            throw new InvalidOperationException("錯誤操作!");
         }
     }
 }
