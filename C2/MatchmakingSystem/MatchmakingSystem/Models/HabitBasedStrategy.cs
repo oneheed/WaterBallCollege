@@ -1,10 +1,13 @@
 ﻿namespace MatchmakingSystem.Models
 {
-    public class HabitBasedStrategy : IMathStrategy
+    public class HabitBasedStrategy : IMatchStrategy
     {
-        public IList<Individual> Math(Individual individual, IList<Individual> paired)
+        public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
-            return paired.OrderBy(p => individual.Habits.Count(h => p.Habits.Contains(h))).ThenBy(p => p.Id).ToList();
+            return paired
+                .OrderBy(p => individual.Habits.Count(h => p.Habits.Contains(h)))
+                .ThenBy(p => p.Id)
+                .ToList();
         }
     }
 }

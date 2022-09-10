@@ -1,18 +1,18 @@
 ﻿namespace MatchmakingSystem.Models
 {
-    public class ReverseStrategy : IMathStrategy
+    public class ReverseStrategy : IMatchStrategy
     {
-        private readonly IMathStrategy _mathStrategy;
+        private readonly IMatchStrategy _mathStrategy;
 
 
-        public ReverseStrategy(IMathStrategy mathStrategy)
+        public ReverseStrategy(IMatchStrategy mathStrategy)
         {
             this._mathStrategy = mathStrategy;
         }
 
-        public IList<Individual> Math(Individual individual, IList<Individual> paired)
+        public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
-            return _mathStrategy.Math(individual, paired).Reverse().ToList();
+            return _mathStrategy.Match(individual, paired).Reverse().ToList();
         }
     }
 }

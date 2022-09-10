@@ -2,18 +2,18 @@
 {
     public class MatchmakingApp
     {
-        public IList<Individual> Individuals { get; private set; }
+        public IEnumerable<Individual> Individuals { get; private set; }
 
-        public MatchmakingApp(IList<Individual> individuals)
+        public MatchmakingApp(IEnumerable<Individual> individuals)
         {
             Individuals = individuals;
         }
 
         public void Start()
         {
-            Func<int, IList<Individual>> func = id => { return Individuals.Where(t => t.Id != id).ToList(); };
+            Func<int, IEnumerable<Individual>> func = id => { return Individuals.Where(t => t.Id != id).ToList(); };
 
-            var result = Individuals.Select(s => new { Id = s.Id, MathResult = s.MathStrategy.Math(s, func(s.Id)) });
+            var result = Individuals.Select(s => new { Id = s.Id, MathResult = s.MathStrategy.Match(s, func(s.Id)) });
 
             foreach (var item in result)
             {

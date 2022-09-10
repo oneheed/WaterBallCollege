@@ -1,8 +1,8 @@
 ﻿namespace MatchmakingSystem.Models
 {
-    public class DistanceBasedStrategy : IMathStrategy
+    public class DistanceBasedStrategy : IMatchStrategy
     {
-        public IList<Individual> Math(Individual individual, IList<Individual> paired)
+        public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
             return paired.OrderBy(p => individual.Coord.Distance(p.Coord)).ThenBy(p => p.Id).ToList();
         }

@@ -18,10 +18,10 @@ namespace MatchmakingSystem.Models
         public Coord Coord { get; private set; }
 
 
-        public IMathStrategy MathStrategy { get; private set; }
+        public IMatchStrategy MathStrategy { get; private set; }
 
 
-        public Individual(int id, Gender gender, int age, string intro, HashSet<string> habits, Coord coord, IMathStrategy mathStrategy)
+        public Individual(int id, Gender gender, int age, string intro, HashSet<string> habits, Coord coord, IMatchStrategy mathStrategy)
         {
             Id = id;
             Age = age;
@@ -39,7 +39,7 @@ namespace MatchmakingSystem.Models
 
         public IList<Individual> Math(IList<Individual> paired)
         {
-            return MathStrategy.Math(this, paired);
+            return MathStrategy.Match(this, paired);
         }
     }
 }

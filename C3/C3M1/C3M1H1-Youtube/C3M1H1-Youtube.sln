@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C3M1H1-Youtube", "C3M1H1-Youtube\C3M1H1-Youtube.csproj", "{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80EE6906-2735-4D70-AB6B-029F83B07B70}
+	EndGlobalSection
+EndGlobal
