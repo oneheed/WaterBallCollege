@@ -1,4 +1,6 @@
-﻿namespace TreasureMap.Models
+﻿using TreasureMap.Models.States;
+
+namespace TreasureMap.Models
 {
     internal abstract class Role : MapObject
     {
@@ -8,7 +10,7 @@
 
         public State State { get; protected set; }
 
-        protected Role()
+        protected Role() : base()
         {
             this.HP = InitHP;
             this.State = new NormalState(this);
@@ -51,10 +53,6 @@
         internal bool IsFullHp()
         {
             return this.HP >= InitHP;
-        }
-
-        public void Death()
-        {
         }
 
         protected void Attack()

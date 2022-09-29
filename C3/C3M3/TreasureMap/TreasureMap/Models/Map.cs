@@ -12,6 +12,8 @@
 
         public MapObject[] MapObjects { get; private set; }
 
+        private Character _character;
+
         public Map(Dictionary<(string Name, Func<MapObject> func), int> mapObjectTable)
         {
             this.MapObjectTable = mapObjectTable;
@@ -21,7 +23,7 @@
 
         public void InitMap()
         {
-            this.MapObjects = new MapObject[Length * Width];
+            this.MapObjects = Enumerable.Range(0, this.Length * this.Width).Select(m => MapObject.Default).ToArray();
 
             foreach (var item in this.MapObjectTable)
             {
@@ -29,9 +31,15 @@
                 {
                     var randomIndex = new Random().Next(this.MapObjects.Length);
 
-                    if (this.MapObjects[randomIndex] == null)
+                    if (this.MapObjects[randomIndex] == MapObject.Default)
                     {
                         this.MapObjects[randomIndex] = item.Key.func();
+                        this.MapObjects[randomIndex].SetMap(this);
+
+                        if (this.MapObjects[randomIndex] is Character)
+                        {
+                            _character = (Character)this.MapObjects[randomIndex];
+                        }
                     }
                     else
                     {
@@ -50,11 +58,7 @@
             for (var i = 0; i < this.MapObjects.Length; i++)
             {
                 var mapObject = this.MapObjects[i];
-                var symbol = "\u3000";
-                if (mapObject != null)
-                {
-                    symbol = mapObject.Symbol.ToString();
-                }
+                var symbol = mapObject.Symbol.ToString();
 
                 if ((i + 1) % this.Width == 1)
                 {
@@ -69,6 +73,19 @@
                     Console.WriteLine($"\u3000{bound}\u3000");
                 }
             }
+
+            var location = this.GetMapLocation(this._character);
+            Console.WriteLine($"{location.X}, {location.Y}");
+        }
+
+        private int GetMapIndex(MapObject mapObject)
+            => Array.FindIndex(this.MapObjects, o => o.Equals(mapObject));
+
+        private (int X, int Y) GetMapLocation(MapObject mapObject)
+        {
+            var index = this.GetMapIndex(mapObject);
+
+            return (index / 10, index % 10);
         }
     }
 }

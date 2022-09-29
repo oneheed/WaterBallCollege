@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using TreasureMap.Models;
+using TreasureMap.Models.States;
 
 var treasureTable = new Dictionary<(string Name, Func<Role, State> func), int>
 {

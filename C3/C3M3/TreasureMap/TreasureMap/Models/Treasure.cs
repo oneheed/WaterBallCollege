@@ -1,4 +1,6 @@
-﻿namespace TreasureMap.Models
+﻿using TreasureMap.Models.States;
+
+namespace TreasureMap.Models
 {
     internal class Treasure : MapObject
     {
@@ -12,6 +14,8 @@
         {
             this.Name = name;
             this.StateFunc = stateFunc;
+
+            this.Death();
         }
     }
 }
