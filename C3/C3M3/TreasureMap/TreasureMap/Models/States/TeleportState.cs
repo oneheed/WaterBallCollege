@@ -1,4 +1,7 @@
-﻿namespace TreasureMap.Models.States
+﻿using TreasureMap.Models.Roles;
+using TreasureMap.Strategies.Move;
+
+namespace TreasureMap.Models.States
 {
     internal class TeleportState : State
     {
@@ -10,7 +13,8 @@
 
         internal override void DoState()
         {
-            //this._role.RoundMove();
+            this._role.SetMoveStrategy(new RandomMoveStrategy(this._role));
+            this._role.Move(Enums.Direction.Up);
 
             base.DoState();
         }

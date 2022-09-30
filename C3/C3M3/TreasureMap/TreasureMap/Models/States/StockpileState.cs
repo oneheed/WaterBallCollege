@@ -1,4 +1,6 @@
-﻿namespace TreasureMap.Models.States
+﻿using TreasureMap.Models.Roles;
+
+namespace TreasureMap.Models.States
 {
     internal class StockpileState : State
     {

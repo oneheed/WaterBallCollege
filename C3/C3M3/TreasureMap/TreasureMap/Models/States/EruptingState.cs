@@ -1,4 +1,7 @@
-﻿namespace TreasureMap.Models.States
+﻿using TreasureMap.Models.Roles;
+using TreasureMap.Strategies.Attack;
+
+namespace TreasureMap.Models.States
 {
     internal class EruptingState : State
     {
@@ -10,7 +13,7 @@
 
         internal override void DoState()
         {
-            //this._role.ac(50);
+            this._role.SetAttackStrategy(new AllAttackStrategy(this._role));
 
             base.DoState();
         }

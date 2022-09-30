@@ -1,44 +1,55 @@
-﻿namespace TreasureMap.Models
+﻿using TreasureMap.Enums;
+using TreasureMap.Models.Roles;
+using TreasureMap.Models.States;
+
+namespace TreasureMap.Models
 {
     internal class Map
     {
-        public int Length { get; private set; } = 10;
+        public int Round { get; private set; } = 1;
 
         public int Width { get; private set; } = 10;
 
-        public int Round { get; private set; } = 1;
+        public int Height { get; private set; } = 10;
 
-        public Dictionary<(string Name, Func<MapObject> func), int> MapObjectTable { get; private set; }
+        public int Size => this.Width * this.Height;
 
-        public MapObject[] MapObjects { get; private set; }
+        private readonly Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> _mapObjectTable;
 
-        private Character _character;
+        private readonly Dictionary<Type, List<MapObject>> _mapObjectDic = new Dictionary<Type, List<MapObject>>();
 
-        public Map(Dictionary<(string Name, Func<MapObject> func), int> mapObjectTable)
+        private readonly MapObject[] _mapObjects;
+
+        public Map(int width, int height, Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> mapObjectTable)
         {
-            this.MapObjectTable = mapObjectTable;
+            this.Width = width;
+            this.Height = height;
+
+            this._mapObjectTable = mapObjectTable;
+            this._mapObjects = Enumerable.Range(0, this.Size).Select(m => MapObject.Default).ToArray();
 
             InitMap();
         }
 
         public void InitMap()
         {
-            this.MapObjects = Enumerable.Range(0, this.Length * this.Width).Select(m => MapObject.Default).ToArray();
-
-            foreach (var item in this.MapObjectTable)
+            foreach (var item in this._mapObjectTable)
             {
-                for (var i = 0; i < item.Value; i++)
+                this._mapObjectDic.Add(item.Key, new List<MapObject>());
+
+                for (var i = 0; i < item.Value.Number; i++)
                 {
-                    var randomIndex = new Random().Next(this.MapObjects.Length);
+                    var randomIndex = new Random().Next(this._mapObjects.Length);
 
-                    if (this.MapObjects[randomIndex] == MapObject.Default)
+                    if (this._mapObjects[randomIndex] == MapObject.Default)
                     {
-                        this.MapObjects[randomIndex] = item.Key.func();
-                        this.MapObjects[randomIndex].SetMap(this);
+                        this._mapObjects[randomIndex] = item.Value.ConstructFunc();
+                        this._mapObjects[randomIndex].SetMap(this);
+                        this._mapObjectDic[item.Key].Add(this._mapObjects[randomIndex]);
 
-                        if (this.MapObjects[randomIndex] is Character)
+                        if (this._mapObjects[randomIndex] is Character character)
                         {
-                            _character = (Character)this.MapObjects[randomIndex];
+                            character.EnterState(new OrderlessState(character));
                         }
                     }
                     else
@@ -55,9 +66,9 @@
 
             Console.WriteLine($"\u3000{bound}\u3000");
 
-            for (var i = 0; i < this.MapObjects.Length; i++)
+            for (var i = 0; i < this._mapObjects.Length; i++)
             {
-                var mapObject = this.MapObjects[i];
+                var mapObject = this._mapObjects[i];
                 var symbol = mapObject.Symbol.ToString();
 
                 if ((i + 1) % this.Width == 1)
@@ -73,19 +84,149 @@
                     Console.WriteLine($"\u3000{bound}\u3000");
                 }
             }
-
-            var location = this.GetMapLocation(this._character);
-            Console.WriteLine($"{location.X}, {location.Y}");
         }
 
-        private int GetMapIndex(MapObject mapObject)
-            => Array.FindIndex(this.MapObjects, o => o.Equals(mapObject));
+        public void Start()
+        {
+            while (!this.Gameover())
+            {
+                this.CharacterRound();
+            }
+        }
 
-        private (int X, int Y) GetMapLocation(MapObject mapObject)
+        public void CharacterRound()
+        {
+            var actionSuccess = false;
+            var character = (Character)_mapObjectDic[typeof(Character)].First();
+
+            while (!actionSuccess)
+            {
+                var keyInfo = Console.ReadKey();
+                var key = keyInfo.Key;
+                Console.WriteLine();
+                try
+                {
+                    if (key == ConsoleKey.UpArrow ||
+                        key == ConsoleKey.DownArrow ||
+                        key == ConsoleKey.LeftArrow ||
+                        key == ConsoleKey.RightArrow)
+                    {
+                        character.Move(MapDirection(key));
+                    }
+                    else if (key == ConsoleKey.A)
+                    {
+                        character.Attack();
+                    }
+
+                    actionSuccess = true;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (Exception)
+                {
+                    actionSuccess = false;
+                }
+            }
+
+            character.Do();
+            PrintMap();
+        }
+
+        public void MonsterRound()
+        {
+
+        }
+
+        public MapObject GetMapObjectByIndex(int index)
+        {
+            return _mapObjects[index];
+        }
+
+        public IEnumerable<MapObject> GetMapObjectsByType(Type type)
+        {
+            return _mapObjectDic.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
+        }
+
+        public void RemoveMapObject(MapObject mapObject)
         {
             var index = this.GetMapIndex(mapObject);
 
-            return (index / 10, index % 10);
+            this._mapObjects[index] = MapObject.Default;
+            this._mapObjectDic[mapObject.GetType()].Remove(mapObject);
+        }
+
+
+        public void MoveMapObjectByIndex(MapObject mapObject, int index)
+        {
+            var fromIndex = this.GetMapIndex(mapObject);
+            var toIndex = index;
+
+            var temp = this._mapObjects[fromIndex];
+
+            this._mapObjects[fromIndex] = MapObject.Default;
+            this._mapObjects[toIndex] = temp;
+        }
+
+        public (int X, int Y) GetMapLocation(MapObject mapObject)
+        {
+            var index = this.GetMapIndex(mapObject);
+
+            return (index / this.Width, index % this.Width);
+        }
+
+        public int GetMapIndexByOffset(MapObject mapObject, (int X, int Y) locationOffset)
+        {
+            var fromIndex = this.GetMapIndex(mapObject);
+            var index = fromIndex + (this.Width * locationOffset.Y + locationOffset.X);
+
+            if (index >= this.Size || index < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return index;
+        }
+
+        public int GetMapIndex(MapObject mapObject)
+            => Array.FindIndex(this._mapObjects, o => o.Equals(mapObject));
+
+        public (int UpBoundIndex, int DownBoundIndex, int LeftBoundIndex, int RightBoundIndex) GetBoundIndex(MapObject mapObject)
+        {
+            var fromIndex = this.GetMapIndex(mapObject);
+
+            var heightIndex = fromIndex / this.Width;
+
+            var upBoundIndex = fromIndex - (heightIndex * this.Width);
+            var downBoundIndex = fromIndex + ((this.Height - heightIndex - 1) * this.Width);
+
+            var leftBoundIndex = heightIndex * this.Width;
+            var rightBoundIndex = (heightIndex + 1) * this.Width - 1;
+
+            return (upBoundIndex, downBoundIndex, leftBoundIndex, rightBoundIndex);
+        }
+
+        private Direction MapDirection(ConsoleKey consoleKey)
+        {
+            switch (consoleKey)
+            {
+                case ConsoleKey.UpArrow:
+                    return Direction.Up;
+                case ConsoleKey.DownArrow:
+                    return Direction.Down;
+                case ConsoleKey.LeftArrow:
+                    return Direction.Left;
+                case ConsoleKey.RightArrow:
+                    return Direction.Right;
+                default:
+                    return Direction.Up;
+            }
+        }
+
+        private bool Gameover()
+        {
+            return this._mapObjectDic[typeof(Character)].Count == 0 || this._mapObjectDic[typeof(Monster)].Count == 0;
         }
     }
 }

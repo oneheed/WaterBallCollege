@@ -1,4 +1,7 @@
-﻿namespace TreasureMap.Models.States
+﻿using TreasureMap.Models.Roles;
+using TreasureMap.Strategies.Move;
+
+namespace TreasureMap.Models.States
 {
     internal class OrderlessState : State
     {
@@ -8,10 +11,12 @@
             _finishedState = new NormalState(role);
         }
 
-        internal override void DoState()
+        internal override void EnterState()
         {
-            //OnlyMoveUpAndDown();
-            //OnlyMoveRightAndLeft();
+            var random = new Random().Next(2);
+            MoveStrategy moveStrategy = random == 0 ? new OnlyUpAndDownMoveStrategy(this._role) : new OnlyRightAndLeftMoveStrategy(this._role);
+
+            this._role.SetMoveStrategy(moveStrategy);
         }
     }
 }

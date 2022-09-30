@@ -1,4 +1,5 @@
-﻿using TreasureMap.Models.States;
+﻿using TreasureMap.Models.Roles;
+using TreasureMap.Models.States;
 
 namespace TreasureMap.Models
 {
@@ -14,8 +15,6 @@ namespace TreasureMap.Models
         {
             this.Name = name;
             this.StateFunc = stateFunc;
-
-            this.Death();
         }
     }
 }

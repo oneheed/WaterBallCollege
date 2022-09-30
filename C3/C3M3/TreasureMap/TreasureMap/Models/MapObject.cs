@@ -6,20 +6,28 @@
 
         public virtual char Symbol { get; } = '\u3000';
 
-        protected Map? Map { get; private set; }
+        public Map? Map { get; private set; }
 
         public void SetMap(Map map)
         {
             this.Map = map;
         }
 
+        public int GetMapIndex()
+        {
+            if (this.Map != null)
+            {
+                return this.Map.GetMapIndex(this);
+            }
+
+            return -1;
+        }
+
         public void Death()
         {
             if (this.Map != null)
             {
-                var index = Array.FindIndex(this.Map.MapObjects, o => o.Equals(this));
-
-                this.Map.MapObjects[index] = Default;
+                this.Map.RemoveMapObject(this);
             }
         }
     }
