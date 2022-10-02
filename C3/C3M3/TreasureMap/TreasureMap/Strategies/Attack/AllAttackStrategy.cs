@@ -1,4 +1,5 @@
-﻿using TreasureMap.Models.Roles;
+﻿using TreasureMap.Enums;
+using TreasureMap.Models.Roles;
 
 namespace TreasureMap.Strategies.Attack
 {
@@ -8,7 +9,7 @@ namespace TreasureMap.Strategies.Attack
         {
         }
 
-        public override void Attack()
+        public override void Attack(Direction direction = Direction.None)
         {
             var map = _attacker.Map;
             var monsters = map.GetMapObjectsByType(typeof(Monster));

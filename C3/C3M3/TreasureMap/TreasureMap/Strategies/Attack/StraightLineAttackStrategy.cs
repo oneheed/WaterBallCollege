@@ -1,4 +1,5 @@
 ﻿using TreasureMap.Enums;
+using TreasureMap.Models;
 using TreasureMap.Models.Roles;
 
 namespace TreasureMap.Strategies.Attack
@@ -9,23 +10,37 @@ namespace TreasureMap.Strategies.Attack
         {
         }
 
-        public override void Attack()
+        public override void Attack(Direction direction = Direction.None)
         {
             var map = _attacker.Map;
             var fromIndex = _attacker.GetMapIndex();
-            var direction = Direction.Left;
-            var offest = -1;
-            var test = new[] { Direction.Left, Direction.Right };
+            var offestDirections = new[] { Direction.Up, Direction.Left };
+            var xDirections = new[] { Direction.Left, Direction.Right };
+            var offest = offestDirections.Contains(direction) ? -1 : 1;
 
-            if (test.Contains(direction))
+            if (xDirections.Contains(direction))
             {
                 // X
                 var startIndex = (fromIndex % map.Width);
                 var endIndex = offest > 0 ? (map.Width - 1) : 0;
                 var length = Math.Abs(startIndex - endIndex);
 
+                var toIndex = fromIndex;
+                while (startIndex != endIndex)
+                {
+                    toIndex += offest;
 
-                Console.WriteLine($"{startIndex} {endIndex} {length}");
+                    startIndex += offest;
+
+                    if (map.GetMapObjectByIndex(toIndex) is Obstacle)
+                    {
+                        break;
+                    }
+                    else if (map.GetMapObjectByIndex(toIndex) is Monster monster)
+                    {
+                        monster.Death();
+                    }
+                }
             }
             else
             {
@@ -34,7 +49,22 @@ namespace TreasureMap.Strategies.Attack
                 var endIndex = offest > 0 ? (map.Height - 1) : 0;
                 var length = Math.Abs(startIndex - endIndex);
 
-                Console.WriteLine($"{startIndex} {endIndex} {length}");
+                var toIndex = fromIndex;
+                while (startIndex != endIndex)
+                {
+                    toIndex += (offest * map.Width);
+
+                    startIndex += offest;
+
+                    if (map.GetMapObjectByIndex(toIndex) is Obstacle)
+                    {
+                        break;
+                    }
+                    else if (map.GetMapObjectByIndex(toIndex) is Monster monster)
+                    {
+                        monster.Death();
+                    }
+                }
             }
         }
     }

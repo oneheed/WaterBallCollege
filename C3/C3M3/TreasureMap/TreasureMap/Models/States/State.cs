@@ -21,6 +21,10 @@ namespace TreasureMap.Models.States
         {
         }
 
+        internal virtual void ActionState()
+        {
+        }
+
         internal virtual void DoState()
         {
             ReduceTimeLimit();

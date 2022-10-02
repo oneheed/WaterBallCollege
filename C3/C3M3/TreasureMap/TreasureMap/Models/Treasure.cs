@@ -16,5 +16,12 @@ namespace TreasureMap.Models
             this.Name = name;
             this.StateFunc = stateFunc;
         }
+
+        public State Touched(Role role)
+        {
+            this.Death();
+
+            return this.StateFunc(role);
+        }
     }
 }

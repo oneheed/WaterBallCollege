@@ -10,11 +10,9 @@ namespace TreasureMap.Models.States
             _finishedState = new NormalState(role);
         }
 
-        internal override void DoState()
+        internal override void ActionState()
         {
-            //this._role.Change();
-
-            base.DoState();
+            this._role.ActionNumber++;
         }
 
         internal override void Damage()

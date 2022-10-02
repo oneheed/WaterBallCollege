@@ -20,6 +20,7 @@ namespace TreasureMap.Models.Roles
 
         private Direction _direction = Direction.Up;
 
+
         public Character() : base()
         {
             this.ResetDefualtStrategy();
@@ -33,7 +34,7 @@ namespace TreasureMap.Models.Roles
 
         public override void Attack()
         {
-            this._attackStrategy.Attack();
+            this._attackStrategy.Attack(this._direction);
         }
 
         public override void Move(Direction direction = Direction.None)

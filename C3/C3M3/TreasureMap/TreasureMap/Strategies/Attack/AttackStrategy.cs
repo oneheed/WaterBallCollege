@@ -1,4 +1,5 @@
-﻿using TreasureMap.Models.Roles;
+﻿using TreasureMap.Enums;
+using TreasureMap.Models.Roles;
 
 namespace TreasureMap.Strategies.Attack
 {
@@ -11,6 +12,6 @@ namespace TreasureMap.Strategies.Attack
             this._attacker = attacker;
         }
 
-        public abstract void Attack();
+        public abstract void Attack(Direction direction = Direction.None);
     }
 }

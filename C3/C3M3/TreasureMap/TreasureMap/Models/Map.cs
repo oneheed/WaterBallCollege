@@ -1,12 +1,11 @@
 ﻿using TreasureMap.Enums;
 using TreasureMap.Models.Roles;
-using TreasureMap.Models.States;
 
 namespace TreasureMap.Models
 {
     internal class Map
     {
-        public int Round { get; private set; } = 1;
+        public int Round { get; private set; } = 0;
 
         public int Width { get; private set; } = 10;
 
@@ -49,7 +48,7 @@ namespace TreasureMap.Models
 
                         if (this._mapObjects[randomIndex] is Character character)
                         {
-                            character.EnterState(new OrderlessState(character));
+                            //character.EnterState(new AcceleratedState(character));
                         }
                     }
                     else
@@ -64,6 +63,7 @@ namespace TreasureMap.Models
         {
             var bound = string.Join("\u3000", Enumerable.Range(0, this.Width).Select(x => "—"));
 
+            Console.WriteLine($"Round {this.Round}");
             Console.WriteLine($"\u3000{bound}\u3000");
 
             for (var i = 0; i < this._mapObjects.Length; i++)
@@ -90,16 +90,20 @@ namespace TreasureMap.Models
         {
             while (!this.Gameover())
             {
+                this.Round++;
+
                 this.CharacterRound();
+                this.MonsterRound();
             }
         }
 
         public void CharacterRound()
         {
-            var actionSuccess = false;
             var character = (Character)_mapObjectDic[typeof(Character)].First();
+            character.ActionNumber++;
+            character.Action();
 
-            while (!actionSuccess)
+            while (character.IsAction)
             {
                 var keyInfo = Console.ReadKey();
                 var key = keyInfo.Key;
@@ -118,7 +122,8 @@ namespace TreasureMap.Models
                         character.Attack();
                     }
 
-                    actionSuccess = true;
+                    character.ActionNumber--;
+                    PrintMap();
                 }
                 catch (ArgumentException ex)
                 {
@@ -126,17 +131,41 @@ namespace TreasureMap.Models
                 }
                 catch (Exception)
                 {
-                    actionSuccess = false;
                 }
             }
 
             character.Do();
-            PrintMap();
         }
 
         public void MonsterRound()
         {
+            var monsters = _mapObjectDic[typeof(Monster)];
 
+            foreach (var monster in monsters.Select(m => (Monster)m).ToList())
+            {
+                monster.ActionNumber++;
+                monster.Action();
+
+                while (monster.IsAction)
+                {
+                    try
+                    {
+                        monster.DoAction();
+                        monster.ActionNumber--;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+                monster.Do();
+            }
+
+            PrintMap();
         }
 
         public MapObject GetMapObjectByIndex(int index)
@@ -162,11 +191,19 @@ namespace TreasureMap.Models
         {
             var fromIndex = this.GetMapIndex(mapObject);
             var toIndex = index;
+            var toMapObject = this._mapObjects[toIndex];
 
-            var temp = this._mapObjects[fromIndex];
-
-            this._mapObjects[fromIndex] = MapObject.Default;
-            this._mapObjects[toIndex] = temp;
+            if (mapObject is Role role &&
+                toMapObject is Treasure treasure)
+            {
+                Console.WriteLine($"Get {treasure.Name}");
+                role.Touch(treasure);
+            }
+            else if (toMapObject == MapObject.Default)
+            {
+                this._mapObjects[fromIndex] = MapObject.Default;
+                this._mapObjects[toIndex] = mapObject;
+            }
         }
 
         public (int X, int Y) GetMapLocation(MapObject mapObject)

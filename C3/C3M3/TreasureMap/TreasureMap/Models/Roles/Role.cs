@@ -11,6 +11,10 @@ namespace TreasureMap.Models.Roles
 
         public int HP { get; private set; }
 
+        public bool IsAction => this.ActionNumber > 0;
+
+        public int ActionNumber { get; set; }
+
         public State State { get; protected set; }
 
         protected AttackStrategy _attackStrategy;
@@ -42,6 +46,11 @@ namespace TreasureMap.Models.Roles
             State = state;
 
             State.EnterState();
+        }
+
+        public void Action()
+        {
+            State.ActionState();
         }
 
         public void Do()
@@ -80,7 +89,7 @@ namespace TreasureMap.Models.Roles
 
         public void Touch(Treasure treasure)
         {
-            var state = treasure.StateFunc(this);
+            var state = treasure.Touched(this);
 
             EnterState(state);
         }
