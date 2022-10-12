@@ -15,7 +15,7 @@ namespace TreasureMap.Models.States
             this._role.ActionNumber++;
         }
 
-        internal override void Damage()
+        internal override void Damaged()
         {
             Finished();
         }

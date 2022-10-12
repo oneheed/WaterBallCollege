@@ -168,6 +168,11 @@ namespace TreasureMap.Models
             PrintMap();
         }
 
+        private bool Gameover()
+        {
+            return this._mapObjectDic[typeof(Character)].Count == 0 || this._mapObjectDic[typeof(Monster)].Count == 0;
+        }
+
         public MapObject GetMapObjectByIndex(int index)
         {
             return _mapObjects[index];
@@ -259,11 +264,6 @@ namespace TreasureMap.Models
                 default:
                     return Direction.Up;
             }
-        }
-
-        private bool Gameover()
-        {
-            return this._mapObjectDic[typeof(Character)].Count == 0 || this._mapObjectDic[typeof(Monster)].Count == 0;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace TreasureMap.Models.Roles
                 Death();
             }
 
-            State.Damage();
+            State.Damaged();
         }
 
         internal void Healing(int number)

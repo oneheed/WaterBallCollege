@@ -15,8 +15,6 @@ namespace TreasureMap.Models.States
             _role = role;
         }
 
-        internal virtual int CalDamage(int number) => number;
-
         internal virtual void EnterState()
         {
         }
@@ -39,9 +37,9 @@ namespace TreasureMap.Models.States
         {
         }
 
-        private void ReduceTimeLimit()
-            => _timeLimit--;
-
+        /// <summary>
+        /// 狀態結束
+        /// </summary>
         internal void Finished()
         {
             if (_finishedState != null)
@@ -50,8 +48,17 @@ namespace TreasureMap.Models.States
             }
         }
 
-        internal virtual void Damage()
+        internal virtual int CalDamage(int number) => number;
+
+
+        /// <summary>
+        /// 受到傷害
+        /// </summary>
+        internal virtual void Damaged()
         {
         }
+
+        private void ReduceTimeLimit()
+            => _timeLimit--;
     }
 }

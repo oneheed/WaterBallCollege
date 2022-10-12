@@ -10,7 +10,7 @@ namespace TreasureMap.Models.States
             _finishedState = new EruptingState(role);
         }
 
-        internal override void Damage()
+        internal override void Damaged()
         {
             _role.EnterState(new NormalState(_role));
         }
