@@ -1,0 +1,43 @@
+﻿using C3BOSS_RPG.States;
+
+namespace C3BOSS_RPG.Roles
+{
+    internal class Role
+    {
+        public virtual int HP { get; private set; }
+
+        public virtual int MP { get; private set; }
+
+        public virtual int STR { get; private set; }
+
+        public string Name { get; private set; }
+
+        public State State { get; private set; }
+
+        public Role(int hp, int mp, int str, string name)
+        {
+            this.HP = hp;
+            this.MP = mp;
+            this.STR = str;
+            this.Name = name;
+        }
+
+        public bool Dead() => this.HP <= 0;
+
+        public bool Alive() => !this.Dead();
+
+        public void Damage(int unit)
+        {
+            unit = State.CalDamage(unit);
+
+            this.HP -= unit;
+        }
+
+        public void Healing(int unit)
+        {
+            unit = State.CalHealing(unit);
+
+            this.HP += unit;
+        }
+    }
+}
