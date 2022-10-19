@@ -1,11 +1,11 @@
-﻿namespace C3BOSS_RPG.Roles
+﻿using C3BOSS_RPG.Skills;
+
+namespace C3BOSS_RPG.Roles
 {
     internal class Slime : Role
     {
-        public override int HP => 100;
-
-        public override int MP => 0;
-
-        public override int STR => 50;
+        public Slime() : base(100, 0, 50, "史萊姆", new List<Skill>())
+        {
+        }
     }
 }

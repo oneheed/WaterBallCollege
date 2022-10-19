@@ -1,4 +1,5 @@
-﻿using C3BOSS_RPG.States;
+﻿using C3BOSS_RPG.Skills;
+using C3BOSS_RPG.States;
 
 namespace C3BOSS_RPG.Roles
 {
@@ -14,12 +15,20 @@ namespace C3BOSS_RPG.Roles
 
         public State State { get; private set; }
 
-        public Role(int hp, int mp, int str, string name)
+        public List<Skill> Skills { get; } = new List<Skill>
+        {
+            new BasicAttack(),
+        };
+
+        public Role(int hp, int mp, int str, string name, IEnumerable<Skill> skills)
         {
             this.HP = hp;
             this.MP = mp;
             this.STR = str;
             this.Name = name;
+            this.State = new NormalState(this);
+
+            this.Skills.AddRange(skills);
         }
 
         public bool Dead() => this.HP <= 0;
@@ -38,6 +47,13 @@ namespace C3BOSS_RPG.Roles
             unit = State.CalHealing(unit);
 
             this.HP += unit;
+        }
+
+        public void ChangeState(State state)
+        {
+            this.State.ExitState();
+            this.State = state;
+            this.State.EnterState();
         }
     }
 }

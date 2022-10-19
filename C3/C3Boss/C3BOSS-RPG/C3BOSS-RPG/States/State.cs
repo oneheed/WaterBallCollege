@@ -1,15 +1,71 @@
-﻿namespace C3BOSS_RPG.States
+﻿using C3BOSS_RPG.Roles;
+
+namespace C3BOSS_RPG.States
 {
-    public class State
+    internal class State
     {
-        internal int CalDamage(int unit)
+        protected int _timeLimit = 0;
+
+        protected State? _finishedState;
+
+        protected Role _role;
+
+        internal virtual string Name { get; } = string.Empty;
+
+        public State(Role role)
         {
-            throw new NotImplementedException();
+            this._role = role;
         }
 
-        internal int CalHealing(int unit)
+        internal virtual void ChangAction()
         {
-            throw new NotImplementedException();
         }
+
+        internal virtual void ChangTargets()
+        {
+        }
+
+        internal virtual void ExcuteAction()
+        {
+        }
+
+        internal virtual void EnterState()
+        {
+        }
+
+        internal virtual void DoState()
+        {
+            this.ReduceTimeLimit();
+
+            if (_timeLimit <= 0)
+            {
+                Finished();
+            }
+        }
+
+        internal virtual void ExitState()
+        {
+        }
+
+        /// <summary>
+        /// 狀態結束
+        /// </summary>
+        internal void Finished()
+        {
+            if (_finishedState != null)
+            {
+                _role.ChangeState(_finishedState);
+            }
+        }
+
+
+        internal virtual int CalDamage(int unit)
+            => unit;
+
+        internal virtual int CalHealing(int unit)
+            => unit;
+
+        private void ReduceTimeLimit()
+            => _timeLimit--;
     }
 }
