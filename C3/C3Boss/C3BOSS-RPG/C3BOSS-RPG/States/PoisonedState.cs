@@ -4,7 +4,7 @@ namespace C3BOSS_RPG.States
 {
     internal class PoisonedState : State
     {
-        internal override string Name => "受到鼓舞";
+        internal override string Name => "中毒";
 
         public PoisonedState(Role role) : base(role)
         {
@@ -12,7 +12,9 @@ namespace C3BOSS_RPG.States
             this._finishedState = new NormalState(role);
         }
 
-        internal override int CalDamage(int unit)
-            => unit + 50;
+        internal override void ChangAction()
+        {
+            this._role.Damage(null, 30);
+        }
     }
 }

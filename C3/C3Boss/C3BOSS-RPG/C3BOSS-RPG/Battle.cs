@@ -1,5 +1,6 @@
 ﻿using C3BOSS_RPG.Enums;
 using C3BOSS_RPG.Roles;
+using C3BOSS_RPG.Skills;
 
 namespace C3BOSS_RPG
 {
@@ -7,72 +8,172 @@ namespace C3BOSS_RPG
     {
         public int Round { get; private set; } = 0;
 
-        public Dictionary<TroopType, Troop> Troops { get; private set; }
+        public Troop[] Troops { get; private set; } = new Troop[2];
 
         public Hero Hero { get; private set; }
 
-        internal Battle(Dictionary<TroopType, Troop> troops)
+        internal Battle(Troop[] troops)
         {
             this.Troops = troops;
+
+            Hero = (Hero)troops[0].Roles.FirstOrDefault(r => r.GetType() == typeof(Hero));
         }
 
         internal void BattlStart()
         {
+            BattlProcess();
+            Winner();
         }
 
         internal void BattlProcess()
         {
-            foreach (var troop in Troops)
+            while (true)
             {
-                foreach ((var index, var role) in troop.Value.Roles.Select((x, i) => (i, x)))
+                for (var i = 0; i < this.Troops.Length; i++)
                 {
-                    Console.WriteLine($"輪到 [{(int)troop.Key}]{role.Name} (HP: {role.HP}, MP: {role.MP}, STR: {role.STR}, State: {role.State.Name})。");
+                    var troop = this.Troops[i];
+                    var allyIndex = i;
+                    var enemyIndex = i == 0 ? 1 : 0;
 
-                    role.State.ChangAction();
-
-                    if (ChangeAction())
+                    for (int j = 0; j < troop.Roles.Count; j++)
                     {
-                        Console.WriteLine($"選擇行動： {string.Join(" ", role.Skills.Select((s, i) => $"({i}) {s.Name}"))}");
+                        var index = j;
+                        var role = troop.Roles[index];
+
+                        if (role.State.CanAction() && role.Alive())
+                        {
+                            Console.WriteLine($"輪到 {role.Name} (HP: {role.HP}, MP: {role.MP}, STR: {role.STR}, State: {role.State.Name})。");
+
+                            role.State.ChangAction();
+
+                            Skill action = new BasicAttack();
+
+                            do
+                            {
+                                Console.WriteLine($"選擇行動： {string.Join(" ", role.Skills.Select((s, i) => $"({i}) {s.Name}"))}");
+                                action = role.ChangeAction();
+
+                                if (role.MP < action.MP)
+                                {
+                                    Console.WriteLine("你缺乏 MP，不能進行此行動。");
+                                }
+                            } while (role.MP < action.MP);
+
+                            var targets = new List<Role>();
+                            if (action.TroopType == TroopType.Ally || action.TroopType == TroopType.Enemy)
+                            {
+                                var targetIndex = action.TroopType == TroopType.Ally ? allyIndex : enemyIndex;
+                                targets = this.Troops[targetIndex].Roles.Where(r => r.Alive() && !r.Equals(role)).ToList();
+
+                                if (action.TargetNumber != -1 && (targets.Count > action.TargetNumber && role.GetType() == typeof(Hero)))
+                                {
+                                    var text = string.Join(" ", targets.Select((r, i) => $"({i}) {r.Name}"));
+                                    Console.WriteLine($"選擇 {action.TargetNumber} 位目標: {text}");
+                                }
+
+                                if (targets.Count > action.TargetNumber)
+                                {
+                                    targets = role.ChangTargets(action, targets).ToList();
+                                }
+                            }
+                            else if (action.TroopType == TroopType.Self)
+                            {
+                                targets = new List<Role> { role };
+                            }
+                            else
+                            {
+                                targets = this.Troops.SelectMany(t => t.Roles).Where(r => !r.Equals(role)).ToList();
+                            }
+
+                            action.Execute(role, targets);
+                        }
+
+                        role.State.DoState();
+
+                        if (Gameover())
+                        {
+                            return;
+                        }
                     }
 
-                    if (ChangTargets())
-                    {
-                        Console.WriteLine($"選擇 3 位目標: (0) [1]Servant1 (1) [1]Servant2 (2) [1]Servant3 (3) [1]Servant4 (4) [1]Servant5");
-                    }
+                    //foreach ((var index, var role) in troop.Roles.Where(r => r.Alive()).Select((x, i) => (i, x)).ToList())
+                    //{
+                    //    Console.WriteLine($"輪到 {role.Name} (HP: {role.HP}, MP: {role.MP}, STR: {role.STR}, State: {role.State.Name})。");
 
-                    if (ExcuteAction())
-                    {
-                        Console.WriteLine($"[1]英雄 對 [1]Servant1, [1]Servant2, [1]Servant3 使用了 鼓舞。");
-                    }
+                    //    role.State.ChangAction();
+
+                    //    Skill action = new BasicAttack();
+
+                    //    if (role.State.CanAction() && role.Alive())
+                    //    {
+                    //        do
+                    //        {
+                    //            Console.WriteLine($"選擇行動： {string.Join(" ", role.Skills.Select((s, i) => $"({i}) {s.Name}"))}");
+                    //            action = role.ChangeAction();
+
+                    //            if (role.MP < action.MP)
+                    //            {
+                    //                Console.WriteLine("你缺乏 MP，不能進行此行動。");
+                    //            }
+                    //        } while (role.MP < action.MP);
+
+                    //        var targets = new List<Role>();
+                    //        if (action.TroopType == TroopType.Ally || action.TroopType == TroopType.Enemy)
+                    //        {
+                    //            var targetIndex = action.TroopType == TroopType.Ally ? allyIndex : enemyIndex;
+                    //            targets = this.Troops[targetIndex].Roles.Where(r => r.Alive() && !r.Equals(role)).ToList();
+
+                    //            if (action.TargetNumber != -1 && (targets.Count > action.TargetNumber && role.GetType() == typeof(Hero)))
+                    //            {
+                    //                var text = string.Join(" ", targets.Select((r, i) => $"({i}) {r.Name}"));
+                    //                Console.WriteLine($"選擇 {action.TargetNumber} 位目標: {text}");
+                    //            }
+
+                    //            if (targets.Count > action.TargetNumber)
+                    //            {
+                    //                targets = role.ChangTargets(action, targets).ToList();
+                    //            }
+                    //        }
+                    //        else if (action.TroopType == TroopType.Self)
+                    //        {
+                    //            targets = new List<Role> { role };
+                    //        }
+                    //        else
+                    //        {
+                    //            targets = this.Troops.SelectMany(t => t.Roles).Where(r => !r.Equals(role)).ToList();
+                    //        }
+
+                    //        action.Execute(role, targets);
+                    //    }
+
+                    //    role.State.DoState();
+
+                    //    if (Gameover())
+                    //    {
+                    //        return;
+                    //    }
+                    //}
                 }
+
+                Round++;
             }
-        }
-
-        private bool ChangeAction()
-        {
-            return true;
-        }
-
-        private bool ChangTargets()
-        {
-            return true;
-        }
-
-        private bool ExcuteAction()
-        {
-            return true;
         }
 
         internal bool Gameover()
         {
-            return this.Troops[TroopType.Ally].Annihilate() ||
-                this.Troops[TroopType.Enemy].Annihilate() ||
-                this.Hero.Dead();
+            return this.Troops.Any(t => t.Annihilate()) || this.Hero.Dead();
         }
 
-        internal bool Winner()
+        internal void Winner()
         {
-            return this.Hero.Alive();
+            if (this.Hero.Alive())
+            {
+                Console.WriteLine("你獲勝了！");
+            }
+            else
+            {
+                Console.WriteLine("你失敗了！");
+            }
         }
     }
 }

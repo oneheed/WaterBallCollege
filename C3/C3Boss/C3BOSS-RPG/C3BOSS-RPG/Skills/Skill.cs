@@ -1,16 +1,17 @@
-﻿using C3BOSS_RPG.Roles;
+﻿using C3BOSS_RPG.Enums;
+using C3BOSS_RPG.Roles;
 
 namespace C3BOSS_RPG.Skills
 {
     internal abstract class Skill
     {
-        internal virtual string Name { get; set; }
+        internal abstract string Name { get; }
 
-        internal virtual int MP { get; set; } = 0;
+        internal abstract int MP { get; }
 
-        internal virtual int TargetNumber { get; set; } = 1;
+        internal abstract int TargetNumber { get; }
 
-        internal Role _caster;
+        internal abstract TroopType TroopType { get; }
 
         internal bool CheckMP(Role role)
         {
@@ -22,6 +23,6 @@ namespace C3BOSS_RPG.Skills
             return targets.Count() <= this.TargetNumber;
         }
 
-        internal abstract void Execute(IEnumerable<Role> targets);
+        internal abstract void Execute(Role caster, IEnumerable<Role> targets);
     }
 }

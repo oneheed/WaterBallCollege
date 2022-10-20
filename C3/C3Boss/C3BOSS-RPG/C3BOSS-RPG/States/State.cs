@@ -67,5 +67,10 @@ namespace C3BOSS_RPG.States
 
         private void ReduceTimeLimit()
             => _timeLimit--;
+
+        internal virtual bool CanAction()
+        {
+            return true;
+        }
     }
 }

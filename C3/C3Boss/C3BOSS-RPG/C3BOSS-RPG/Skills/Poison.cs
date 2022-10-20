@@ -4,22 +4,21 @@ using C3BOSS_RPG.States;
 
 namespace C3BOSS_RPG.Skills
 {
-    internal class Cheerup : Skill
+    internal class Poison : Skill
     {
-        internal override string Name => "鼓舞";
+        internal override string Name => "下毒";
 
-        internal override int MP => 100;
+        internal override int MP => 80;
 
-        internal override int TargetNumber => 3;
+        internal override int TargetNumber => 1;
 
-        internal override TroopType TroopType => TroopType.Ally;
-
+        internal override TroopType TroopType => TroopType.Enemy;
 
         internal override void Execute(Role caster, IEnumerable<Role> targets)
         {
             foreach (var target in targets)
             {
-                target.ChangeState(new CheerupState(target));
+                target.ChangeState(new PoisonedState(target));
             }
 
             var text = string.Join(", ", targets.Select(r => $"{r.Name}"));

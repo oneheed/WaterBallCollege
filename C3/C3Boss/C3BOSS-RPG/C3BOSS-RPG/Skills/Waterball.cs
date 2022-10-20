@@ -3,24 +3,24 @@ using C3BOSS_RPG.Roles;
 
 namespace C3BOSS_RPG.Skills
 {
-    internal class BasicAttack : Skill
+    internal class Waterball : Skill
     {
-        internal override string Name => "普通攻擊";
+        internal override string Name => "水球";
 
-        internal override int MP => 0;
+        internal override int MP => 50;
 
         internal override int TargetNumber => 1;
 
         internal override TroopType TroopType => TroopType.Enemy;
 
-
         internal override void Execute(Role caster, IEnumerable<Role> targets)
         {
-            var damage = caster.STR;
+            var text = string.Join(", ", targets.Select(r => $"{r.Name}"));
+            Console.WriteLine($"{caster.Name} 對 {text} 使用了 {this.Name}。");
+
             foreach (var target in targets)
             {
-                Console.WriteLine($"{caster.Name} 攻擊 {target.Name}。");
-                target.Damage(caster, damage);
+                target.Damage(caster, 120);
             }
 
             caster.ConsumeMP(MP);
