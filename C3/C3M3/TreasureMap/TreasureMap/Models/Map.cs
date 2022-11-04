@@ -191,7 +191,6 @@ namespace TreasureMap.Models
             this._mapObjectDic[mapObject.GetType()].Remove(mapObject);
         }
 
-
         public void MoveMapObjectByIndex(MapObject mapObject, int index)
         {
             var fromIndex = this.GetMapIndex(mapObject);
