@@ -6,7 +6,7 @@ namespace CommandPattern.Models
     {
         private Buttons _buttons = new Buttons();
 
-        private Buttons _undoButtons;
+        private Buttons? _undoButtons;
 
         public bool Bind(ConsoleKey key, ICommand? command)
         {
