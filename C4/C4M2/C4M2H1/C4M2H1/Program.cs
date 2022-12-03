@@ -2,12 +2,8 @@
 
 using C4M2H1;
 
-var analyzer = new RelationshipAnalyzer();
+var analyzer = new RelationshipAnalyzerAdapter();
 var script = File.ReadAllText("Resources/Data.txt");
-
 analyzer.Parse(script);
-
-foreach (var item in analyzer.GetMutualFrineds("A", "B"))
-{
-    Console.WriteLine(item);
-}
+Console.WriteLine(string.Join(" ", analyzer.GetMutualFrineds("B", "C")));
+Console.WriteLine(analyzer.HasConnection("A", "Z"));
