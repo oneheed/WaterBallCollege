@@ -24,7 +24,7 @@
 
         public Channel GetChannel()
         {
-            return _channel;
+            return _channel!;
         }
 
         public void Like(string name)
