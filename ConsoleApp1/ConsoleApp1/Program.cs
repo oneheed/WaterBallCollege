@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Diagnostics;
 
 
 //ThreadPool.SetMinThreads(2, 2);
@@ -157,24 +156,64 @@ using System.Diagnostics;
 //await task.Result;
 //Console.WriteLine("Done with test");
 
-async Task Test()
-{
-    System.Console.WriteLine("Enter Test");
-    await Task.Delay(1000);
-    System.Console.WriteLine("Leave Test");
-}
+var test = new SampleClass();
 
-var task = Test().ContinueWith(
-async (task) =>
-{
-    System.Console.WriteLine("Enter callback");
-    await Task.Delay(1000);
-    System.Console.WriteLine("Leave callback");
-},
-TaskContinuationOptions.AttachedToParent);
+((IControl)test).Paint();
+((ISurface)test).Paint();
 
-await await task;
+//async Task Test()
+//{
+//    System.Console.WriteLine("Enter Test");
+//    await Task.Delay(1000);
+//    System.Console.WriteLine("Leave Test");
+//}
 
-Console.WriteLine("Done with test");
+//var task = Test().ContinueWith(
+//async (task) =>
+//{
+//    System.Console.WriteLine("Enter callback");
+//    await Task.Delay(1000);
+//    System.Console.WriteLine("Leave callback");
+//},
+//TaskContinuationOptions.AttachedToParent);
+
+//await await task;
+
+//Console.WriteLine("Done with test");
 
 Console.ReadKey();
+
+
+public interface IControl
+{
+    void Paint();
+}
+public interface ISurface
+{
+    void Paint();
+}
+public class SampleClass : IControl, ISurface
+{
+    // Both ISurface.Paint and IControl.Paint call this method.
+    public void Paint()
+    {
+        Console.WriteLine("Paint method in SampleClass");
+    }
+}
+interface IWriter
+{
+    void Write();
+}
+
+interface IReader
+{
+    void Read();
+}
+
+class DataStorage : IWriter
+{
+    public void Write()
+    {
+        throw new NotImplementedException();
+    }
+}
