@@ -13,10 +13,10 @@ namespace TreasureMap.Models.Roles
 
         public Monster() : base()
         {
-            this.ResetDefualtStrategy();
+            this.ResetDefaultStrategy();
         }
 
-        public override void ResetDefualtStrategy()
+        public override void ResetDefaultStrategy()
         {
             this.SetAttackStrategy(new NormalAttackStrategy(this));
             this.SetMoveStrategy(new NormalMoveStrategy(this));
@@ -62,17 +62,17 @@ namespace TreasureMap.Models.Roles
                 else
                 {
                     var stateType = this.State.GetType();
-                    var xOffeset = (characterIndex % map.Width - fromIndex % map.Width);
-                    var yOffeset = (characterIndex - fromIndex) / map.Height;
+                    var xOffset = (characterIndex % map.Width - fromIndex % map.Width);
+                    var yOffset = (characterIndex - fromIndex) / map.Height;
 
-                    if (yOffeset != 0 && stateType != typeof(OrderlessState))
+                    if (yOffset != 0 && stateType != typeof(OrderlessState))
                     {
-                        var direction = yOffeset > 0 ? Direction.Down : Direction.Up;
+                        var direction = yOffset > 0 ? Direction.Down : Direction.Up;
                         this._moveStrategy.Move(direction);
                     }
                     else if (stateType != typeof(OrderlessState))
                     {
-                        var direction = xOffeset > 0 ? Direction.Right : Direction.Left;
+                        var direction = xOffset > 0 ? Direction.Right : Direction.Left;
                         this._moveStrategy.Move(direction);
                     }
                 }

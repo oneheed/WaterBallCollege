@@ -37,7 +37,7 @@ namespace TreasureMap.Models.Roles
             this._moveStrategy = moveStrategy;
         }
 
-        public abstract void ResetDefualtStrategy();
+        public abstract void ResetDefaultStrategy();
 
         public void EnterState(State state)
         {

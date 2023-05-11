@@ -23,10 +23,10 @@ namespace TreasureMap.Models.Roles
 
         public Character() : base()
         {
-            this.ResetDefualtStrategy();
+            this.ResetDefaultStrategy();
         }
 
-        public override void ResetDefualtStrategy()
+        public override void ResetDefaultStrategy()
         {
             this.SetAttackStrategy(new StraightLineAttackStrategy(this));
             this.SetMoveStrategy(new NormalMoveStrategy(this));

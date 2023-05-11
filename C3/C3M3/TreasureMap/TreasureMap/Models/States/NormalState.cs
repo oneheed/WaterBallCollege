@@ -10,7 +10,7 @@ namespace TreasureMap.Models.States
 
         internal override void EnterState()
         {
-            this._role.ResetDefualtStrategy();
+            this._role.ResetDefaultStrategy();
         }
 
         internal override void DoState()

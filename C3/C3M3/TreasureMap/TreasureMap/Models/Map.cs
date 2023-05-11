@@ -13,18 +13,18 @@ namespace TreasureMap.Models
 
         public int Size => this.Width * this.Height;
 
-        private readonly Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> _mapObjectTable;
+        private readonly Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> _initMapObjects;
 
-        private readonly Dictionary<Type, List<MapObject>> _mapObjectDic = new Dictionary<Type, List<MapObject>>();
+        private readonly Dictionary<Type, List<MapObject>> _roleMapObjects = new Dictionary<Type, List<MapObject>>();
 
         private readonly MapObject[] _mapObjects;
 
-        public Map(int width, int height, Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> mapObjectTable)
+        public Map(int width, int height, Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> initMapObjects)
         {
             this.Width = width;
             this.Height = height;
 
-            this._mapObjectTable = mapObjectTable;
+            this._initMapObjects = initMapObjects;
             this._mapObjects = Enumerable.Range(0, this.Size).Select(m => MapObject.Default).ToArray();
 
             InitMap();
@@ -32,9 +32,9 @@ namespace TreasureMap.Models
 
         public void InitMap()
         {
-            foreach (var item in this._mapObjectTable)
+            foreach (var item in this._initMapObjects)
             {
-                this._mapObjectDic.Add(item.Key, new List<MapObject>());
+                this._roleMapObjects.Add(item.Key, new List<MapObject>());
 
                 for (var i = 0; i < item.Value.Number; i++)
                 {
@@ -44,11 +44,11 @@ namespace TreasureMap.Models
                     {
                         this._mapObjects[randomIndex] = item.Value.ConstructFunc();
                         this._mapObjects[randomIndex].SetMap(this);
-                        this._mapObjectDic[item.Key].Add(this._mapObjects[randomIndex]);
+                        this._roleMapObjects[item.Key].Add(this._mapObjects[randomIndex]);
 
                         if (this._mapObjects[randomIndex] is Character character)
                         {
-                            //character.EnterState(new AcceleratedState(character));
+                            //character.EnterState(new InvincibleState(character));
                         }
                     }
                     else
@@ -88,7 +88,7 @@ namespace TreasureMap.Models
 
         public void Start()
         {
-            while (!this.Gameover())
+            while (!this.GameOver())
             {
                 this.Round++;
 
@@ -99,7 +99,7 @@ namespace TreasureMap.Models
 
         public void CharacterRound()
         {
-            var character = (Character)_mapObjectDic[typeof(Character)].First();
+            var character = (Character)_roleMapObjects[typeof(Character)].First();
             character.ActionNumber++;
             character.Action();
 
@@ -108,6 +108,8 @@ namespace TreasureMap.Models
                 var keyInfo = Console.ReadKey();
                 var key = keyInfo.Key;
                 Console.WriteLine();
+
+                Console.WriteLine($"HP: {character.HP} State: {character.State.GetType().Name}");
                 try
                 {
                     if (key == ConsoleKey.UpArrow ||
@@ -139,7 +141,7 @@ namespace TreasureMap.Models
 
         public void MonsterRound()
         {
-            var monsters = _mapObjectDic[typeof(Monster)];
+            var monsters = _roleMapObjects[typeof(Monster)];
 
             foreach (var monster in monsters.Select(m => (Monster)m).ToList())
             {
@@ -165,12 +167,12 @@ namespace TreasureMap.Models
                 monster.Do();
             }
 
-            PrintMap();
+            //PrintMap();
         }
 
-        private bool Gameover()
+        private bool GameOver()
         {
-            return this._mapObjectDic[typeof(Character)].Count == 0 || this._mapObjectDic[typeof(Monster)].Count == 0;
+            return this._roleMapObjects[typeof(Character)].Count == 0 || this._roleMapObjects[typeof(Monster)].Count == 0;
         }
 
         public MapObject GetMapObjectByIndex(int index)
@@ -180,7 +182,7 @@ namespace TreasureMap.Models
 
         public IEnumerable<MapObject> GetMapObjectsByType(Type type)
         {
-            return _mapObjectDic.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
+            return _roleMapObjects.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
         }
 
         public void RemoveMapObject(MapObject mapObject)
@@ -188,7 +190,7 @@ namespace TreasureMap.Models
             var index = this.GetMapIndex(mapObject);
 
             this._mapObjects[index] = MapObject.Default;
-            this._mapObjectDic[mapObject.GetType()].Remove(mapObject);
+            this._roleMapObjects[mapObject.GetType()].Remove(mapObject);
         }
 
         public void MoveMapObjectByIndex(MapObject mapObject, int index)
