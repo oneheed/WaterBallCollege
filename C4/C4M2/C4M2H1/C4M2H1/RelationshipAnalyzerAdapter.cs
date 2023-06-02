@@ -30,18 +30,18 @@
             _relationshipGraph = new RelationshipGraphAdapter(string.Join("\r\n", superData));
         }
 
-        public IEnumerable<string> GetMutualFrineds(string name1, string name2)
+        public IEnumerable<string> GetMutualFriends(string name1, string name2)
         {
             var result = new List<string>();
 
-            var tragets = _friendsData[name1]?
+            var targets = _friendsData[name1]?
                 .Union(_friendsData[name2])
                 .Where(f => !new[] { name1, name2 }.Contains(f)) ?? new List<string>();
 
-            foreach (var traget in tragets
+            foreach (var target in targets
                 .Where(t => _superRelationshipAnalyzer.IsMutualFrined(t, name1, name2)))
             {
-                result.Add(traget);
+                result.Add(target);
             }
 
             return result;

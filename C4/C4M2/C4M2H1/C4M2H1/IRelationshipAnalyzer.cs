@@ -4,6 +4,6 @@
     {
         void Parse(string script);
 
-        IEnumerable<string> GetMutualFrineds(string name1, string name2);
+        IEnumerable<string> GetMutualFriends(string name1, string name2);
     }
 }

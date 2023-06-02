@@ -13,7 +13,7 @@
             }
         }
 
-        public IEnumerable<string> GetMutualFrineds(string name1, string name2)
+        public IEnumerable<string> GetMutualFriends(string name1, string name2)
         {
             return _friendsData[name1].Intersect(_friendsData[name2]);
         }
