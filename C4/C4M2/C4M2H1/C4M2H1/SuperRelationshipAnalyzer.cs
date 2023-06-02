@@ -24,8 +24,10 @@
         {
             if (!_friendsData.ContainsKey(traget))
             {
-                _friendsData[traget] = new List<string>();
-                _friendsData[traget].Add(name);
+                _friendsData[traget] = new List<string>
+                {
+                    name,
+                };
             }
             else
             {
