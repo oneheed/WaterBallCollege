@@ -25,7 +25,7 @@
             }
         }
 
-        public override Card ShowCard()
+        public override Card Play()
         {
             Console.WriteLine(this.Hand.ShowAllCard());
 
@@ -33,13 +33,13 @@
 
             if (int.TryParse(command, out int index) && index < this.Hand.Count)
             {
-                return this.Hand.ShowCard(index);
+                return this.Hand.Play(index);
             }
             else
             {
                 Console.WriteLine("輸入錯誤, 請重新輸入");
 
-                return ShowCard();
+                return Play();
             }
         }
     }

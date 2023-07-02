@@ -1,4 +1,6 @@
-﻿namespace Showdown.Models
+﻿// Ignore Spelling: exchangee
+
+namespace Showdown.Models
 {
     public class ExchangeHands
     {
@@ -24,7 +26,7 @@
             _exchangee.SetHand(tempHand);
         }
 
-        public (bool isFinish, Player Exchanger, Player Exchangee) Countdown()
+        public (bool IsFinish, Player Exchanger, Player Exchangee) Countdown()
         {
             _round--;
 

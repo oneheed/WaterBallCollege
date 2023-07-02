@@ -15,7 +15,7 @@
             return string.Join(", ", _cards.Select((c, i) => $"[{i}]{c}"));
         }
 
-        public Card ShowCard(int index)
+        public Card Play(int index)
         {
             var card = _cards[index];
 

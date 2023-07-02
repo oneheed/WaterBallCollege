@@ -1,6 +1,6 @@
 ﻿namespace Showdown.Models
 {
-    public abstract class Player : IComparable<Player>
+    public abstract class Player
     {
         public string Name { get; private set; }
 
@@ -32,11 +32,6 @@
 
         public abstract void Exchange(IList<Player> players);
 
-        public abstract Card ShowCard();
-
-        public int CompareTo(Player other)
-        {
-            return Point - other.Point;
-        }
+        public abstract Card Play();
     }
 }
