@@ -15,20 +15,20 @@ namespace MatchmakingSystem.Models
 
         public HashSet<string> Habits { get; private set; }
 
-        public Coord Coord { get; private set; }
+        public Coordinate Coordinate { get; private set; }
 
 
         public IMatchStrategy MathStrategy { get; private set; }
 
 
-        public Individual(int id, Gender gender, int age, string intro, HashSet<string> habits, Coord coord, IMatchStrategy mathStrategy)
+        public Individual(int id, Gender gender, int age, string intro, HashSet<string> habits, Coordinate coordinate, IMatchStrategy mathStrategy)
         {
             Id = id;
             Age = age;
             Gender = gender;
             Intro = intro;
             Habits = habits;
-            Coord = coord;
+            Coordinate = coordinate;
             MathStrategy = mathStrategy;
         }
 
@@ -39,7 +39,7 @@ namespace MatchmakingSystem.Models
 
         public IList<Individual> Math(IList<Individual> paired)
         {
-            return MathStrategy.Match(this, paired);
+            return MathStrategy.Match(this, paired).ToList();
         }
     }
 }

@@ -4,7 +4,10 @@
     {
         public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
-            return paired.OrderBy(p => individual.Coord.Distance(p.Coord)).ThenBy(p => p.Id).ToList();
+            return paired
+                .OrderBy(p => individual.Coordinate.Distance(p.Coordinate))
+                .ThenBy(p => p.Id)
+                .ToList();
         }
     }
 }

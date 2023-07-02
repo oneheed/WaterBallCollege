@@ -5,7 +5,7 @@
         public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
             return paired
-                .OrderBy(p => individual.Habits.Count(h => p.Habits.Contains(h)))
+                .OrderByDescending(p => individual.Habits.Count(h => p.Habits.Contains(h)))
                 .ThenBy(p => p.Id)
                 .ToList();
         }
