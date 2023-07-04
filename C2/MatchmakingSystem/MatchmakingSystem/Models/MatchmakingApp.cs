@@ -1,6 +1,6 @@
 ﻿namespace MatchmakingSystem.Models
 {
-    public class MatchmakingApp
+    internal class MatchmakingApp
     {
         public IEnumerable<Individual> Individuals { get; private set; }
 
@@ -11,14 +11,19 @@
 
         public void Start()
         {
-            Func<int, IEnumerable<Individual>> func = id => { return Individuals.Where(t => t.Id != id).ToList(); };
-
-            var result = Individuals.Select(s => new { Id = s.Id, MathResult = s.MathStrategy.Match(s, func(s.Id)) });
-
-            foreach (var item in result)
+            foreach (var individual in Individuals)
             {
-                Console.WriteLine($"Id: {item.Id} 配對到 {item.MathResult.FirstOrDefault().Id}");
+                var result = Match(individual);
+
+                Console.WriteLine($"Id: {individual.Id} 配對到 {result.Id}");
             }
+        }
+
+        public Individual Match(Individual individual)
+        {
+            var filterIndividuals = Individuals.Where(i => i.Id != individual.Id);
+
+            return individual.Math(filterIndividuals).FirstOrDefault();
         }
     }
 }

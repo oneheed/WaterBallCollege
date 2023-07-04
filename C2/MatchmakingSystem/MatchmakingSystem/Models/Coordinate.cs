@@ -1,6 +1,6 @@
 ﻿namespace MatchmakingSystem.Models
 {
-    public class Coordinate
+    internal class Coordinate
     {
         public int X { get; private set; }
 

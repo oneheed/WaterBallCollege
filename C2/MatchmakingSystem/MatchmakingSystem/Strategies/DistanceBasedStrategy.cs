@@ -1,11 +1,13 @@
-﻿namespace MatchmakingSystem.Models
+﻿using MatchmakingSystem.Models;
+
+namespace MatchmakingSystem.Strategies
 {
-    public class HabitBasedStrategy : IMatchStrategy
+    internal class DistanceBasedStrategy : IMatchStrategy
     {
         public IEnumerable<Individual> Match(Individual individual, IEnumerable<Individual> paired)
         {
             return paired
-                .OrderByDescending(p => individual.Habits.Count(h => p.Habits.Contains(h)))
+                .OrderBy(p => individual.Coordinate.Distance(p.Coordinate))
                 .ThenBy(p => p.Id)
                 .ToList();
         }

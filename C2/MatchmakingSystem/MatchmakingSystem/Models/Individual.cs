@@ -1,8 +1,9 @@
 ﻿using MatchmakingSystem.Enums;
+using MatchmakingSystem.Strategies;
 
 namespace MatchmakingSystem.Models
 {
-    public class Individual
+    internal class Individual
     {
         public int Id { get; private set; }
 
@@ -37,7 +38,7 @@ namespace MatchmakingSystem.Models
             return string.Join(",", Habits);
         }
 
-        public IList<Individual> Math(IList<Individual> paired)
+        public IEnumerable<Individual> Math(IEnumerable<Individual> paired)
         {
             return MathStrategy.Match(this, paired).ToList();
         }

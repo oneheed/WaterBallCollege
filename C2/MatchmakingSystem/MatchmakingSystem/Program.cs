@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using MatchmakingSystem.Enums;
 using MatchmakingSystem.Models;
+using MatchmakingSystem.Strategies;
 
 var individuals = new List<Individual>
 {
