@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using C3M1H1_Youtube.Models;
+using C3M1H1_YouTube.Interfaces;
+using C3M1H1_YouTube.Models;
 
 var pewDiePie = new Channel("PewDiePie");
 var waterBallCollege = new Channel("水球軟體學院");
@@ -9,19 +10,13 @@ var channels = new List<Channel> {
     waterBallCollege,
 };
 
-var subscribeies = new List<Subscriber>
+var subscribers = new List<ISubscriber>
 {
-    new Subscriber("水球", (subscriber, video) => {
-        if(video.Length >= TimeSpan.FromMinutes(3))
-            video.Like(subscriber.Name);
-    }),
-    new Subscriber("火球", (subscriber, video) => {
-        if(video.Length <= TimeSpan.FromMinutes(1))
-            video.GetChannel().Unsubscribe(subscriber);
-    }),
+    new GreaterOrEqualToThenLikeSubscriber("水球", TimeSpan.FromMinutes(3)),
+    new LessThanOrEqualToThenUnsubscriptedSubscriber("火球", TimeSpan.FromMinutes(1)),
 };
 
-foreach (var subscriber in subscribeies)
+foreach (var subscriber in subscribers)
 {
     foreach (var channel in channels)
     {

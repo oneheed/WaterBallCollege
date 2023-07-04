@@ -8,7 +8,7 @@
         {
             if (video.Length >= TimeSpan.FromMinutes(3))
             {
-                video.Like(this.Name);
+                video.Like(this);
             }
         }
     }

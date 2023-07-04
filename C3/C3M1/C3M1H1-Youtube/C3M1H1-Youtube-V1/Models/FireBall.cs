@@ -8,7 +8,7 @@
         {
             if (video.Length <= TimeSpan.FromMinutes(1))
             {
-                video.GetChannel().Unsubscribe(this);
+                video.GetChannel().Unsubscripted(this);
             }
         }
     }

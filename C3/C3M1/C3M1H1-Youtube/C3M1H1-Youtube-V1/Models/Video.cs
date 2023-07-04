@@ -27,9 +27,9 @@
             return _channel!;
         }
 
-        public void Like(string name)
+        public void Like(Subscriber subscriber)
         {
-            Console.WriteLine($"{name} 對影片 \"{this.Title}\" 按讚。");
+            Console.WriteLine($"{subscriber.Name} 對影片 \"{this.Title}\" 按讚。");
         }
     }
 }

@@ -20,7 +20,7 @@
             Console.WriteLine($"{subscriber.Name} 訂閱了 {this.Name}。");
         }
 
-        public void Unsubscribe(Subscriber subscriber)
+        public void Unsubscripted(Subscriber subscriber)
         {
             _observers.Remove(subscriber);
 

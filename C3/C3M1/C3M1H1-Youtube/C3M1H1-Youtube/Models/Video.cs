@@ -1,4 +1,6 @@
-﻿namespace C3M1H1_Youtube.Models
+﻿using C3M1H1_YouTube.Interfaces;
+
+namespace C3M1H1_YouTube.Models
 {
     internal class Video
     {
@@ -27,9 +29,9 @@
             return _channel!;
         }
 
-        public void Like(string name)
+        public void Like(ISubscriber subscriber)
         {
-            Console.WriteLine($"{name} 對影片 \"{this.Title}\" 按讚。");
+            Console.WriteLine($"{subscriber.Name} 對影片 \"{this.Title}\" 按讚。");
         }
     }
 }

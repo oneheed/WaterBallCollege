@@ -1,12 +1,12 @@
-﻿using C3M1H1_Youtube.interfaces;
+﻿using C3M1H1_YouTube.Interfaces;
 
-namespace C3M1H1_Youtube.Models
+namespace C3M1H1_YouTube.Models
 {
     internal class Channel
     {
-        private IList<ISubscriber> _observers = new List<ISubscriber>();
+        private readonly IList<ISubscriber> _observers = new List<ISubscriber>();
 
-        private IList<Video> _videos = new List<Video>();
+        private readonly IList<Video> _videos = new List<Video>();
 
         public string Name { get; private set; }
 
@@ -22,7 +22,7 @@ namespace C3M1H1_Youtube.Models
             Console.WriteLine($"{subscriber.Name} 訂閱了 {this.Name}。");
         }
 
-        public void Unsubscribe(ISubscriber subscriber)
+        public void Unsubscripted(ISubscriber subscriber)
         {
             _observers.Remove(subscriber);
 
@@ -44,7 +44,7 @@ namespace C3M1H1_Youtube.Models
         {
             foreach (var observer in this._observers.ToList())
             {
-                observer.Execute(video);
+                observer.Behavior(video);
             }
         }
     }

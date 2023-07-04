@@ -1,16 +1,13 @@
-﻿using C3M1H1_Youtube.Models;
+﻿using C3M1H1_YouTube.Models;
 
-namespace C3M1H1_Youtube.interfaces
+namespace C3M1H1_YouTube.Interfaces
 {
     internal interface ISubscriber
     {
         string Name { get; }
 
-        Action<ISubscriber, Video> OnExecute { get; }
+        TimeSpan Condition { get; }
 
-        public void Execute(Video video)
-        {
-            OnExecute(this, video);
-        }
+        abstract void Behavior(Video video);
     }
 }
