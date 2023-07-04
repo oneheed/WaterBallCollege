@@ -7,8 +7,8 @@ var mainController = new MainController();
 
 var commands = new List<ICommand>
 {
-    new MoveTankForward(new ()),
-    new MoveTankBackward(new ()),
+    new MoveTankForward(new()),
+    new MoveTankBackward(new()),
     new ConnectTelecom(new()),
     new DisconnectTelecom(new()),
     new ResetMainControlKeyboard(mainController),

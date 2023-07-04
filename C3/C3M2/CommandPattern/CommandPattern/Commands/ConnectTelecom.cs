@@ -1,4 +1,6 @@
-﻿using CommandPattern.interfaces;
+﻿// Ignore Spelling: Telecom
+
+using CommandPattern.interfaces;
 using CommandPattern.Models;
 
 namespace CommandPattern.Commands

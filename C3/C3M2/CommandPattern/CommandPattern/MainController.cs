@@ -1,4 +1,6 @@
-﻿using CommandPattern.interfaces;
+﻿// Ignore Spelling: Hotkey
+
+using CommandPattern.interfaces;
 using CommandPattern.Models;
 
 namespace CommandPattern
@@ -82,8 +84,8 @@ namespace CommandPattern
             Console.WriteLine(string.Join(Environment.NewLine, _commands.Select((c, i) => $"({i}) {c}")));
 
             var readLine = Console.ReadLine() ?? string.Empty;
-            var indexs = readLine.Split(" ");
-            var commands = _commands.Where((c, i) => indexs.Contains(i.ToString()));
+            var indexes = readLine.Split(" ");
+            var commands = _commands.Where((c, i) => indexes.Contains(i.ToString()));
 
             var macro = new Macro();
             macro.AddCommands(commands);
@@ -114,7 +116,7 @@ namespace CommandPattern
 
         private void Undo()
         {
-            if (_undoCommands.Any() && _undoCommands.TryPop(out ICommand command))
+            if (_undoCommands.Any() && _undoCommands.TryPop(out ICommand? command))
             {
                 command.Undo();
                 _redoCommands.Push(command);
@@ -123,7 +125,7 @@ namespace CommandPattern
 
         private void Redo()
         {
-            if (_redoCommands.Any() && _redoCommands.TryPop(out ICommand command))
+            if (_redoCommands.Any() && _redoCommands.TryPop(out ICommand? command))
             {
                 command.Execute();
                 _undoCommands.Push(command);
