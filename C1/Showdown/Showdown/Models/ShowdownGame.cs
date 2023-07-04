@@ -4,17 +4,21 @@ namespace Showdown.Models
 {
     public class ShowdownGame
     {
-        private readonly int _drawNumber = 13;
-
         public int Round { get; private set; } = 1;
 
         private readonly Deck _deck;
 
-        private readonly IList<Player> _players;
+        private readonly IEnumerable<Player> _players;
 
-        public ShowdownGame(Deck deck, IList<Player> players)
+        public ShowdownGame(Deck deck, IEnumerable<Player> players)
         {
             this._deck = deck;
+
+            foreach (var (player, i) in players.Select((p, i) => (p, i)))
+            {
+                player.SetOrder(i + 1);
+            }
+
             this._players = players;
         }
 
@@ -26,40 +30,16 @@ namespace Showdown.Models
 
             DrawStage();
 
-            while (NextRound())
-            {
-                Console.WriteLine($"==== 回合 {Round} ====");
-
-                ExchangeHandStage();
-
-                var showCards = new List<(int Order, Card Card)>();
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    var player = _players[i];
-                    var card = player.Play();
-
-                    showCards.Add((i, card));
-
-                    Console.WriteLine($"{player.Name} 出 {card}");
-                }
-
-                var winnerData = showCards.MaxBy(x => x.Card);
-                var winner = _players[winnerData.Order];
-                winner.GainPoint();
-
-                Console.WriteLine($"回合 {Round} : {winner.Name} 為勝者");
-
-                Round++;
-            }
+            TakesATurnStage();
 
             GameOver();
         }
 
         private void NameHimselfStage()
         {
-            for (int i = 0; i < _players.Count; i++)
+            foreach (var player in _players)
             {
-                _players[i].NameHimself($"player {i}");
+                player.NameHimself();
             }
         }
 
@@ -68,14 +48,42 @@ namespace Showdown.Models
             _deck.Shuffle();
         }
 
+        private void TakesATurnStage()
+        {
+            while (NextRound())
+            {
+                Console.WriteLine($"==== 回合 {Round} ====");
+
+                ExchangeHandStage();
+
+                var showCards = new List<(int Order, Card Card)>();
+
+                foreach (var player in _players)
+                {
+                    var card = player.Showdown();
+
+                    showCards.Add((player.Order, card));
+
+                    Console.WriteLine($"{player.Name} 出 {card}");
+                }
+
+                var winnerData = showCards.MaxBy(x => x.Card);
+                var winner = _players.Single(p => p.Order == winnerData.Order);
+                winner.GainPoint();
+
+                Console.WriteLine($"回合 {Round} : {winner.Name} 為勝者");
+
+                Round++;
+            }
+        }
+
         private void DrawStage()
         {
-            for (int i = 0; i < _drawNumber * _players.Count; i++)
+            while (_deck.Any())
             {
-                if (_deck.Any())
+                foreach (var player in _players)
                 {
-                    var index = i % _players.Count;
-                    _players[index].Hand.AddCard(_deck.DrawCard());
+                    player.Hand.AddCard(_deck.DrawCard());
                 }
             }
         }
@@ -88,32 +96,22 @@ namespace Showdown.Models
         private void ExchangeHandStage()
         {
             // Check Exchange Hand
-            for (int i = 0; i < _players.Count; i++)
+            foreach (var exchangeHands in _players.Where(player => player.ExchangeHands != null).Select(p => p.ExchangeHands))
             {
-                var player = _players[i];
-
-                if (player.ExchangeHands != null)
+                var isFinish = exchangeHands.Countdown();
+                if (isFinish)
                 {
-                    var exchangeEvent = player.ExchangeHands.Countdown();
+                    var exchanger = exchangeHands.Exchanger;
+                    var exchangee = exchangeHands.Exchangee;
 
-                    if (exchangeEvent.IsFinish)
-                    {
-                        var exchanger = exchangeEvent.Exchanger;
-                        var exchangee = exchangeEvent.Exchangee;
-
-                        Console.WriteLine($"將 {exchanger.Name} 跟 {exchangee.Name} 交換回來");
-                    }
+                    Console.WriteLine($"將 {exchanger.Name} 跟 {exchangee.Name} 交換回來");
                 }
             }
 
             // Exchange Hand
-            for (int i = 0; i < _players.Count; i++)
+            foreach (var player in _players.Where(player => player.ExchangeHands == null))
             {
-                var player = _players[i];
-                if (player.ExchangeHands == null)
-                {
-                    player.Exchange(_players.Where(p => p != player).ToList());
-                }
+                player.Exchange(_players.Where(p => p != player).ToList());
             }
         }
 

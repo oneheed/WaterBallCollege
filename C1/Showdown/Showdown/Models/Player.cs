@@ -2,7 +2,9 @@
 {
     public abstract class Player
     {
-        public string Name { get; private set; }
+        public int Order { get; private set; }
+
+        public string Name { get; protected set; }
 
         public int Point { get; private set; }
 
@@ -10,10 +12,12 @@
 
         public Hand Hand { get; private set; } = new();
 
-        public void NameHimself(string name)
+        public void SetOrder(int order)
         {
-            this.Name = name;
+            this.Order = order;
         }
+
+        public abstract void NameHimself();
 
         public void GainPoint()
         {
@@ -32,6 +36,6 @@
 
         public abstract void Exchange(IList<Player> players);
 
-        public abstract Card Play();
+        public abstract Card Showdown();
     }
 }

@@ -6,27 +6,27 @@ namespace Showdown.Models
     {
         private int _round = 3;
 
-        private readonly Player _exchanger;
+        public Player Exchanger { get; private set; }
 
-        private readonly Player _exchangee;
+        public Player Exchangee { get; private set; }
 
         public ExchangeHands(Player exchanger, Player exchangee)
         {
-            _exchanger = exchanger;
-            _exchangee = exchangee;
+            Exchanger = exchanger;
+            Exchangee = exchangee;
 
             Exchange();
         }
 
         private void Exchange()
         {
-            var tempHand = _exchanger.Hand;
+            var tempHand = Exchanger.Hand;
 
-            _exchanger.SetHand(_exchangee.Hand);
-            _exchangee.SetHand(tempHand);
+            Exchanger.SetHand(Exchangee.Hand);
+            Exchangee.SetHand(tempHand);
         }
 
-        public (bool IsFinish, Player Exchanger, Player Exchangee) Countdown()
+        public bool Countdown()
         {
             _round--;
 
@@ -34,10 +34,10 @@ namespace Showdown.Models
             {
                 Exchange();
 
-                return (true, _exchanger, _exchangee);
+                return true;
             }
 
-            return (false, null, null);
+            return false;
         }
     }
 }

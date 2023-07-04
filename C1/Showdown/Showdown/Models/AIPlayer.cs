@@ -4,6 +4,11 @@ namespace Showdown.Models
 {
     public class AIPlayer : Player
     {
+        public override void NameHimself()
+        {
+            this.Name = $"Player {Order}";
+        }
+
         public override void Exchange(IList<Player> players)
         {
             if (this.ExchangeHands == null)
@@ -24,11 +29,11 @@ namespace Showdown.Models
             }
         }
 
-        public override Card Play()
+        public override Card Showdown()
         {
             var index = new Random().Next(0, this.Hand.Count - 1);
 
-            return this.Hand.Play(index);
+            return this.Hand.Showdown(index);
         }
     }
 }
