@@ -1,7 +1,8 @@
-﻿using CardGame.Enums;
-using CardGame.Extensions;
+﻿using CardGame.Extensions;
+using CardGame.Models;
+using CardGame.UNo.Enums;
 
-namespace CardGame.Models
+namespace CardGame.UNo
 {
     public class UNoCard : Card
     {
@@ -25,13 +26,18 @@ namespace CardGame.Models
 
         public override int CompareTo(Card other)
         {
-            if (other is UNoCard unoCard &&
-                (Color == unoCard.Color || Number == unoCard.Number))
+            if (other is UNoCard uNoCard &&
+                (Color == uNoCard.Color || Number == uNoCard.Number))
             {
                 return 0;
             }
 
             return 1;
+        }
+
+        public static IEnumerable<UNoCard> Standard40UNoCards()
+        {
+            return Enumerable.Range(0, 40).Select(i => new UNoCard(i)).ToList();
         }
     }
 }

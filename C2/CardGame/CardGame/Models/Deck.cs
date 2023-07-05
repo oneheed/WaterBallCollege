@@ -4,22 +4,16 @@
     {
         private readonly Stack<Card> _cards = new();
 
-        public static Deck Standard52PokerCards()
+        public Deck()
         {
-            var deck = new Deck();
-            var cards = Enumerable.Range(0, 52).Select(i => new PokerCard(i)).ToList();
-            cards.ForEach(card => deck.Push(card));
-
-            return deck;
         }
 
-        public static Deck Standard40UNoCards()
+        public Deck(IEnumerable<Card> cards)
         {
-            var deck = new Deck();
-            var cards = Enumerable.Range(0, 40).Select(i => new UNoCard(i)).ToList();
-            cards.ForEach(card => deck.Push(card));
-
-            return deck;
+            foreach (var card in cards)
+            {
+                _cards.Push(card);
+            }
         }
 
         public void SetCards(Deck deck)

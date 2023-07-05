@@ -48,6 +48,22 @@ namespace Showdown.Models
             _deck.Shuffle();
         }
 
+        private void DrawStage()
+        {
+            while (_deck.Any())
+            {
+                foreach (var player in _players)
+                {
+                    player.Hand.AddCard(_deck.DrawCard());
+                }
+            }
+        }
+
+        private bool NextRound()
+        {
+            return Round <= 13;
+        }
+
         private void TakesATurnStage()
         {
             while (NextRound())
@@ -75,22 +91,6 @@ namespace Showdown.Models
 
                 Round++;
             }
-        }
-
-        private void DrawStage()
-        {
-            while (_deck.Any())
-            {
-                foreach (var player in _players)
-                {
-                    player.Hand.AddCard(_deck.DrawCard());
-                }
-            }
-        }
-
-        private bool NextRound()
-        {
-            return Round <= 13;
         }
 
         private void ExchangeHandStage()

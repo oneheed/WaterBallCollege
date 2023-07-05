@@ -1,10 +1,12 @@
-﻿namespace CardGame.Models
+﻿using CardGame.Models;
+
+namespace CardGame.Showdown
 {
     public class ShowdownGame : CardGameApp
     {
         public ShowdownGame(Deck deck, IList<Player> players) : base(deck, players)
         {
-            this._drawNumber = 13;
+            _drawNumber = 13;
         }
         protected sealed override bool NextRound()
         {
@@ -13,26 +15,26 @@
 
         protected override void TakeRound()
         {
-            var showCards = new List<(int Index, Card Card)>();
-            for (int i = 0; i < _players.Count; i++)
+            var showCards = new List<(int Order, Card Card)>();
+
+            foreach (var player in _players)
             {
-                var player = _players[i];
-                var card = player.ShowCard();
+                var card = player.Showdown();
                 player.Hand.RemoveCard(card);
 
-                showCards.Add((i, card));
+                showCards.Add((player.Order, card));
 
                 Console.WriteLine($"{player.Name} 出 {card}");
             }
 
             var winnerData = showCards.MaxBy(x => x.Card);
-            var winner = _players[winnerData.Index];
+            var winner = _players.Single(p => p.Order == winnerData.Order);
             winner.GainPoint();
         }
 
         protected override Player WinnerPlayer()
         {
-            return this._players.MaxBy(p => p.Point);
+            return _players.MaxBy(p => p.Point);
         }
     }
 }

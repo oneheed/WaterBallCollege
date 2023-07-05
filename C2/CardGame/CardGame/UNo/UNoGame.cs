@@ -1,6 +1,7 @@
-﻿using CardGame.Enums;
+﻿using CardGame.Models;
+using CardGame.UNo.Enums;
 
-namespace CardGame.Models
+namespace CardGame.UNo
 {
     public class UNoGame : CardGameApp
     {
@@ -10,7 +11,7 @@ namespace CardGame.Models
 
         public UNoGame(Deck deck, IList<Player> players) : base(deck, players)
         {
-            this._drawNumber = 5;
+            _drawNumber = 5;
         }
 
         protected sealed override bool NextRound()
@@ -23,27 +24,27 @@ namespace CardGame.Models
             if (Round == 1)
                 _topDeck.Push(_deck.DrawCard());
 
-            this.TopCard = _topDeck.ShowCard();
+            TopCard = _topDeck.ShowCard();
 
             //Console.WriteLine($"Top: {_topDeck.Count}, Deck: {_deck.Count}, Pl: {_players[0].Hand.Count}, P2: {_players[1].Hand.Count}, P3: {_players[2].Hand.Count}, P4: {_players[3].Hand.Count}");
             //Console.WriteLine($"{_topDeck.Count + _deck.Count + _players[0].Hand.Count + _players[1].Hand.Count + _players[2].Hand.Count + _players[3].Hand.Count}");
 
-            ShowCard("頂牌為", this.TopCard);
+            ShowCard("頂牌為", TopCard);
 
             var showCards = new List<(int, Card)>();
             for (int i = 0; i < _players.Count; i++)
             {
                 var player = _players[i];
-                var card = player.ShowCard();
+                var card = player.Showdown();
 
-                if (this.TopCard.CompareTo(card) == 0)
+                if (TopCard.CompareTo(card) == 0)
                 {
                     player.Hand.RemoveCard(card);
                     _topDeck.Push(card);
 
                     showCards.Add((i, card));
 
-                    this.TopCard = card;
+                    TopCard = card;
 
                     ShowCard($"{player.Name} 出 ", (UNoCard)card);
                 }
@@ -58,7 +59,7 @@ namespace CardGame.Models
                     }
                 }
 
-                if (player.Hand.Count == 0 || (!_deck.Any() && _topDeck.Count == 1))
+                if (player.Hand.Count == 0 || !_deck.Any() && _topDeck.Count == 1)
                 {
                     _nextRound = false;
                     break;
@@ -68,7 +69,7 @@ namespace CardGame.Models
 
         protected override Player WinnerPlayer()
         {
-            return this._players.SingleOrDefault(p => p.Hand.Count == 0);
+            return _players.SingleOrDefault(p => p.Hand.Count == 0);
         }
 
         private void ShowCard(string context, Card card)

@@ -10,9 +10,14 @@
             this.strategy.SetAIPlayer(this);
         }
 
-        public override Card ShowCard()
+        public override void NameHimself()
         {
-            return this.strategy.ShowCard();
+            this.Name = $"Player {Order}";
+        }
+
+        public override Card Showdown()
+        {
+            return this.strategy.Showdown();
         }
     }
 }

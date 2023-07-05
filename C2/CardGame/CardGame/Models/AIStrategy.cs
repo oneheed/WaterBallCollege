@@ -9,6 +9,6 @@
             this.aiPlayer = aiPlayer;
         }
 
-        public abstract Card ShowCard();
+        public abstract Card Showdown();
     }
 }

@@ -1,7 +1,8 @@
-﻿using CardGame.Enums;
-using CardGame.Extensions;
+﻿using CardGame.Extensions;
+using CardGame.Models;
+using CardGame.Showdown.Enums;
 
-namespace CardGame.Models
+namespace CardGame.Showdown
 {
     public class PokerCard : Card
     {
@@ -37,6 +38,11 @@ namespace CardGame.Models
             }
 
             return 1;
+        }
+
+        public static IEnumerable<PokerCard> Standard52PokerCards()
+        {
+            return Enumerable.Range(0, 52).Select(i => new PokerCard(i)).ToList();
         }
     }
 }

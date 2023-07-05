@@ -2,7 +2,9 @@
 {
     public abstract class Player : IComparable<Player>
     {
-        public string Name { get; private set; }
+        public int Order { get; private set; }
+
+        public string Name { get; protected set; }
 
         public CardGameApp CardGame { get; private set; }
 
@@ -10,10 +12,12 @@
 
         public Hand Hand { get; private set; } = new();
 
-        public void NameHimself(string name)
+        public void SetOrder(int order)
         {
-            this.Name = name;
+            this.Order = order;
         }
+
+        public abstract void NameHimself();
 
         public void SetCardGame(CardGameApp cardGame)
         {
@@ -30,7 +34,7 @@
             Hand = hand;
         }
 
-        public abstract Card ShowCard();
+        public abstract Card Showdown();
 
         public int CompareTo(Player other)
         {

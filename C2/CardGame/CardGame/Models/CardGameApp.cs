@@ -15,6 +15,13 @@
         protected CardGameApp(Deck deck, IList<Player> players)
         {
             this._deck = deck;
+
+            foreach (var (player, i) in players.Select((p, i) => (p, i)))
+            {
+                player.SetOrder(i + 1);
+                player.SetCardGame(this);
+            }
+
             this._players = players;
         }
 
@@ -40,10 +47,9 @@
 
         private void NameHimselfStage()
         {
-            for (int i = 0; i < _players.Count; i++)
+            foreach (var player in _players)
             {
-                _players[i].NameHimself($"player {i}");
-                _players[i].SetCardGame(this);
+                player.NameHimself();
             }
         }
 
@@ -54,12 +60,11 @@
 
         private void DrawStage()
         {
-            for (int i = 0; i < _drawNumber * _players.Count; i++)
+            for (var i = 0; i < _drawNumber; i++)
             {
-                if (_deck.Any())
+                foreach (var player in _players.Where(player => _deck.Any()))
                 {
-                    var index = i % _players.Count;
-                    _players[index].Hand.AddCard(_deck.DrawCard());
+                    player.Hand.AddCard(_deck.DrawCard());
                 }
             }
         }

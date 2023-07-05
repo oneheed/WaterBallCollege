@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Ignore Spelling: Enums
+using System.ComponentModel.DataAnnotations;
 
-namespace CardGame.Enums
+namespace CardGame.Showdown.Enums
 {
     public enum Suit
     {

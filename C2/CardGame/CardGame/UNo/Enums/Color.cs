@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Ignore Spelling: Enums
 
-namespace CardGame.Enums
+using System.ComponentModel.DataAnnotations;
+
+namespace CardGame.UNo.Enums
 {
     public enum Color
     {
