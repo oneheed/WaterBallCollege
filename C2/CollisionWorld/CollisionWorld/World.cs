@@ -7,32 +7,39 @@ namespace CollisionWorld
     {
         private const int SIZE = 30;
 
-        private const int NUM_OF_SPRITE = 20;
+        private const int NUM_OF_SPRITE = 10;
+
+        private readonly IList<Func<int, Sprite>> _generateSpriteTypes;
 
         private readonly IList<Sprite> _sprites = new List<Sprite>();
 
         private readonly CollisionHandler _collisionHandler;
 
-        public World(CollisionHandler collisionHandler)
+        public World(CollisionHandler collisionHandler, IList<Func<int, Sprite>> generateSpriteTypes)
         {
+
             this._collisionHandler = collisionHandler;
+            this._generateSpriteTypes = generateSpriteTypes;
         }
 
         public void Generate()
         {
-            var postions = Enumerable.Range(0, SIZE).ToList();
+
+            var positions = Enumerable.Range(0, SIZE).ToList();
             var random = new Random();
 
             var generateSpriteNumber = 0;
             while (generateSpriteNumber < NUM_OF_SPRITE)
             {
-                var index = random.Next(0, postions.Count);
-                var postion = postions.ElementAt(index);
-                postions.RemoveAt(index);
+                var index = random.Next(0, positions.Count);
+                var position = positions.ElementAt(index);
+                positions.RemoveAt(index);
 
-                var spriteType = random.Next(0, 3);
-                var sprite = GenerateSprite(spriteType, postion);
+                var spriteTypeIndex = random.Next(0, _generateSpriteTypes.Count);
+                var sprite = _generateSpriteTypes[spriteTypeIndex](position);
+
                 sprite.SetWorld(this);
+
                 _sprites.Add(sprite);
 
                 generateSpriteNumber++;
@@ -65,7 +72,7 @@ namespace CollisionWorld
             {
                 try
                 {
-                    this._collisionHandler.Collisio(collide, collided);
+                    this._collisionHandler.Collision(collide, collided);
 
                     if (collide.SetPosition(to))
                     {
@@ -95,13 +102,5 @@ namespace CollisionWorld
         {
             return _sprites.FirstOrDefault(s => s.Position == position) ?? Sprite.Default;
         }
-
-        private Sprite GenerateSprite(int spriteType, int position) => spriteType switch
-        {
-            0 => new Sprite("Fire", position),
-            1 => new Sprite("Water", position),
-            2 => new Hero(position),
-            _ => Sprite.Default,
-        };
     }
 }

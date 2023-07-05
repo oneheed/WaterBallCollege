@@ -8,7 +8,7 @@ namespace CollisionWorld.Handlers
         {
         }
 
-        public override void Collisio(Sprite collide, Sprite collided)
+        public override void Collision(Sprite collide, Sprite collided)
         {
             if (collide.Name.Equals(collided.Name))
             {
@@ -16,7 +16,7 @@ namespace CollisionWorld.Handlers
             }
             else if (_next != null)
             {
-                this._next.Collisio(collide, collided);
+                this._next.Collision(collide, collided);
             }
         }
 

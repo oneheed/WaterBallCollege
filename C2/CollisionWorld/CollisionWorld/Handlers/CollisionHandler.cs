@@ -15,7 +15,7 @@ namespace CollisionWorld.Handlers
             this._next = next;
         }
 
-        public virtual void Collisio(Sprite collide, Sprite collided)
+        public virtual void Collision(Sprite collide, Sprite collided)
         {
             if (collide.Name.Equals(CollideName) && collided.Name.Equals(CollidedName) ||
                 (collide.Name.Equals(CollidedName) && collided.Name.Equals(CollideName)))
@@ -24,7 +24,7 @@ namespace CollisionWorld.Handlers
             }
             else if (_next != null)
             {
-                this._next.Collisio(collide, collided);
+                this._next.Collision(collide, collided);
             }
         }
 

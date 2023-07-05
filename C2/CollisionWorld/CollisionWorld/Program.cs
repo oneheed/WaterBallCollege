@@ -1,14 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CollisionWorld;
 using CollisionWorld.Handlers;
+using CollisionWorld.Sprites;
 
 Console.WriteLine("Hello, World!");
 
-var world = new World(
-    new WaterAndFireCollisionHandler(
-        new HeroAndFireCollisionHandler(
-            new HeroAndWaterCollisionHandler(
-                new SameCollisionHandler(null)))));
+var generateSpriteTypes = new List<Func<int, Sprite>>
+{
+    { (position) => new Sprite("Fire", position) },
+    { (position) => new Sprite("Water", position) },
+    { (position) => new Hero(position) },
+};
+
+var collisionHandler = new WaterAndFireCollisionHandler(new HeroAndFireCollisionHandler(new HeroAndWaterCollisionHandler(new SameCollisionHandler(null))));
+
+var world = new World(collisionHandler, generateSpriteTypes);
 
 world.Generate();
 while (true)
