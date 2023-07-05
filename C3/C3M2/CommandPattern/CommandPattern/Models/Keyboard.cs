@@ -4,7 +4,7 @@ namespace CommandPattern.Models
 {
     internal class Keyboard
     {
-        private Buttons _buttons = new Buttons();
+        private Buttons _buttons = new();
 
         private Buttons? _undoButtons;
 
@@ -31,8 +31,11 @@ namespace CommandPattern.Models
 
         public void Undo()
         {
-            _buttons = _undoButtons;
-            _undoButtons = default(Buttons);
+            if (_undoButtons != null)
+            {
+                _buttons = _undoButtons;
+                _undoButtons = default;
+            }
         }
     }
 }

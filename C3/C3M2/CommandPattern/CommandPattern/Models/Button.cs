@@ -12,7 +12,7 @@ namespace CommandPattern.Models
             _bindCommands = Enumerable.Range(65, 26).ToDictionary(v => (ConsoleKey)v, _ => default(ICommand));
         }
 
-        public bool Bind(ConsoleKey key, ICommand? command)
+        public bool Bind(ConsoleKey key, ICommand command)
         {
             if (_bindCommands.ContainsKey(key))
             {

@@ -90,7 +90,10 @@ namespace CommandPattern
             var macro = new Macro();
             macro.AddCommands(commands);
 
-            this._keyboard.Bind(consoleKeyInfo.Key, macro);
+            if (macro.AnyCommands())
+            {
+                Bind(consoleKeyInfo.Key, macro);
+            }
         }
 
         private void SettingSingle(ConsoleKeyInfo consoleKeyInfo)
@@ -102,7 +105,15 @@ namespace CommandPattern
             Console.WriteLine();
             var command = _commands.Where((c, i) => i.ToString() == commandKeyInfo.KeyChar.ToString()).SingleOrDefault();
 
-            this._keyboard.Bind(consoleKeyInfo.Key, command);
+            if (command != null)
+            {
+                Bind(consoleKeyInfo.Key, command);
+            }
+        }
+
+        public void Bind(ConsoleKey consoleKey, ICommand command)
+        {
+            this._keyboard.Bind(consoleKey, command);
         }
 
         private ConsoleKeyInfo ConsoleReadKey(string showMessage)

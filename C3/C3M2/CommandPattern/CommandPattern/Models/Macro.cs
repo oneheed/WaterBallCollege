@@ -19,6 +19,11 @@ namespace CommandPattern.Models
             }
         }
 
+        public bool AnyCommands()
+        {
+            return _commands.Any();
+        }
+
         public void ClearCommand()
         {
             _commands.Clear();
