@@ -15,7 +15,7 @@
             this.Name = name;
         }
 
-        public void SetCradGame(CardGameApp cardGame)
+        public void SetCardGame(CardGameApp cardGame)
         {
             this.CardGame = cardGame;
         }

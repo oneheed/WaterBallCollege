@@ -4,7 +4,7 @@ using CardGame.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-var prokerDeck = Deck.Standard52ProkerCards();
+var pokerDeck = Deck.Standard52PokerCards();
 
 var players = new Player[4]
 {
@@ -14,14 +14,14 @@ var players = new Player[4]
     new AIPlayer(),
 };
 
-var showdownGame = new ShowdownGame(prokerDeck, players);
+var showdownGame = new ShowdownGame(pokerDeck, players);
 showdownGame.Start();
 
 
 Console.WriteLine("================================================");
 
-var unoDeck = Deck.Standard40UnoCards();
+var uNoDeck = Deck.Standard40UNoCards();
 
-var unoGame = new UnoGame(unoDeck, players);
-unoGame.Start();
+var uNoGame = new UNoGame(uNoDeck, players);
+uNoGame.Start();
 

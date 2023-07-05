@@ -43,7 +43,7 @@
             for (int i = 0; i < _players.Count; i++)
             {
                 _players[i].NameHimself($"player {i}");
-                _players[i].SetCradGame(this);
+                _players[i].SetCardGame(this);
             }
         }
 

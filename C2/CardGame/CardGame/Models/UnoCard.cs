@@ -3,13 +3,13 @@ using CardGame.Extensions;
 
 namespace CardGame.Models
 {
-    public class UnoCard : Card
+    public class UNoCard : Card
     {
         public Color Color { get; private set; }
 
         public Number Number { get; private set; }
 
-        public UnoCard(int order)
+        public UNoCard(int order)
         {
             if (order > 40)
                 throw new ArgumentOutOfRangeException(nameof(order));
@@ -25,7 +25,7 @@ namespace CardGame.Models
 
         public override int CompareTo(Card other)
         {
-            if (other is UnoCard unoCard &&
+            if (other is UNoCard unoCard &&
                 (Color == unoCard.Color || Number == unoCard.Number))
             {
                 return 0;

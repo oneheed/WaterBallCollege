@@ -2,13 +2,13 @@
 
 namespace CardGame.Models
 {
-    public class UnoGame : CardGameApp
+    public class UNoGame : CardGameApp
     {
         private readonly Deck _topDeck = new();
 
         private bool _nextRound = true;
 
-        public UnoGame(Deck deck, IList<Player> players) : base(deck, players)
+        public UNoGame(Deck deck, IList<Player> players) : base(deck, players)
         {
             this._drawNumber = 5;
         }
@@ -45,7 +45,7 @@ namespace CardGame.Models
 
                     this.TopCard = card;
 
-                    ShowCard($"{player.Name} 出 ", (UnoCard)card);
+                    ShowCard($"{player.Name} 出 ", (UNoCard)card);
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace CardGame.Models
         {
             Console.Write($"{context}");
 
-            switch ((card as UnoCard).Color)
+            switch ((card as UNoCard).Color)
             {
                 case Color.BLUE:
                     Console.ForegroundColor = ConsoleColor.Blue;

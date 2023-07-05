@@ -3,13 +3,13 @@ using CardGame.Extensions;
 
 namespace CardGame.Models
 {
-    public class ProkerCard : Card
+    public class PokerCard : Card
     {
         public Suit Suit { get; private set; }
 
         public Rank Rank { get; private set; }
 
-        public ProkerCard(int order)
+        public PokerCard(int order)
         {
             if (order > 52)
                 throw new ArgumentOutOfRangeException(nameof(order));
@@ -25,7 +25,7 @@ namespace CardGame.Models
 
         public override int CompareTo(Card other)
         {
-            if (other is ProkerCard card)
+            if (other is PokerCard card)
             {
                 if (Rank == card.Rank)
                 {
