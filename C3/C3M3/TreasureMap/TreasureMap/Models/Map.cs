@@ -7,9 +7,9 @@ namespace TreasureMap.Models
     {
         public int Round { get; private set; } = 0;
 
-        public int Width { get; private set; } = 10;
+        public int Width { get; private set; }
 
-        public int Height { get; private set; } = 10;
+        public int Height { get; private set; }
 
         public int Size => this.Width * this.Height;
 
