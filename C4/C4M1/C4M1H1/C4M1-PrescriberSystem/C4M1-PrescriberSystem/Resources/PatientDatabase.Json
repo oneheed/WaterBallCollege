@@ -1,0 +1,29 @@
+﻿[
+  {
+    "Id": "N123000001",
+    "Name": "Tom",
+    "Gender": 0,
+    "Age": 30,
+    "Height": 170,
+    "Weight": 60,
+    "Case": []
+  },
+  {
+    "Id": "N123000002",
+    "Name": "Jack",
+    "Gender": 0,
+    "Age": 25,
+    "Height": 174,
+    "Weight": 60,
+    "Case": []
+  },
+  {
+    "Id": "N123000003",
+    "Name": "Mike",
+    "Gender": 1,
+    "Age": 18,
+    "Height": 174,
+    "Weight": 60,
+    "Case": []
+  }
+]
