@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Enums
 
-namespace C4M1_PrescriberSystem_.Enums
+namespace PrescriberSystemApp.Enums
 {
     public enum FileFormat
     {

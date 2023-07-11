@@ -1,8 +1,7 @@
-﻿using C4M1_PrescriberSystem.Enums;
-using C4M1_PrescriberSystem.Models;
-using C4M1_PrescriberSystem_.Models.Prescriptions;
+﻿using PrescriberSystemApp.Enums;
+using PrescriberSystemApp.Models.Prescriptions;
 
-namespace C4M1_PrescriberSystem_.Models.PrescriptionRules
+namespace PrescriberSystemApp.Models.PrescriptionRules
 {
     internal class AttractiveRule : PrescriptionRule
     {

@@ -1,9 +1,9 @@
 ﻿// Ignore Spelling: BMI
 
 using System.Text.Json.Serialization;
-using C4M1_PrescriberSystem.Enums;
+using PrescriberSystemApp.Enums;
 
-namespace C4M1_PrescriberSystem.Models
+namespace PrescriberSystemApp.Models
 {
     internal class Patient
     {

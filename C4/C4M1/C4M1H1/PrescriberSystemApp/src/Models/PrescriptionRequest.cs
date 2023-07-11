@@ -1,10 +1,10 @@
-﻿using C4M1_PrescriberSystem_.Models.Prescriptions;
+﻿using PrescriberSystemApp.Models.Prescriptions;
 
-namespace C4M1_PrescriberSystem.Models
+namespace PrescriberSystemApp.Models
 {
-    internal class PrescriptionRequest
+    public class PrescriptionRequest
     {
-        private readonly ManualResetEventSlim completionEvent = new ManualResetEventSlim();
+        private readonly ManualResetEventSlim completionEvent = new();
 
         public string Id { get; private set; }
 
@@ -35,14 +35,14 @@ namespace C4M1_PrescriberSystem.Models
             this.Descriptions = descriptions;
         }
 
-        public void Complete()
+        internal void Complete()
         {
             completionEvent.Set();
 
             this.IsComplete = true;
         }
 
-        public void Wait()
+        internal void Wait()
         {
             completionEvent.Wait();
         }

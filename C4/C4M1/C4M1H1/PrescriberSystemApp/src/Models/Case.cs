@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace C4M1_PrescriberSystem.Models
+namespace PrescriberSystemApp.Models
 {
     internal class Case
     {

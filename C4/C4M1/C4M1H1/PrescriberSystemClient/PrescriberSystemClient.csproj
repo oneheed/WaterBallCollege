@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>C4M1_PrescriberSystem_</RootNamespace>
+    <RootNamespace>PrescriberSystem</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PrescriberSystemApp\PrescriberSystemApp.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Resources\PatientDatabase.Json">

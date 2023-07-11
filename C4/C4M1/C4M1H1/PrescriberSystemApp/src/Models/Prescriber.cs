@@ -1,7 +1,7 @@
-﻿using C4M1_PrescriberSystem_.Models.PrescriptionRules;
-using C4M1_PrescriberSystem_.Models.Prescriptions;
+﻿using PrescriberSystemApp.Models.PrescriptionRules;
+using PrescriberSystemApp.Models.Prescriptions;
 
-namespace C4M1_PrescriberSystem.Models
+namespace PrescriberSystemApp.Models
 {
     internal class Prescriber
     {

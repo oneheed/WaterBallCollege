@@ -1,30 +1,30 @@
 ﻿using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using C4M1_PrescriberSystem.Models;
-using C4M1_PrescriberSystem_.Enums;
-using C4M1_PrescriberSystem_.Models.PrescriptionRules;
-using C4M1_PrescriberSystem_.Models.Prescriptions;
+using PrescriberSystemApp.Enums;
+using PrescriberSystemApp.Models.PrescriptionRules;
+using PrescriberSystemApp.Models.Prescriptions;
 
-namespace C4M1_PrescriberSystem_.Models
+namespace PrescriberSystemApp.Models
 {
-    internal class PrescriberSystemFacade
+    public class PrescriberSystemFacade
     {
         private readonly Prescriber prescriber;
 
-        private readonly List<string> _supportRules = new();
+        private readonly List<PrescriptionRule> _supportRules = new()
+        {
+            new Covid19Rule(),
+            new AttractiveRule(),
+            new SleepApneaSyndromeRule(),
+        };
 
         public PrescriberSystemFacade(string databaseFilePath, string ruleFilePath)
         {
             var patientDatabase = new PatientDatabaseFormFile(databaseFilePath);
 
-            SetSupportRulesFormFile(ruleFilePath);
-            var prescriptionRules = new List<PrescriptionRule>
-            {
-                new Covid19Rule(),
-                new AttractiveRule(),
-                new SleepApneaSyndromeRule(),
-            }.Where(p => _supportRules.Contains(p.Name, StringComparer.OrdinalIgnoreCase));
+            var filterRules = GetFilterRulesFormFile(ruleFilePath);
+            var prescriptionRules = _supportRules
+                .Where(p => filterRules.Contains(p.Name, StringComparer.OrdinalIgnoreCase));
 
             this.prescriber = new Prescriber(patientDatabase, prescriptionRules);
             this.prescriber.Start();
@@ -35,7 +35,7 @@ namespace C4M1_PrescriberSystem_.Models
             prescriber.PrescriptionDemand(prescriptionRequest);
         }
 
-        public void SavePrescriptionToFile(PrescriptionRequest prescriptionRequest, string outFilePath, FileFormat fileFormat)
+        public static void SavePrescriptionToFile(PrescriptionRequest prescriptionRequest, string outFilePath, FileFormat fileFormat)
         {
             var prescription = prescriptionRequest.Prescription;
             if (prescription != null)
@@ -72,11 +72,11 @@ namespace C4M1_PrescriberSystem_.Models
             }
         }
 
-        private void SetSupportRulesFormFile(string ruleFilePath)
+        private List<string> GetFilterRulesFormFile(string ruleFilePath)
         {
             var rules = File.ReadAllLines(ruleFilePath).ToList();
 
-            _supportRules.AddRange(rules);
+            return rules ?? new();
         }
     }
 }

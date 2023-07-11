@@ -1,4 +1,4 @@
-﻿namespace C4M1_PrescriberSystem_.Models.Prescriptions
+﻿namespace PrescriberSystemApp.Models.Prescriptions
 {
     internal class Attractive : IPrescription
     {

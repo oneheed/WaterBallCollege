@@ -1,6 +1,6 @@
-﻿namespace C4M1_PrescriberSystem_.Models.Prescriptions
+﻿namespace PrescriberSystemApp.Models.Prescriptions
 {
-    internal interface IPrescription
+    public interface IPrescription
     {
 
         string Name { get; }

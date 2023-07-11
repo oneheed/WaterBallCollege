@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Enums
 
-namespace C4M1_PrescriberSystem.Enums
+namespace PrescriberSystemApp.Enums
 {
     internal enum Gender
     {
