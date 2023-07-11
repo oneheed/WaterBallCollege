@@ -2,6 +2,7 @@
 {
     internal interface IPrescription
     {
+
         string Name { get; }
 
         string PotentialDisease { get; }

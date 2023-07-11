@@ -7,27 +7,18 @@ namespace C4M1_PrescriberSystem.Models
     {
         private readonly PatientDatabase _patientDatabase;
 
-        private readonly List<string> _settingRules = new List<string>();
+        private readonly Queue<PrescriptionRequest> requestQueue = new Queue<PrescriptionRequest>();
 
-        private readonly List<IPrescriptionRule> _prescriptionRules = new List<IPrescriptionRule>();
+        private readonly List<PrescriptionRule> _prescriptionRules = new List<PrescriptionRule>();
 
-        private readonly Queue<Task<IPrescription?>> requestQueue = new Queue<Task<IPrescription?>>();
-
-        public Prescriber(PatientDatabase patientDatabase, IEnumerable<IPrescriptionRule> prescriptionRules)
+        public Prescriber(PatientDatabase patientDatabase, IEnumerable<PrescriptionRule> prescriptionRules)
         {
             _patientDatabase = patientDatabase;
 
             _prescriptionRules.AddRange(prescriptionRules);
         }
 
-        public void SetPrescriptionRules(IEnumerable<string> rules)
-        {
-            _settingRules.AddRange(rules);
-        }
-
         private readonly object lockObject = new object();
-
-
 
         public Task Start()
         {
@@ -35,62 +26,49 @@ namespace C4M1_PrescriberSystem.Models
             {
                 while (true)
                 {
-                    Task<IPrescription?> request;
+                    PrescriptionRequest request;
                     lock (lockObject)
                     {
                         while (!requestQueue.Any())
                         {
-                            Monitor.Wait(lockObject); // 等待新的请求到达
+                            Monitor.Wait(lockObject);
                         }
 
                         request = requestQueue.Dequeue();
                     }
 
-                    await request;
+                    request.Prescription = await Diagnosis(request.Id, request.Descriptions.ToList());
+
+                    Console.WriteLine($"{request.Id} 診斷完畢");
+
+                    request.Complete();
                 }
             });
         }
 
-        public Task<IPrescription?> PrescriptionDemand(string id, Symptom symptom)
+        public void PrescriptionDemand(PrescriptionRequest prescriptionRequest)
         {
-            Console.WriteLine(id);
+            Console.WriteLine($"收到 {prescriptionRequest.Id} 診斷需求");
 
-            var test = default(Task<IPrescription?>);
             lock (lockObject)
             {
-                test = Task.Delay(TimeSpan.FromSeconds(3))
-                    .ContinueWith(t => Test(id, symptom));
-
-                requestQueue.Enqueue(test);
-                Monitor.Pulse(lockObject); // 通知处理任务有新的请求
+                requestQueue.Enqueue(prescriptionRequest);
+                Monitor.Pulse(lockObject);
             }
-
-            return test;
         }
 
-        private IPrescription? Test(string id, Symptom symptom)
+        private async Task<IPrescription?> Diagnosis(string id, List<string> symptom)
+
         {
             var patient = _patientDatabase.Search(id);
+            this._patientDatabase.AddCase(id, new Case(symptom));
+            this._patientDatabase.SyncDataBase();
 
             if (patient != null)
             {
-                foreach (var rule in _prescriptionRules.Where(p => _settingRules.Contains(p.Name)))
-                {
-                    if (rule.PrescriptionDemand(patient, symptom))
-                    {
-                        return rule.Prescription;
-                    }
-                    else
-                    {
-                        // TODO: not find Prescription
-                        //throw new ArgumentException();
-                    }
-                }
-            }
-            else
-            {
-                // TODO: not find patient
-                //throw new ArgumentException();
+                await Task.Delay(3000);
+
+                return _prescriptionRules.FirstOrDefault(r => r.PrescriptionDemand(patient, symptom))?.Prescription;
             }
 
             return default;

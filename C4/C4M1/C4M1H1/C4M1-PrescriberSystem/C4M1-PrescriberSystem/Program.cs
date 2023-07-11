@@ -1,13 +1,21 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using C4M1_PrescriberSystem.Models;
 using C4M1_PrescriberSystem_.Models;
 
-Console.WriteLine("Hello, World!");
-
 var prescriberFacade = new PrescriberSystemFacade("Resources/PatientDatabase.Json", "Resources/PrescriberFile.txt");
+var requests = new List<PrescriptionRequest>
+{
+    new PrescriptionRequest("N123000001", new[] { "Sneeze", "Headache", "Cough" }),
+    new PrescriptionRequest("N123000002", new[] { "Snore" }),
+};
 
+foreach (var request in requests)
+{
+    prescriberFacade.PrescriptionDemand(request);
+}
 
-var task1 = prescriberFacade.PrescriptionDemand("N123000001", "Sneeze", "Headache", "Cough");
-var task2 = prescriberFacade.PrescriptionDemand("N123000001", "Sneeze", "Headache", "Cough");
+//prescriberFacade.SavePrescriptionToFile(requests[0], "Resources/1.json", FileFormat.Json);
+//prescriberFacade.SavePrescriptionToFile(requests[1], "Resources/1.csv", FileFormat.CSV);
 
-Console.WriteLine(task1.Result.Name);
-Console.WriteLine(task2.Result.Name);
+Console.WriteLine(requests[0].Prescription?.Name);
+Console.WriteLine(requests[1].Prescription?.Name);

@@ -1,5 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using C4M1_PrescriberSystem.Models;
+using C4M1_PrescriberSystem_.Enums;
 using C4M1_PrescriberSystem_.Models.PrescriptionRules;
 using C4M1_PrescriberSystem_.Models.Prescriptions;
 
@@ -7,46 +10,73 @@ namespace C4M1_PrescriberSystem_.Models
 {
     internal class PrescriberSystemFacade
     {
-        private readonly PatientDatabase patientDatabase;
-
         private readonly Prescriber prescriber;
 
-        public PrescriberSystemFacade(string databaseFile, string prescriberFile)
-        {
-            this.patientDatabase = new PatientDatabase();
-            this.patientDatabase.SetData(ReadDatabaseFile(databaseFile));
+        private readonly List<string> _supportRules = new();
 
-            this.prescriber = new Prescriber(this.patientDatabase, new List<IPrescriptionRule>
+        public PrescriberSystemFacade(string databaseFilePath, string ruleFilePath)
+        {
+            var patientDatabase = new PatientDatabaseFormFile(databaseFilePath);
+
+            SetSupportRulesFormFile(ruleFilePath);
+            var prescriptionRules = new List<PrescriptionRule>
             {
-                new COVID19Rule(),
+                new Covid19Rule(),
                 new AttractiveRule(),
                 new SleepApneaSyndromeRule(),
-            });
+            }.Where(p => _supportRules.Contains(p.Name, StringComparer.OrdinalIgnoreCase));
 
-            this.prescriber.SetPrescriptionRules(ReadPrescriberFile(prescriberFile));
-
+            this.prescriber = new Prescriber(patientDatabase, prescriptionRules);
             this.prescriber.Start();
         }
 
-        private List<Patient> ReadDatabaseFile(string databaseFile)
+        public void PrescriptionDemand(PrescriptionRequest prescriptionRequest)
         {
-            var document = File.ReadAllText(databaseFile);
-            var patients = JsonSerializer.Deserialize<List<Patient>>(document);
-
-            return patients;
+            prescriber.PrescriptionDemand(prescriptionRequest);
         }
 
-        private List<string> ReadPrescriberFile(string prescriberFile)
+        public void SavePrescriptionToFile(PrescriptionRequest prescriptionRequest, string outFilePath, FileFormat fileFormat)
         {
-            return File.ReadAllLines(prescriberFile).ToList();
+            var prescription = prescriptionRequest.Prescription;
+            if (prescription != null)
+            {
+                Console.WriteLine($"將 {prescriptionRequest.Id} 診斷結果, 存入 {outFilePath}");
+
+                switch (fileFormat)
+                {
+                    case FileFormat.Json:
+                        var options = new JsonSerializerOptions
+                        {
+                            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                            WriteIndented = true
+                        };
+
+                        var prescriptionJson = JsonSerializer.Serialize(prescription, options);
+                        File.WriteAllText(outFilePath, prescriptionJson);
+
+                        break;
+
+                    case FileFormat.CSV:
+                        var stringBuilder = new StringBuilder();
+
+                        var properties = typeof(IPrescription).GetProperties();
+                        var titles = string.Join(",", properties.Select(p => p.Name));
+                        stringBuilder.AppendLine(titles);
+                        var values = string.Join(",", properties.Select(p => p.GetValue(prescription)?.ToString()));
+                        stringBuilder.AppendLine(values);
+
+                        File.WriteAllText(outFilePath, stringBuilder.ToString());
+
+                        break;
+                }
+            }
         }
 
-
-
-        public async Task<IPrescription?> PrescriptionDemand(string id, params string[] symptom)
+        private void SetSupportRulesFormFile(string ruleFilePath)
         {
-            return await prescriber.PrescriptionDemand(id, new Symptom(symptom));
-        }
+            var rules = File.ReadAllLines(ruleFilePath).ToList();
 
+            _supportRules.AddRange(rules);
+        }
     }
 }

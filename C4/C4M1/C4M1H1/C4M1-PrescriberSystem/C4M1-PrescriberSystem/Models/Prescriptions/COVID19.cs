@@ -2,7 +2,7 @@
 
 namespace C4M1_PrescriberSystem_.Models.Prescriptions
 {
-    internal class COVID19 : IPrescription
+    internal class Covid19 : IPrescription
     {
         public string Name => "清冠一號";
 

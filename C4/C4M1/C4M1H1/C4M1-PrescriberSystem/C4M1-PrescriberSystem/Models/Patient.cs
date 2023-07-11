@@ -1,5 +1,6 @@
 ﻿// Ignore Spelling: BMI
 
+using System.Text.Json.Serialization;
 using C4M1_PrescriberSystem.Enums;
 
 namespace C4M1_PrescriberSystem.Models
@@ -18,7 +19,8 @@ namespace C4M1_PrescriberSystem.Models
 
         public double Weight { get; private set; }
 
-        public Patient(string id, string name, Gender gender, int age, double height, double weight)
+        [JsonConstructor]
+        public Patient(string id, string name, Gender gender, int age, double height, double weight, List<Case> cases)
         {
             Id = id;
             Name = name;
@@ -27,15 +29,13 @@ namespace C4M1_PrescriberSystem.Models
 
             Height = height;
             Weight = weight;
+
+            Cases = cases ?? new List<Case>();
         }
 
+        [JsonIgnore]
         public double BMI => this.Weight / Math.Pow(this.Height / 100, 2);
 
-        public List<Case> Case { get; private set; } = new List<Case>();
-
-        public void AddCase(Case @case)
-        {
-            this.Case.Add(@case);
-        }
+        public List<Case> Cases { get; private set; } = new List<Case>();
     }
 }
