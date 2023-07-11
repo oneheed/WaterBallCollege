@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: COVID
 
-namespace PrescriberSystemApp.Models.Prescriptions
+namespace PrescriberSystemApp.Prescriptions
 {
     internal class Covid19 : IPrescription
     {

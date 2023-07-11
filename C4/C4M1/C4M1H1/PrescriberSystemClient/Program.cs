@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using PrescriberSystemApp;
 using PrescriberSystemApp.Enums;
-using PrescriberSystemApp.Models;
 
 var prescriberFacade = new PrescriberSystemFacade("Resources/PatientDatabase.Json", "Resources/PrescriberFile.txt");
 var requests = new List<PrescriptionRequest>

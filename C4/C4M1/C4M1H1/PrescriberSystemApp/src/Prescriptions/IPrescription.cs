@@ -1,4 +1,4 @@
-﻿namespace PrescriberSystemApp.Models.Prescriptions
+﻿namespace PrescriberSystemApp.Prescriptions
 {
     public interface IPrescription
     {

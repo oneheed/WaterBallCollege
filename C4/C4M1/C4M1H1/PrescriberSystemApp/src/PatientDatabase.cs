@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
+using PrescriberSystemApp.Models;
 
-namespace PrescriberSystemApp.Models
+namespace PrescriberSystemApp
 {
     internal abstract class PatientDatabase
     {
@@ -28,14 +29,14 @@ namespace PrescriberSystemApp.Models
 
         public PatientDatabaseFormFile(string filePath) : base()
         {
-            this._filePath = filePath;
+            _filePath = filePath;
 
             InitDataBaseFormFile();
         }
 
         private void InitDataBaseFormFile()
         {
-            var document = File.ReadAllText(this._filePath);
+            var document = File.ReadAllText(_filePath);
             var patients = JsonSerializer.Deserialize<List<Patient>>(document);
 
             if (patients != null)
@@ -49,9 +50,9 @@ namespace PrescriberSystemApp.Models
 
         public override void SyncDataBase()
         {
-            var document = JsonSerializer.Serialize(this._patients.Values, new JsonSerializerOptions { WriteIndented = true });
+            var document = JsonSerializer.Serialize(_patients.Values, new JsonSerializerOptions { WriteIndented = true });
 
-            File.WriteAllText(this._filePath, document);
+            File.WriteAllText(_filePath, document);
         }
     }
 }

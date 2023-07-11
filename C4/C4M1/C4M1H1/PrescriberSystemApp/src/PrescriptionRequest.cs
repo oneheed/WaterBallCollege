@@ -1,6 +1,6 @@
-﻿using PrescriberSystemApp.Models.Prescriptions;
+﻿using PrescriberSystemApp.Prescriptions;
 
-namespace PrescriberSystemApp.Models
+namespace PrescriberSystemApp
 {
     public class PrescriptionRequest
     {
@@ -18,28 +18,28 @@ namespace PrescriberSystemApp.Models
         {
             get
             {
-                this.Wait();
+                Wait();
 
-                return this._prescription;
+                return _prescription;
             }
             set
             {
-                this._prescription = value;
+                _prescription = value;
             }
         }
 
 
         public PrescriptionRequest(string id, string[] descriptions)
         {
-            this.Id = id;
-            this.Descriptions = descriptions;
+            Id = id;
+            Descriptions = descriptions;
         }
 
         internal void Complete()
         {
             completionEvent.Set();
 
-            this.IsComplete = true;
+            IsComplete = true;
         }
 
         internal void Wait()

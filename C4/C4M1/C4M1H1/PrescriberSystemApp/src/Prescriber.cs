@@ -1,7 +1,8 @@
-﻿using PrescriberSystemApp.Models.PrescriptionRules;
-using PrescriberSystemApp.Models.Prescriptions;
+﻿using PrescriberSystemApp.Models;
+using PrescriberSystemApp.PrescriptionRules;
+using PrescriberSystemApp.Prescriptions;
 
-namespace PrescriberSystemApp.Models
+namespace PrescriberSystemApp
 {
     internal class Prescriber
     {
@@ -61,8 +62,8 @@ namespace PrescriberSystemApp.Models
 
         {
             var patient = _patientDatabase.Search(id);
-            this._patientDatabase.AddCase(id, new Case(symptom));
-            this._patientDatabase.SyncDataBase();
+            _patientDatabase.AddCase(id, new Case(symptom));
+            _patientDatabase.SyncDataBase();
 
             if (patient != null)
             {

@@ -2,10 +2,10 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using PrescriberSystemApp.Enums;
-using PrescriberSystemApp.Models.PrescriptionRules;
-using PrescriberSystemApp.Models.Prescriptions;
+using PrescriberSystemApp.PrescriptionRules;
+using PrescriberSystemApp.Prescriptions;
 
-namespace PrescriberSystemApp.Models
+namespace PrescriberSystemApp
 {
     public class PrescriberSystemFacade
     {
@@ -26,8 +26,8 @@ namespace PrescriberSystemApp.Models
             var prescriptionRules = _supportRules
                 .Where(p => filterRules.Contains(p.Name, StringComparer.OrdinalIgnoreCase));
 
-            this.prescriber = new Prescriber(patientDatabase, prescriptionRules);
-            this.prescriber.Start();
+            prescriber = new Prescriber(patientDatabase, prescriptionRules);
+            prescriber.Start();
         }
 
         public void PrescriptionDemand(PrescriptionRequest prescriptionRequest)

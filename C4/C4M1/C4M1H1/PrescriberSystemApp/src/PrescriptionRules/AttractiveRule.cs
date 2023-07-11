@@ -1,7 +1,8 @@
 ﻿using PrescriberSystemApp.Enums;
-using PrescriberSystemApp.Models.Prescriptions;
+using PrescriberSystemApp.Models;
+using PrescriberSystemApp.Prescriptions;
 
-namespace PrescriberSystemApp.Models.PrescriptionRules
+namespace PrescriberSystemApp.PrescriptionRules
 {
     internal class AttractiveRule : PrescriptionRule
     {

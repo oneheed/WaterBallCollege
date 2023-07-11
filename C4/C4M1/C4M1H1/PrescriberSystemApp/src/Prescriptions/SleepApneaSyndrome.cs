@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Apnea
 
-namespace PrescriberSystemApp.Models.Prescriptions
+namespace PrescriberSystemApp.Prescriptions
 {
     internal class SleepApneaSyndrome : IPrescription
     {

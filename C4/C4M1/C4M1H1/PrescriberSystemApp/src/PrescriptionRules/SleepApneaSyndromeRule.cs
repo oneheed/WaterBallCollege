@@ -1,8 +1,9 @@
 ﻿// Ignore Spelling: Apnea
 
-using PrescriberSystemApp.Models.Prescriptions;
+using PrescriberSystemApp.Models;
+using PrescriberSystemApp.Prescriptions;
 
-namespace PrescriberSystemApp.Models.PrescriptionRules
+namespace PrescriberSystemApp.PrescriptionRules
 {
     internal class SleepApneaSyndromeRule : PrescriptionRule
     {

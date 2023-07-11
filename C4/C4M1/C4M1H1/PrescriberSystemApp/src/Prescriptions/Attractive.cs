@@ -1,4 +1,4 @@
-﻿namespace PrescriberSystemApp.Models.Prescriptions
+﻿namespace PrescriberSystemApp.Prescriptions
 {
     internal class Attractive : IPrescription
     {
