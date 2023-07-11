@@ -33,18 +33,4 @@ Console.WriteLine(models[3].Equals(models[4]));
 Console.WriteLine(models[0].Source.Equals(models[1].Source));
 stopWatch.Stop();
 
-//var reflection = new ComputationModels().CreateModel("Reflection");
-//var reflection1 = new ComputationModels().CreateModel("Reflection");
-//var scaling = new ComputationModels().CreateModel("Scaling");
-//var shrinking = new ComputationModels().CreateModel("Shrinking");
-
-//var reflectionResult = reflection.Calculate(target);
-//var reflectionResult1 = reflection1.Calculate(target);
-//var scalingResult = scaling.Calculate(target);
-//var shrinkingResult = shrinking.Calculate(target);
-
-//reflectionResult.Print();
-//scalingResult.Print();
-//shrinkingResult.Print();
-
 Console.WriteLine(stopWatch.ElapsedMilliseconds / 1000);
