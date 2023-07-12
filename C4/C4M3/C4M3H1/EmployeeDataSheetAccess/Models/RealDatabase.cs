@@ -1,22 +1,17 @@
-﻿using C4M3H1.Interfaces;
+﻿using EmployeeDataSheetAccess.Interfaces;
 
-namespace C4M3H1
+namespace EmployeeDataSheetAccess.Models
 {
     internal class RealDatabase : IDatabase
     {
-        private readonly string _path = @"Database.txt";
+        private readonly string _path = @"Resources\Database.txt";
 
         public virtual IEmployee GetEmployeeById(int id)
         {
-            var line = File.ReadLines(this._path).ElementAtOrDefault(id);
+            var line = File.ReadLines(_path).ElementAtOrDefault(id) ??
+                throw new ArgumentOutOfRangeException(nameof(id), "Can not find employee by id");
 
-            if (line == null)
-            {
-                // 該員工不存在
-                throw new ArgumentException();
-            }
-
-            return new RealEmplyee(this, line);
+            return new RealEmployee(this, line);
         }
 
         //public IEmployee GetEmployeeById(int id)

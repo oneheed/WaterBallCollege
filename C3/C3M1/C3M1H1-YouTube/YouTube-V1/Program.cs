@@ -10,13 +10,13 @@ var channels = new List<Channel> {
     waterBallCollege,
 };
 
-var subscribeies = new List<Subscriber>
+var subscribers = new List<Subscriber>
 {
     new WaterBall(),
     new FireBall(),
 };
 
-foreach (var subscriber in subscribeies)
+foreach (var subscriber in subscribers)
 {
     foreach (var channel in channels)
     {

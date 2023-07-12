@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using C4M2H1;
+using FriendRelationshipAnalyzer;
 
 var analyzer = new RelationshipAnalyzerAdapter();
 var script = File.ReadAllText("Resources/Data.txt");

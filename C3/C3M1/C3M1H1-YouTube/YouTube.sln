@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C3M1H1-YouTube", "C3M1H1-YouTube\C3M1H1-YouTube.csproj", "{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YouTube", "YouTube\YouTube.csproj", "{A9FB5505-02ED-422A-97CA-9AC36EB1B32C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C3M1H1-YouTube-V1", "C3M1H1-YouTube-V1\C3M1H1-YouTube-V1.csproj", "{2C3D08C8-2BE3-46FC-8B06-16C89B9D71CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTube-V1", "YouTube-V1\YouTube-V1.csproj", "{2C3D08C8-2BE3-46FC-8B06-16C89B9D71CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

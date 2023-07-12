@@ -1,4 +1,6 @@
-﻿namespace C4M2H1
+﻿using FriendRelationshipAnalyzer.Interfaces;
+
+namespace FriendRelationshipAnalyzer.Models
 {
     internal class RelationshipAnalyzer : IRelationshipAnalyzer
     {

@@ -1,13 +1,14 @@
-﻿using NGenerics.DataStructures.General;
+﻿using FriendRelationshipAnalyzer.Interfaces;
+using NGenerics.DataStructures.General;
 using NGenerics.Patterns.Visitor;
 
-namespace C4M2H1
+namespace FriendRelationshipAnalyzer.Models
 {
-    internal class RelationshipGraphAdapter : IRelationshipGraph
+    internal class RelationshipGraph : IRelationshipGraph
     {
         private readonly Graph<string> _graph = new(false);
 
-        public RelationshipGraphAdapter(string script)
+        public RelationshipGraph(string script)
         {
             foreach (var item in script.Split("\r\n"))
             {

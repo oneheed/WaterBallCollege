@@ -1,4 +1,4 @@
-﻿namespace C4M3H1.Interfaces
+﻿namespace EmployeeDataSheetAccess.Interfaces
 {
     internal interface IEmployee
     {

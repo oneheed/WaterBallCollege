@@ -1,4 +1,7 @@
-﻿namespace C4M2H1
+﻿using FriendRelationshipAnalyzer.Interfaces;
+using FriendRelationshipAnalyzer.Models;
+
+namespace FriendRelationshipAnalyzer
 {
     internal class RelationshipAnalyzerAdapter : IRelationshipAnalyzer, IRelationshipGraph
     {
@@ -27,7 +30,7 @@
             }
 
             _superRelationshipAnalyzer.Init(string.Join("\r\n", superData));
-            _relationshipGraph = new RelationshipGraphAdapter(string.Join("\r\n", superData));
+            _relationshipGraph = new RelationshipGraph(string.Join("\r\n", superData));
         }
 
         public IEnumerable<string> GetMutualFriends(string name1, string name2)
@@ -39,7 +42,7 @@
                 .Where(f => !new[] { name1, name2 }.Contains(f)) ?? new List<string>();
 
             foreach (var target in targets
-                .Where(t => _superRelationshipAnalyzer.IsMutualFrined(t, name1, name2)))
+                .Where(t => _superRelationshipAnalyzer.IsMutualFriend(t, name1, name2)))
             {
                 result.Add(target);
             }

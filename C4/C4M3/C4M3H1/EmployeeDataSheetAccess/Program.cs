@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using C4M3H1;
-using C4M3H1.Interfaces;
+using EmployeeDataSheetAccess;
+using EmployeeDataSheetAccess.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 var config = new ConfigurationBuilder()

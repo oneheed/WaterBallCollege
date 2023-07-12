@@ -1,4 +1,4 @@
-﻿namespace C4M2H1
+﻿namespace FriendRelationshipAnalyzer.Models
 {
     internal class SuperRelationshipAnalyzer
     {
@@ -14,24 +14,24 @@
             }
         }
 
-        public bool IsMutualFrined(string targetName, string name1, string name2)
+        public bool IsMutualFriend(string targetName, string name1, string name2)
         {
-            return _friendsData[name1].Any(f => f.Equals(targetName)) &&
-                _friendsData[name2].Any(f => f.Equals(targetName));
+            return _friendsData[name1].Contains(targetName) &&
+                _friendsData[name2].Contains(targetName);
         }
 
-        private void AddFriendsData(string traget, string name)
+        private void AddFriendsData(string target, string name)
         {
-            if (!_friendsData.ContainsKey(traget))
+            if (!_friendsData.ContainsKey(target))
             {
-                _friendsData[traget] = new List<string>
+                _friendsData[target] = new List<string>
                 {
                     name,
                 };
             }
             else
             {
-                _friendsData[traget].Add(name);
+                _friendsData[target].Add(name);
             }
         }
     }

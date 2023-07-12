@@ -1,4 +1,4 @@
-﻿namespace C4M2H1
+﻿namespace FriendRelationshipAnalyzer.Interfaces
 {
     internal interface IRelationshipGraph
     {
