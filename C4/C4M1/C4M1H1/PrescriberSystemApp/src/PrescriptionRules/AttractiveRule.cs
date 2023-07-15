@@ -8,7 +8,7 @@ namespace PrescriberSystemApp.PrescriptionRules
     {
         public override string Name => "Attractive";
 
-        public override IPrescription Prescription => new Attractive();
+        public override Prescription Prescription => new Attractive();
 
         public override List<string> MathSymptom => new List<string> { "Sneeze" };
 

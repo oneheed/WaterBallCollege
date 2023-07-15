@@ -12,9 +12,9 @@ namespace PrescriberSystemApp
 
         public bool IsComplete { get; private set; } = false;
 
-        private IPrescription? _prescription;
+        private Prescription? _prescription;
 
-        public IPrescription? Prescription
+        public Prescription? Prescription
         {
             get
             {

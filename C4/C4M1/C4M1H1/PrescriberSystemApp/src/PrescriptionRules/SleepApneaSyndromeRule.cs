@@ -9,7 +9,7 @@ namespace PrescriberSystemApp.PrescriptionRules
     {
         public override string Name => "SleepApneaSyndrome";
 
-        public override IPrescription Prescription => new SleepApneaSyndrome();
+        public override Prescription Prescription => new SleepApneaSyndrome();
 
         public override List<string> MathSymptom => new List<string> { "Snore" };
 

@@ -58,18 +58,24 @@ namespace PrescriberSystemApp
             }
         }
 
-        private async Task<IPrescription?> Diagnosis(string id, List<string> symptom)
+        private async Task<Prescription?> Diagnosis(string id, List<string> symptom)
 
         {
             var patient = _patientDatabase.Search(id);
-            _patientDatabase.AddCase(id, new Case(symptom));
-            _patientDatabase.SyncDataBase();
 
             if (patient != null)
             {
                 await Task.Delay(3000);
 
-                return _prescriptionRules.FirstOrDefault(r => r.PrescriptionDemand(patient, symptom))?.Prescription;
+                var prescription = _prescriptionRules.FirstOrDefault(r => r.PrescriptionDemand(patient, symptom))?.Prescription;
+
+                if (prescription != null)
+                {
+                    _patientDatabase.AddCase(id, new Case(prescription, symptom));
+                    _patientDatabase.SyncDataBase();
+                }
+
+                return prescription;
             }
 
             return default;

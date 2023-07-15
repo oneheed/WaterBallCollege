@@ -59,7 +59,7 @@ namespace PrescriberSystemApp
                     case FileFormat.CSV:
                         var stringBuilder = new StringBuilder();
 
-                        var properties = typeof(IPrescription).GetProperties();
+                        var properties = typeof(Prescription).GetProperties();
                         var titles = string.Join(",", properties.Select(p => p.Name));
                         stringBuilder.AppendLine(titles);
                         var values = string.Join(",", properties.Select(p => p.GetValue(prescription)?.ToString()));

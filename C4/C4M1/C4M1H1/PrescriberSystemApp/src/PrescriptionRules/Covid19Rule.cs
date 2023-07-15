@@ -9,7 +9,7 @@ namespace PrescriberSystemApp.PrescriptionRules
     {
         public override string Name => "COVID-19";
 
-        public override IPrescription Prescription => new Covid19();
+        public override Prescription Prescription => new Covid19();
 
         public override List<string> MathSymptom => new() { "Sneeze", "Headache", "Cough" };
 
