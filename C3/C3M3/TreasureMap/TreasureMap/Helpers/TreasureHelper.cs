@@ -6,14 +6,10 @@ namespace TreasureMap.Helpers
 {
     internal class TreasureHelper
     {
-        private readonly Dictionary<string, (int Number, Func<Role, State> StateConstructFunc)> _treasureTable;
-
         private readonly IList<Treasure> _treasures = new List<Treasure>();
 
         public TreasureHelper(Dictionary<string, (int Number, Func<Role, State> StateConstructFunc)> treasureTable)
         {
-            this._treasureTable = treasureTable;
-
             foreach (var item in treasureTable)
             {
                 for (var i = 0; i < item.Value.Number; i++)
@@ -27,7 +23,7 @@ namespace TreasureMap.Helpers
         {
             var randomIndex = new Random().Next(_treasures.Count);
 
-            var treasure = _treasures.ElementAt(randomIndex);
+            var treasure = _treasures[randomIndex];
             _treasures.Remove(treasure);
 
             return treasure;

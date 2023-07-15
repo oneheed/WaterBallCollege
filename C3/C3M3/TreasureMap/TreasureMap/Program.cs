@@ -8,7 +8,7 @@ var treasureTable = new Dictionary<string, (int Number, Func<Role, State> StateC
 {
     { "Super Sta", new(10, role => new InvincibleState(role)) },
     { "Poison", new(25, role => new PoisonedState(role)) },
-    { "Accelerating Potion", new(20, role => new PoisonedState(role)) },
+    { "Accelerating Potion", new(20, role => new AcceleratedState(role)) },
     { "Healing Potion", new(15, role => new HealingState(role)) },
     { "Devil Fruit", new(10, role => new OrderlessState(role)) },
     { "King's Rock", new(10, role => new StockpileState(role)) },

@@ -2,7 +2,7 @@
 {
     internal class MapObject
     {
-        public static readonly MapObject Default = new MapObject();
+        public static readonly MapObject Default = new();
 
         public virtual char Symbol { get; } = '\u3000';
 
@@ -15,20 +15,12 @@
 
         public int GetMapIndex()
         {
-            if (this.Map != null)
-            {
-                return this.Map.GetMapIndex(this);
-            }
-
-            return -1;
+            return this.Map != null ? this.Map.GetMapIndex(this) : -1;
         }
 
         public void Death()
         {
-            if (this.Map != null)
-            {
-                this.Map.RemoveMapObject(this);
-            }
+            this.Map?.RemoveMapObject(this);
         }
     }
 }

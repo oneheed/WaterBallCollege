@@ -15,7 +15,7 @@ namespace TreasureMap.Models
 
         private readonly Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> _initMapObjects;
 
-        private readonly Dictionary<Type, List<MapObject>> _roleMapObjects = new Dictionary<Type, List<MapObject>>();
+        private readonly Dictionary<Type, List<MapObject>> _roleMapObjects = new();
 
         private readonly MapObject[] _mapObjects;
 
@@ -99,7 +99,7 @@ namespace TreasureMap.Models
 
         public void CharacterRound()
         {
-            var character = (Character)_roleMapObjects[typeof(Character)].First();
+            var character = (Character)_roleMapObjects[typeof(Character)][0];
             character.ActionNumber++;
             character.Action();
 
@@ -131,8 +131,9 @@ namespace TreasureMap.Models
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -159,8 +160,9 @@ namespace TreasureMap.Models
                     {
                         Console.WriteLine(ex.Message);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Console.WriteLine(ex.Message);
                     }
                 }
 
@@ -226,7 +228,7 @@ namespace TreasureMap.Models
 
             if (index >= this.Size || index < 0)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(locationOffset), "Can't get mapObject");
             }
 
             return index;
