@@ -4,7 +4,7 @@
     {
         public static readonly MapObject Default = new();
 
-        public virtual char Symbol { get; } = '\u3000';
+        public virtual char Symbol { get; } = ' ';
 
         public Map? Map { get; private set; }
 
@@ -16,11 +16,6 @@
         public int GetMapIndex()
         {
             return this.Map != null ? this.Map.GetMapIndex(this) : -1;
-        }
-
-        public void Death()
-        {
-            this.Map?.RemoveMapObject(this);
         }
     }
 }

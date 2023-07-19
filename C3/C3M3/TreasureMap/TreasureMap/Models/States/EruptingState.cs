@@ -14,8 +14,6 @@ namespace TreasureMap.Models.States
         internal override void DoState()
         {
             this._role.SetAttackStrategy(new AllAttackStrategy(this._role));
-
-            base.DoState();
         }
     }
 }

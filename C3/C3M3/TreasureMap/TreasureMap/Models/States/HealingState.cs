@@ -18,10 +18,6 @@ namespace TreasureMap.Models.States
             {
                 Finished();
             }
-            else
-            {
-                base.DoState();
-            }
         }
     }
 }

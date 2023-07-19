@@ -5,7 +5,7 @@ namespace TreasureMap.Models
 {
     internal class Treasure : MapObject
     {
-        public override char Symbol => '〤';
+        public override char Symbol => 'x';
 
         public string Name { get; private set; }
 
@@ -19,7 +19,7 @@ namespace TreasureMap.Models
 
         public State Touched(Role role)
         {
-            this.Death();
+            this.Map?.RemoveMapObject(this);
 
             return this.StateFunc(role);
         }

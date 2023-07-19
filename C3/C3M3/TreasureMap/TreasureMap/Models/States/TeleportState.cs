@@ -15,8 +15,6 @@ namespace TreasureMap.Models.States
         {
             this._role.SetMoveStrategy(new RandomMoveStrategy(this._role));
             this._role.Move(Enums.Direction.Up);
-
-            base.DoState();
         }
     }
 }

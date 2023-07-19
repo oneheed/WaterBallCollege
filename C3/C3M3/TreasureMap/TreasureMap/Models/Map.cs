@@ -1,11 +1,11 @@
-﻿using TreasureMap.Enums;
-using TreasureMap.Models.Roles;
+﻿using TreasureMap.Models.Roles;
+using TreasureMap.Models.States;
 
 namespace TreasureMap.Models
 {
     internal class Map
     {
-        public int Round { get; private set; } = 0;
+        public GameApp GameApp { get; private set; }
 
         public int Width { get; private set; }
 
@@ -15,26 +15,25 @@ namespace TreasureMap.Models
 
         private readonly Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> _initMapObjects;
 
-        private readonly Dictionary<Type, List<MapObject>> _roleMapObjects = new();
+        public Dictionary<Type, List<MapObject>> RoleMapObjects { get; } = new();
 
         private readonly MapObject[] _mapObjects;
 
-        public Map(int width, int height, Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> initMapObjects)
+        public Map(int width, int height, GameApp gameApp, Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)> initMapObjects)
         {
             this.Width = width;
             this.Height = height;
+            this.GameApp = gameApp;
 
             this._initMapObjects = initMapObjects;
             this._mapObjects = Enumerable.Range(0, this.Size).Select(m => MapObject.Default).ToArray();
-
-            InitMap();
         }
 
         public void InitMap()
         {
             foreach (var item in this._initMapObjects)
             {
-                this._roleMapObjects.Add(item.Key, new List<MapObject>());
+                this.RoleMapObjects.Add(item.Key, new List<MapObject>());
 
                 for (var i = 0; i < item.Value.Number; i++)
                 {
@@ -44,11 +43,11 @@ namespace TreasureMap.Models
                     {
                         this._mapObjects[randomIndex] = item.Value.ConstructFunc();
                         this._mapObjects[randomIndex].SetMap(this);
-                        this._roleMapObjects[item.Key].Add(this._mapObjects[randomIndex]);
+                        this.RoleMapObjects[item.Key].Add(this._mapObjects[randomIndex]);
 
                         if (this._mapObjects[randomIndex] is Character character)
                         {
-                            //character.EnterState(new InvincibleState(character));
+                            character.EnterState(new TeleportState(character));
                         }
                     }
                     else
@@ -61,10 +60,10 @@ namespace TreasureMap.Models
 
         public void PrintMap()
         {
-            var bound = string.Join("\u3000", Enumerable.Range(0, this.Width).Select(x => "—"));
+            var bound = string.Join(" ", Enumerable.Range(0, this.Width).Select(x => "-"));
 
-            Console.WriteLine($"Round {this.Round}");
-            Console.WriteLine($"\u3000{bound}\u3000");
+            Console.WriteLine($"Round {this.GameApp.Round}");
+            Console.WriteLine($" {bound} ");
 
             for (var i = 0; i < this._mapObjects.Length; i++)
             {
@@ -73,108 +72,17 @@ namespace TreasureMap.Models
 
                 if ((i + 1) % this.Width == 1)
                 {
-                    Console.Write("｜");
+                    Console.Write($"|");
                 }
 
-                Console.Write($"{symbol}｜");
+                Console.Write($"{symbol}|");
 
                 if ((i + 1) % this.Width == 0)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"\u3000{bound}\u3000");
+                    Console.WriteLine($" {bound} ");
                 }
             }
-        }
-
-        public void Start()
-        {
-            while (!this.GameOver())
-            {
-                this.Round++;
-
-                this.CharacterRound();
-                this.MonsterRound();
-            }
-        }
-
-        public void CharacterRound()
-        {
-            var character = (Character)_roleMapObjects[typeof(Character)][0];
-            character.ActionNumber++;
-            character.Action();
-
-            while (character.IsAction)
-            {
-                var keyInfo = Console.ReadKey();
-                var key = keyInfo.Key;
-                Console.WriteLine();
-
-                Console.WriteLine($"HP: {character.HP} State: {character.State.GetType().Name}");
-                try
-                {
-                    if (key == ConsoleKey.UpArrow ||
-                        key == ConsoleKey.DownArrow ||
-                        key == ConsoleKey.LeftArrow ||
-                        key == ConsoleKey.RightArrow)
-                    {
-                        character.Move(MapDirection(key));
-                    }
-                    else if (key == ConsoleKey.A)
-                    {
-                        character.Attack();
-                    }
-
-                    character.ActionNumber--;
-                    PrintMap();
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-            character.Do();
-        }
-
-        public void MonsterRound()
-        {
-            var monsters = _roleMapObjects[typeof(Monster)];
-
-            foreach (var monster in monsters.Select(m => (Monster)m).ToList())
-            {
-                monster.ActionNumber++;
-                monster.Action();
-
-                while (monster.IsAction)
-                {
-                    try
-                    {
-                        monster.DoAction();
-                        monster.ActionNumber--;
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-
-                monster.Do();
-            }
-
-            //PrintMap();
-        }
-
-        private bool GameOver()
-        {
-            return this._roleMapObjects[typeof(Character)].Count == 0 || this._roleMapObjects[typeof(Monster)].Count == 0;
         }
 
         public MapObject GetMapObjectByIndex(int index)
@@ -184,7 +92,7 @@ namespace TreasureMap.Models
 
         public IEnumerable<MapObject> GetMapObjectsByType(Type type)
         {
-            return _roleMapObjects.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
+            return RoleMapObjects.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
         }
 
         public void RemoveMapObject(MapObject mapObject)
@@ -192,7 +100,7 @@ namespace TreasureMap.Models
             var index = this.GetMapIndex(mapObject);
 
             this._mapObjects[index] = MapObject.Default;
-            this._roleMapObjects[mapObject.GetType()].Remove(mapObject);
+            this.RoleMapObjects[mapObject.GetType()].Remove(mapObject);
         }
 
         public void MoveMapObjectByIndex(MapObject mapObject, int index)
@@ -204,7 +112,6 @@ namespace TreasureMap.Models
             if (mapObject is Role role &&
                 toMapObject is Treasure treasure)
             {
-                Console.WriteLine($"Get {treasure.Name}");
                 role.Touch(treasure);
             }
             else if (toMapObject == MapObject.Default)
@@ -250,23 +157,6 @@ namespace TreasureMap.Models
             var rightBoundIndex = (heightIndex + 1) * this.Width - 1;
 
             return (upBoundIndex, downBoundIndex, leftBoundIndex, rightBoundIndex);
-        }
-
-        private Direction MapDirection(ConsoleKey consoleKey)
-        {
-            switch (consoleKey)
-            {
-                case ConsoleKey.UpArrow:
-                    return Direction.Up;
-                case ConsoleKey.DownArrow:
-                    return Direction.Down;
-                case ConsoleKey.LeftArrow:
-                    return Direction.Left;
-                case ConsoleKey.RightArrow:
-                    return Direction.Right;
-                default:
-                    return Direction.Up;
-            }
         }
     }
 }

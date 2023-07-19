@@ -14,7 +14,7 @@ namespace TreasureMap.Models.States
         internal override void EnterState()
         {
             var random = new Random().Next(2);
-            MoveStrategy moveStrategy = random == 0 ? new OnlyUpAndDownMoveStrategy(this._role) : new OnlyRightAndLeftMoveStrategy(this._role);
+            var moveStrategy = (MoveStrategy)(random == 0 ? new OnlyUpAndDownMoveStrategy(this._role) : new OnlyRightAndLeftMoveStrategy(this._role));
 
             this._role.SetMoveStrategy(moveStrategy);
         }

@@ -13,8 +13,6 @@ namespace TreasureMap.Models.States
         internal override void DoState()
         {
             _role.Damage(15);
-
-            base.DoState();
         }
     }
 }

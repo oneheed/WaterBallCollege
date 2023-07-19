@@ -23,14 +23,19 @@ namespace TreasureMap.Models.States
         {
         }
 
-        internal virtual void DoState()
+        internal void Do()
         {
-            ReduceTimeLimit();
-
             if (_timeLimit <= 0)
             {
                 Finished();
             }
+
+            DoState();
+            ReduceTimeLimit();
+        }
+
+        internal virtual void DoState()
+        {
         }
 
         internal virtual void ExitState()

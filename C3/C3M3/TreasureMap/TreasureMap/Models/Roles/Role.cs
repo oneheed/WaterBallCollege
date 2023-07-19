@@ -17,9 +17,9 @@ namespace TreasureMap.Models.Roles
 
         public State State { get; protected set; }
 
-        protected AttackStrategy _attackStrategy;
+        protected AttackStrategy? _attackStrategy;
 
-        protected MoveStrategy _moveStrategy;
+        protected MoveStrategy? _moveStrategy;
 
         protected Role() : base()
         {
@@ -55,7 +55,7 @@ namespace TreasureMap.Models.Roles
 
         public void Do()
         {
-            State.DoState();
+            State.Do();
         }
 
         public void Damage(int number)
@@ -83,9 +83,15 @@ namespace TreasureMap.Models.Roles
             return HP >= InitHP;
         }
 
+        public abstract void Move(Direction direction = Direction.None);
+
         public abstract void Attack();
 
-        public abstract void Move(Direction direction = Direction.None);
+
+        public void Death()
+        {
+            this.Map?.RemoveMapObject(this);
+        }
 
         public void Touch(Treasure treasure)
         {
