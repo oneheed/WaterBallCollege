@@ -16,13 +16,13 @@ using C3BOSS_RPG.Skills;
 //enemy.Join(new Role(500, 0, 0, "Slime1", new List<Skill> { }));
 
 // curse
-//var ally = new Troop("軍隊-1", new List<Role>());
-//ally.Join(new Hero(300, 10000, 100, "英雄", new List<Skill> { new Curse() }));
-//ally.Join(new Role(600, 100, 30, "Ally", new List<Skill> { new Curse(), new Curse() }));
+var ally = new Troop("軍隊-1", new List<Role>());
+ally.Join(new Hero(300, 10000, 100, "英雄", new List<Skill> { new Curse() }));
+ally.Join(new Role(600, 100, 30, "Ally", new List<Skill> { new Curse(), new Curse() }));
 
-//var enemy = new Troop("軍隊-2", new List<Role>());
-//enemy.Join(new Role(200, 999, 50, "Slime1", new List<Skill> { }));
-//enemy.Join(new Role(200, 999, 100, "Slime2", new List<Skill> { }));
+var enemy = new Troop("軍隊-2", new List<Role>());
+enemy.Join(new Role(200, 999, 50, "Slime1", new List<Skill> { }));
+enemy.Join(new Role(200, 999, 100, "Slime2", new List<Skill> { }));
 
 // only-basic-attack
 //var ally = new Troop("軍隊-1", new List<Role>());
@@ -90,12 +90,12 @@ using C3BOSS_RPG.Skills;
 
 
 // waterball-and-fireball-1v2
-var ally = new Troop("軍隊-1", new List<Role>());
-ally.Join(new Hero(300, 500, 100, "英雄", new List<Skill> { new Fireball(), new Waterball() }));
+//var ally = new Troop("軍隊-1", new List<Role>());
+//ally.Join(new Hero(300, 500, 100, "英雄", new List<Skill> { new Fireball(), new Waterball() }));
 
-var enemy = new Troop("軍隊-2", new List<Role>());
-enemy.Join(new Role(200, 60, 49, "Slime1", new List<Skill> { new Fireball() }));
-enemy.Join(new Role(200, 200, 50, "Slime2", new List<Skill> { new Fireball(), new Waterball() }));
+//var enemy = new Troop("軍隊-2", new List<Role>());
+//enemy.Join(new Role(200, 60, 49, "Slime1", new List<Skill> { new Fireball() }));
+//enemy.Join(new Role(200, 200, 50, "Slime2", new List<Skill> { new Fireball(), new Waterball() }));
 
 var troops = new Troop[2]
 {

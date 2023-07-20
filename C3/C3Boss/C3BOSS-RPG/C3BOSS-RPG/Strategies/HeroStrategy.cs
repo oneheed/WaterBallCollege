@@ -21,18 +21,19 @@ namespace C3BOSS_RPG.Strategies
         //    "0",
         //};
 
-        //private List<string> changeAction = new List<string>
-        //{
-        //    "1",
-        //    "1",
-        //    "0",
-        //    "0",
-        //    "0",
-        //    "1",
-        //    "0",
-        //    "1",
-        //    "0",
-        //};
+        // curse
+        private List<string> changeAction = new List<string>
+        {
+            "1",
+            "1",
+            "0",
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+        };
 
         // only-basic-attack
         //private List<string> changeAction = new List<string>
@@ -117,16 +118,16 @@ namespace C3BOSS_RPG.Strategies
         //};
 
         // waterball-and-fireball-1v2
-        private List<string> changeAction = new List<string>
-        {
-            "1",
-            "2",
-            "1",
-            "2",
-            "1",
-            "2",
-            "1",
-        };
+        //private List<string> changeAction = new List<string>
+        //{
+        //    "1",
+        //    "2",
+        //    "1",
+        //    "2",
+        //    "1",
+        //    "2",
+        //    "1",
+        //};
 
         internal override Skill ChangeAction()
         {

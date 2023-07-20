@@ -4,11 +4,11 @@ namespace C3BOSS_RPG.Strategies
 {
     internal abstract class DeadStrategy
     {
-        protected Role _caster;
+        protected List<Role> _caster = new List<Role>();
 
         protected DeadStrategy(Role caster)
         {
-            this._caster = caster;
+            this._caster.Add(caster);
         }
 
         internal abstract void Execute(Role self);
@@ -22,9 +22,9 @@ namespace C3BOSS_RPG.Strategies
 
         internal override void Execute(Role self)
         {
-            if (this._caster.Alive())
+            foreach (Role role in _caster.Where(c => c.Alive()))
             {
-                this._caster.Healing(self.MP);
+                role.Healing(self.MP);
             }
         }
     }
@@ -37,9 +37,9 @@ namespace C3BOSS_RPG.Strategies
 
         internal override void Execute(Role self)
         {
-            if (this._caster.Alive())
+            foreach (Role role in _caster.Where(c => c.Alive()))
             {
-                this._caster.Healing(30);
+                role.Healing(30);
             }
         }
     }
