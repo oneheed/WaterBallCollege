@@ -10,6 +10,8 @@ namespace TreasureMap.Strategies.Attack
         {
         }
 
+        public override string Name => "直線攻擊";
+
         public override void Attack(Direction direction = Direction.None)
         {
             var map = _attacker.Map;

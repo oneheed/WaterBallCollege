@@ -15,11 +15,11 @@ namespace TreasureMap.Models.Roles
 
         public int ActionNumber { get; set; }
 
-        public State State { get; protected set; }
+        public State State { get; private set; }
 
-        protected AttackStrategy? _attackStrategy;
+        public AttackStrategy? AttackStrategy { get; private set; }
 
-        protected MoveStrategy? _moveStrategy;
+        public MoveStrategy? MoveStrategy { get; private set; }
 
         protected Role() : base()
         {
@@ -29,12 +29,12 @@ namespace TreasureMap.Models.Roles
 
         public void SetAttackStrategy(AttackStrategy attackStrategy)
         {
-            this._attackStrategy = attackStrategy;
+            this.AttackStrategy = attackStrategy;
         }
 
         public void SetMoveStrategy(MoveStrategy moveStrategy)
         {
-            this._moveStrategy = moveStrategy;
+            this.MoveStrategy = moveStrategy;
         }
 
         public abstract void ResetDefaultStrategy();

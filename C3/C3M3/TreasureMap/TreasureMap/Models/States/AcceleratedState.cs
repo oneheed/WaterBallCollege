@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal class AcceleratedState : State
     {
+        public override string Name => "加速";
+
         internal AcceleratedState(Role role) : base(role)
         {
             _timeLimit = 3;

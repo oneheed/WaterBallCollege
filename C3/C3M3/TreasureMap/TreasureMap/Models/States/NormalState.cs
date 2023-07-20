@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal class NormalState : State
     {
+        public override string Name => "正常";
+
         internal NormalState(Role role) : base(role)
         {
         }

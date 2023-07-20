@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal class HealingState : State
     {
+        public override string Name => "恢復";
+
         internal HealingState(Role role) : base(role)
         {
             _timeLimit = 5;

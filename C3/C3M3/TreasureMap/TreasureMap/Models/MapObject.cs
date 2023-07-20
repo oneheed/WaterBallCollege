@@ -6,6 +6,8 @@
 
         public virtual char Symbol { get; } = ' ';
 
+        public virtual ConsoleColor Color { get; } = ConsoleColor.White;
+
         public Map? Map { get; private set; }
 
         public void SetMap(Map map)

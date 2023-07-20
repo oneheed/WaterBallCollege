@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal class InvincibleState : State
     {
+        public override string Name => "無敵";
+
         internal InvincibleState(Role role) : base(role)
         {
             _timeLimit = 2;

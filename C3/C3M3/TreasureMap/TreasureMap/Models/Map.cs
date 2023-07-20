@@ -47,7 +47,7 @@ namespace TreasureMap.Models
 
                         if (this._mapObjects[randomIndex] is Character character)
                         {
-                            character.EnterState(new TeleportState(character));
+                            character.EnterState(new StockpileState(character));
                         }
                     }
                     else
@@ -69,13 +69,17 @@ namespace TreasureMap.Models
             {
                 var mapObject = this._mapObjects[i];
                 var symbol = mapObject.Symbol.ToString();
+                var color = mapObject.Color;
 
                 if ((i + 1) % this.Width == 1)
                 {
                     Console.Write($"|");
                 }
 
-                Console.Write($"{symbol}|");
+                Console.ForegroundColor = color;
+                Console.Write($"{symbol}");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"|");
 
                 if ((i + 1) % this.Width == 0)
                 {

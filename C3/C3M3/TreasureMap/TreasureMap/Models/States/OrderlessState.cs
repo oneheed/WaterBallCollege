@@ -5,6 +5,8 @@ namespace TreasureMap.Models.States
 {
     internal class OrderlessState : State
     {
+        public override string Name => "混亂";
+
         internal OrderlessState(Role role) : base(role)
         {
             _timeLimit = 3;

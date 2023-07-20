@@ -5,6 +5,8 @@ namespace TreasureMap.Models.States
 {
     internal class TeleportState : State
     {
+        public override string Name => "瞬身";
+
         internal TeleportState(Role role) : base(role)
         {
             _timeLimit = 1;

@@ -5,6 +5,8 @@ namespace TreasureMap.Strategies.Attack
 {
     internal abstract class AttackStrategy
     {
+        public abstract string Name { get; }
+
         protected Role _attacker;
 
         protected AttackStrategy(Role attacker)

@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal abstract class State
     {
+        public abstract string Name { get; }
+
         protected int _timeLimit;
 
         protected State? _finishedState;
@@ -29,9 +31,11 @@ namespace TreasureMap.Models.States
             {
                 Finished();
             }
-
-            DoState();
-            ReduceTimeLimit();
+            else
+            {
+                DoState();
+                ReduceTimeLimit();
+            }
         }
 
         internal virtual void DoState()

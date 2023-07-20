@@ -6,6 +6,14 @@ namespace TreasureMap.Models.Roles
 {
     internal class Character : Role
     {
+        public override char Symbol => _characterDic[_direction];
+
+        public override ConsoleColor Color => ConsoleColor.DarkCyan;
+
+        protected sealed override int InitHP { get; } = 300;
+
+        private Direction _direction = Direction.Up;
+
         private static readonly Dictionary<Direction, char> _characterDic = new Dictionary<Direction, char>
         {
             { Direction.Up, '↑' },
@@ -13,13 +21,6 @@ namespace TreasureMap.Models.Roles
             { Direction.Left, '←' },
             { Direction.Right, '→' },
         };
-
-        public override char Symbol => _characterDic[_direction];
-
-        protected sealed override int InitHP { get; } = 300;
-
-        private Direction _direction = Direction.Up;
-
 
         public Character() : base()
         {
@@ -34,12 +35,12 @@ namespace TreasureMap.Models.Roles
 
         public override void Attack()
         {
-            this._attackStrategy.Attack(this._direction);
+            this.AttackStrategy.Attack(this._direction);
         }
 
         public override void Move(Direction direction = Direction.None)
         {
-            this._moveStrategy.Move(direction);
+            this.MoveStrategy.Move(direction);
             this._direction = direction;
         }
     }

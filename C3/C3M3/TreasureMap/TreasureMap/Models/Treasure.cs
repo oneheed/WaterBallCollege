@@ -7,6 +7,8 @@ namespace TreasureMap.Models
     {
         public override char Symbol => 'x';
 
+        public override ConsoleColor Color => ConsoleColor.DarkYellow;
+
         public string Name { get; private set; }
 
         public Func<Role, State> StateFunc { get; private set; }

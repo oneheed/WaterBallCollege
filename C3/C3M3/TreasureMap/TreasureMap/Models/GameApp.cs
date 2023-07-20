@@ -34,8 +34,9 @@ namespace TreasureMap.Models
             var character = (Character)this.Map.RoleMapObjects[typeof(Character)][0];
             character.ActionNumber++;
             character.Action();
+            character.Do();
 
-            Console.WriteLine($"HP: {character.HP} State: {character.State.GetType().Name}");
+            Console.WriteLine($"HP: {character.HP} State: {character.State.Name} Attack: {character.AttackStrategy?.Name}");
             Console.WriteLine();
 
             while (character.IsAction)
@@ -68,8 +69,6 @@ namespace TreasureMap.Models
                     Console.WriteLine(ex.Message);
                 }
             }
-
-            character.Do();
         }
 
         public void MonsterRound()
@@ -80,6 +79,7 @@ namespace TreasureMap.Models
             {
                 monster.ActionNumber++;
                 monster.Action();
+                monster.Do();
 
                 while (monster.IsAction)
                 {
@@ -97,15 +97,14 @@ namespace TreasureMap.Models
                         Console.WriteLine(ex.Message);
                     }
                 }
-
-                monster.Do();
             }
-
-            //PrintMap();
         }
 
         private bool GameOver()
         {
+            Console.WriteLine();
+            Console.WriteLine("Game Finish");
+
             return this.Map.RoleMapObjects[typeof(Character)].Count == 0 || this.Map.RoleMapObjects[typeof(Monster)].Count == 0;
         }
 

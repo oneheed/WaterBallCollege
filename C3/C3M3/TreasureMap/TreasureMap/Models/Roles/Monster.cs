@@ -9,6 +9,8 @@ namespace TreasureMap.Models.Roles
     {
         public override char Symbol => 'Μ';
 
+        public override ConsoleColor Color => ConsoleColor.Red;
+
         protected sealed override int InitHP { get; } = 1;
 
         public Monster() : base()
@@ -24,12 +26,12 @@ namespace TreasureMap.Models.Roles
 
         public override void Attack()
         {
-            this._attackStrategy.Attack();
+            this.AttackStrategy.Attack();
         }
 
         public override void Move(Direction direction = Direction.None)
         {
-            this._moveStrategy.Move(direction);
+            this.MoveStrategy.Move(direction);
         }
 
         public void DoAction()
@@ -52,7 +54,7 @@ namespace TreasureMap.Models.Roles
 
                 if (attackDirections.TryGetValue(characterIndex, out Direction attackDirection))
                 {
-                    this._attackStrategy.Attack(attackDirection);
+                    this.AttackStrategy.Attack(attackDirection);
 
                     if (character.State.GetType() != typeof(InvincibleState))
                     {
@@ -68,12 +70,12 @@ namespace TreasureMap.Models.Roles
                     if (yOffset != 0 && stateType != typeof(OrderlessState))
                     {
                         var direction = yOffset > 0 ? Direction.Down : Direction.Up;
-                        this._moveStrategy.Move(direction);
+                        this.MoveStrategy.Move(direction);
                     }
                     else if (stateType != typeof(OrderlessState))
                     {
                         var direction = xOffset > 0 ? Direction.Right : Direction.Left;
-                        this._moveStrategy.Move(direction);
+                        this.MoveStrategy.Move(direction);
                     }
                 }
             }

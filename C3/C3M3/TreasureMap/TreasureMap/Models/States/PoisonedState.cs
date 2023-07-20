@@ -4,6 +4,8 @@ namespace TreasureMap.Models.States
 {
     internal class PoisonedState : State
     {
+        public override string Name => "中毒";
+
         internal PoisonedState(Role role) : base(role)
         {
             _timeLimit = 3;
