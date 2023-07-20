@@ -20,7 +20,7 @@ namespace TreasureMap.Models.States
 
         internal override void ExitState()
         {
-            this._role.SetAttackStrategy(new StraightLineAttackStrategy(this._role));
+            this._role.ResetDefaultStrategy();
         }
     }
 }

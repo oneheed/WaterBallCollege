@@ -11,7 +11,7 @@ namespace TreasureMap.Models.Roles
 
         public int HP { get; private set; }
 
-        public bool IsAction => this.ActionNumber > 0;
+        public bool IsAction => this.ActionNumber > 0 && this.HP > 0;
 
         public int ActionNumber { get; set; }
 

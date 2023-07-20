@@ -1,5 +1,4 @@
 ﻿using TreasureMap.Models.Roles;
-using TreasureMap.Models.States;
 
 namespace TreasureMap.Models
 {
@@ -47,7 +46,12 @@ namespace TreasureMap.Models
 
                         if (this._mapObjects[randomIndex] is Character character)
                         {
-                            character.EnterState(new StockpileState(character));
+                            //character.EnterState(new StockpileState(character));
+                        }
+
+                        if (this._mapObjects[randomIndex] is Monster monster)
+                        {
+                            //monster.EnterState(new PoisonedState(monster));
                         }
                     }
                     else

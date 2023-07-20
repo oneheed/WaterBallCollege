@@ -18,7 +18,7 @@ var treasureTable = new Dictionary<string, (int Number, Func<Role, State> StateC
 var mapObjectTable = new Dictionary<Type, (int Number, Func<MapObject> ConstructFunc)>
 {
     { typeof(Character), new(1, () => new Character()) },
-    { typeof(Monster), new(1, () => new Monster()) },
+    { typeof(Monster), new(2, () => new Monster()) },
     { typeof(Obstacle), new(10, () => new Obstacle()) },
     { typeof(Treasure), new(15, () => new TreasureHelper(treasureTable).GenerateTreasure()) },
 };
