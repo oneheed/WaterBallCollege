@@ -13,15 +13,15 @@ namespace TreasureMap.Strategies.Attack
 
         public override void Attack(Direction direction = Direction.None)
         {
-            var map = _attacker.Map;
+            var map = _attacker.Map!;
             var fromIndex = _attacker.GetMapIndex();
-            var offestDirections = new[] { Direction.Up, Direction.Left };
+            var offsetDirections = new[] { Direction.Up, Direction.Left };
             var xDirections = new[] { Direction.Left, Direction.Right };
-            var offest = offestDirections.Contains(direction) ? -1 : 1;
+            var offset = offsetDirections.Contains(direction) ? -1 : 1;
 
             if (xDirections.Contains(direction))
             {
-                var toIndex = fromIndex + offest;
+                var toIndex = fromIndex + offset;
 
                 if (map.GetMapObjectByIndex(toIndex) is Role role)
                 {
@@ -30,7 +30,7 @@ namespace TreasureMap.Strategies.Attack
             }
             else
             {
-                var toIndex = fromIndex + offest * map.Width;
+                var toIndex = fromIndex + offset * map.Width;
                 if (map.GetMapObjectByIndex(toIndex) is Role role)
                 {
                     role.Damage(50);

@@ -36,10 +36,10 @@ namespace TreasureMap.Models.Roles
 
         public override void DoAction()
         {
-            var map = this.Map;
-            var character = (Character)map.GetMapObjectsByType(typeof(Character)).FirstOrDefault();
+            var map = this.Map!;
+            var role = map.GetMapObjectsByType(typeof(Character)).FirstOrDefault();
 
-            if (character != null)
+            if (role is Character character)
             {
                 var fromIndex = this.GetMapIndex();
                 var characterIndex = character.GetMapIndex();

@@ -12,7 +12,7 @@ namespace TreasureMap.Strategies.Move
 
         public override void Move(Direction direction)
         {
-            var map = this._mover.Map;
+            var map = this._mover.Map!;
             var random = new Random();
             var success = false;
             var toIndex = -1;

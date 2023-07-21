@@ -11,7 +11,7 @@ namespace TreasureMap.Strategies.Move
 
         public override void Move(Direction direction)
         {
-            var map = this._mover.Map;
+            var map = this._mover.Map!;
 
             (int Start, int End) bound;
 
@@ -23,8 +23,8 @@ namespace TreasureMap.Strategies.Move
                 throw new ArgumentException("Only Up And Down Move");
             }
 
-            var offest = direction == Direction.Up ? -1 : 1;
-            toIndex = map.GetMapIndexByOffset(this._mover, (0, offest));
+            var offset = direction == Direction.Up ? -1 : 1;
+            toIndex = map.GetMapIndexByOffset(this._mover, (0, offset));
 
             bound = (boundData.UpBoundIndex, boundData.DownBoundIndex);
 

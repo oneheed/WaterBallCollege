@@ -14,25 +14,24 @@ namespace TreasureMap.Strategies.Attack
 
         public override void Attack(Direction direction = Direction.None)
         {
-            var map = _attacker.Map;
+            var map = _attacker.Map!;
             var fromIndex = _attacker.GetMapIndex();
-            var offestDirections = new[] { Direction.Up, Direction.Left };
+            var offsetDirections = new[] { Direction.Up, Direction.Left };
             var xDirections = new[] { Direction.Left, Direction.Right };
-            var offest = offestDirections.Contains(direction) ? -1 : 1;
+            var offset = offsetDirections.Contains(direction) ? -1 : 1;
 
             if (xDirections.Contains(direction))
             {
                 // X
                 var startIndex = (fromIndex % map.Width);
-                var endIndex = offest > 0 ? (map.Width - 1) : 0;
-                var length = Math.Abs(startIndex - endIndex);
+                var endIndex = offset > 0 ? (map.Width - 1) : 0;
 
                 var toIndex = fromIndex;
                 while (startIndex != endIndex)
                 {
-                    toIndex += offest;
+                    toIndex += offset;
 
-                    startIndex += offest;
+                    startIndex += offset;
 
                     if (map.GetMapObjectByIndex(toIndex) is Obstacle)
                     {
@@ -48,15 +47,14 @@ namespace TreasureMap.Strategies.Attack
             {
                 // Y
                 var startIndex = (fromIndex / map.Width);
-                var endIndex = offest > 0 ? (map.Height - 1) : 0;
-                var length = Math.Abs(startIndex - endIndex);
+                var endIndex = offset > 0 ? (map.Height - 1) : 0;
 
                 var toIndex = fromIndex;
                 while (startIndex != endIndex)
                 {
-                    toIndex += (offest * map.Width);
+                    toIndex += (offset * map.Width);
 
-                    startIndex += offest;
+                    startIndex += offset;
 
                     if (map.GetMapObjectByIndex(toIndex) is Obstacle)
                     {

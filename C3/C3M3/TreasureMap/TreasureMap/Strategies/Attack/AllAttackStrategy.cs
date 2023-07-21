@@ -13,7 +13,7 @@ namespace TreasureMap.Strategies.Attack
 
         public override void Attack(Direction direction = Direction.None)
         {
-            var map = _attacker.Map;
+            var map = _attacker.Map!;
             var monsters = map.GetMapObjectsByType(typeof(Monster));
 
             foreach (var mapObject in monsters.ToList())

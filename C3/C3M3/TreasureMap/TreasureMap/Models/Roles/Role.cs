@@ -17,14 +17,16 @@ namespace TreasureMap.Models.Roles
 
         public State State { get; private set; }
 
-        public AttackStrategy? AttackStrategy { get; private set; }
+        public AttackStrategy AttackStrategy { get; private set; }
 
-        public MoveStrategy? MoveStrategy { get; private set; }
+        public MoveStrategy MoveStrategy { get; private set; }
 
         protected Role() : base()
         {
             HP = InitHP;
             State = new NormalState(this);
+            AttackStrategy = new NormalAttackStrategy(this);
+            MoveStrategy = new NormalMoveStrategy(this);
         }
 
         public void SetAttackStrategy(AttackStrategy attackStrategy)

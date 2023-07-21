@@ -100,7 +100,7 @@ namespace TreasureMap.Models
 
         public IEnumerable<MapObject> GetMapObjectsByType(Type type)
         {
-            return RoleMapObjects.TryGetValue(type, out List<MapObject> mapObjects) ? mapObjects : new List<MapObject>();
+            return RoleMapObjects.TryGetValue(type, out var mapObjects) ? mapObjects : new List<MapObject>();
         }
 
         public void RemoveMapObject(MapObject mapObject)

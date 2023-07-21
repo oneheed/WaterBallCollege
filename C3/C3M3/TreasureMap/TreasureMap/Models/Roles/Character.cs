@@ -14,7 +14,7 @@ namespace TreasureMap.Models.Roles
 
         private Direction _direction = Direction.Up;
 
-        private static readonly Dictionary<Direction, char> _characterDic = new Dictionary<Direction, char>
+        private static readonly Dictionary<Direction, char> _characterDic = new()
         {
             { Direction.Up, '↑' },
             { Direction.Down, '↓' },
@@ -64,19 +64,14 @@ namespace TreasureMap.Models.Roles
 
         private Direction MapDirection(ConsoleKey consoleKey)
         {
-            switch (consoleKey)
+            return consoleKey switch
             {
-                case ConsoleKey.UpArrow:
-                    return Direction.Up;
-                case ConsoleKey.DownArrow:
-                    return Direction.Down;
-                case ConsoleKey.LeftArrow:
-                    return Direction.Left;
-                case ConsoleKey.RightArrow:
-                    return Direction.Right;
-                default:
-                    return Direction.Up;
-            }
+                ConsoleKey.UpArrow => Direction.Up,
+                ConsoleKey.DownArrow => Direction.Down,
+                ConsoleKey.LeftArrow => Direction.Left,
+                ConsoleKey.RightArrow => Direction.Right,
+                _ => Direction.Up,
+            };
         }
     }
 }
