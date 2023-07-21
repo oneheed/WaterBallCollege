@@ -4,11 +4,11 @@ using NGenerics.Patterns.Visitor;
 
 namespace FriendRelationshipAnalyzer.Models
 {
-    internal class RelationshipGraph : IRelationshipGraph
+    internal class RelationshipGraphAdapter : IRelationshipGraph
     {
         private readonly Graph<string> _graph = new(false);
 
-        public RelationshipGraph(string script)
+        public RelationshipGraphAdapter(string script)
         {
             foreach (var item in script.Split("\r\n"))
             {

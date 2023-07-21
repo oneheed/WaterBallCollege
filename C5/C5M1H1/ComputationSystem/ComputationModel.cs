@@ -33,7 +33,7 @@ namespace ComputationSystem
             var targetRowCount = target.GetLength(0);
             var targetColCount = target.GetLength(1);
             var sourceRowCount = _source.GetLength(0);
-            var sourceColCount = _source.GetLength(0);
+            var sourceColCount = _source.GetLength(1);
 
             var result = new double[targetRowCount, sourceColCount];
 

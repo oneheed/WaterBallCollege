@@ -30,7 +30,7 @@ namespace FriendRelationshipAnalyzer
             }
 
             _superRelationshipAnalyzer.Init(string.Join("\r\n", superData));
-            _relationshipGraph = new RelationshipGraph(string.Join("\r\n", superData));
+            _relationshipGraph = new RelationshipGraphAdapter(string.Join("\r\n", superData));
         }
 
         public IEnumerable<string> GetMutualFriends(string name1, string name2)
