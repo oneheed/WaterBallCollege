@@ -34,7 +34,7 @@ namespace TreasureMap.Models.Roles
             this.MoveStrategy.Move(direction);
         }
 
-        public void DoAction()
+        public override void DoAction()
         {
             var map = this.Map;
             var character = (Character)map.GetMapObjectsByType(typeof(Character)).FirstOrDefault();

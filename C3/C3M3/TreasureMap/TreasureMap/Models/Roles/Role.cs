@@ -58,6 +58,8 @@ namespace TreasureMap.Models.Roles
             State.Do();
         }
 
+        public abstract void DoAction();
+
         public void Damage(int number)
         {
             number = State.CalDamage(number);

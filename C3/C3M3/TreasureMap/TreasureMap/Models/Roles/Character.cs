@@ -43,5 +43,40 @@ namespace TreasureMap.Models.Roles
             this.MoveStrategy.Move(direction);
             this._direction = direction;
         }
+
+        public override void DoAction()
+        {
+            var keyInfo = Console.ReadKey();
+            var consoleKey = keyInfo.Key;
+
+            if (consoleKey == ConsoleKey.UpArrow ||
+                consoleKey == ConsoleKey.DownArrow ||
+                consoleKey == ConsoleKey.LeftArrow ||
+                consoleKey == ConsoleKey.RightArrow)
+            {
+                this.Move(MapDirection(consoleKey));
+            }
+            else if (consoleKey == ConsoleKey.A)
+            {
+                this.Attack();
+            }
+        }
+
+        private Direction MapDirection(ConsoleKey consoleKey)
+        {
+            switch (consoleKey)
+            {
+                case ConsoleKey.UpArrow:
+                    return Direction.Up;
+                case ConsoleKey.DownArrow:
+                    return Direction.Down;
+                case ConsoleKey.LeftArrow:
+                    return Direction.Left;
+                case ConsoleKey.RightArrow:
+                    return Direction.Right;
+                default:
+                    return Direction.Up;
+            }
+        }
     }
 }
