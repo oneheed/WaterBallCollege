@@ -2,13 +2,14 @@
 
 using EmployeeDataSheetAccess;
 using EmployeeDataSheetAccess.Interfaces;
+using EmployeeDataSheetAccess.Models;
 using Microsoft.Extensions.Configuration;
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 
-var database = new RealDatabaseProxy(config);
+var database = new RealDatabasePasswordProxy(new RealDatabase(), config);
 var employee = database.GetEmployeeById(4);
 
 List<IEmployee> subordinates = employee.GetSubordinates().ToList();
