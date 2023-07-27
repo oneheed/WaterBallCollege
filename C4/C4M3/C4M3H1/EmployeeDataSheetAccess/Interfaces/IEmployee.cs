@@ -2,14 +2,14 @@
 {
     internal interface IEmployee
     {
-        int Id { get; set; }
+        int Id { get; }
 
-        string Name { get; set; }
+        string Name { get; }
 
-        int Age { get; set; }
+        int Age { get; }
 
-        IEnumerable<int> SubordinateIds { get; set; }
+        IEnumerable<int> SubordinateIds { get; }
 
-        IEnumerable<IEmployee> GetSubordinates();
+        IEnumerable<IEmployee> Subordinates { get; set; }
     }
 }

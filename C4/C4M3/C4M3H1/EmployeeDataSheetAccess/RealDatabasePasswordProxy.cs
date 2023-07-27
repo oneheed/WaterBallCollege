@@ -3,26 +3,23 @@ using Microsoft.Extensions.Configuration;
 
 namespace EmployeeDataSheetAccess
 {
-    internal class RealDatabasePasswordProxy : IDatabase
+    internal class PasswordRealDatabaseProxy : LazyRealDatabaseProxy
     {
         private readonly string _passwords = @"1qaz2wsx";
 
         private readonly IConfiguration _configuration;
 
-        private readonly IDatabase _database;
-
-        public RealDatabasePasswordProxy(IDatabase realDatabase, IConfiguration configuration)
+        public PasswordRealDatabaseProxy(IConfiguration configuration)
         {
-            this._database = realDatabase;
             this._configuration = configuration;
         }
 
-        public IEmployee GetEmployeeById(int id)
+        public override IEmployee GetEmployeeById(int id)
         {
 
             if (_passwords == this._configuration["Password"])
             {
-                return this._database.GetEmployeeById(id);
+                return base.GetEmployeeById(id);
             }
             else
             {

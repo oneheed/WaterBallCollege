@@ -4,8 +4,6 @@ namespace EmployeeDataSheetAccess.Models
 {
     internal class RealEmployee : IEmployee
     {
-        private readonly IDatabase database;
-
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -14,20 +12,43 @@ namespace EmployeeDataSheetAccess.Models
 
         public IEnumerable<int> SubordinateIds { get; set; }
 
-        public RealEmployee(IDatabase database, string line)
-        {
-            this.database = database;
+        public IEnumerable<IEmployee> Subordinates { get; set; }
+    }
 
-            var fields = line.Split(' ');
-            Id = int.Parse(fields[0]);
-            Name = fields[1];
-            Age = int.Parse(fields[2]);
-            SubordinateIds = fields[3].Split(',').Select(int.Parse);
+    internal class LazyRealEmployee : IEmployee
+    {
+        public int Id => _employee.Id;
+
+        public string Name => _employee.Name;
+
+        public int Age => _employee.Age;
+
+        public IEnumerable<int> SubordinateIds => _employee.SubordinateIds;
+
+        public IEnumerable<IEmployee> Subordinates
+        {
+            get
+            {
+                if (_employee.Subordinates == null)
+                {
+                    _employee.Subordinates = _employee.SubordinateIds.Select(_database.GetEmployeeById);
+                }
+
+                return _employee.Subordinates;
+            }
+
+            set { _employee.Subordinates = value; }
         }
 
-        public IEnumerable<IEmployee> GetSubordinates()
+        private readonly IEmployee _employee;
+
+        private readonly IDatabase _database;
+
+
+        public LazyRealEmployee(IEmployee employee, IDatabase database)
         {
-            return SubordinateIds.Select(database.GetEmployeeById);
+            _employee = employee;
+            _database = database;
         }
     }
 }

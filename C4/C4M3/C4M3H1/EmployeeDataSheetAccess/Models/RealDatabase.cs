@@ -6,24 +6,21 @@ namespace EmployeeDataSheetAccess.Models
     {
         private readonly string _path = @"Resources\Database.txt";
 
-        private readonly Dictionary<int, IEmployee> _data = new();
-
         public virtual IEmployee GetEmployeeById(int id)
         {
-            if (_data.TryGetValue(id, out var employee))
-            {
-                return employee;
-            }
-            else
-            {
-                var line = File.ReadLines(_path).ElementAtOrDefault(id) ??
-                    throw new ArgumentOutOfRangeException(nameof(id), "Can not find employee by id");
+            var line = File.ReadLines(_path).ElementAtOrDefault(id) ??
+                throw new ArgumentOutOfRangeException(nameof(id), "Can not find employee by id");
 
-                var result = new RealEmployee(this, line);
-                _data.Add(id, result);
+            var fields = line.Split('	');
+            var employee = new RealEmployee
+            {
+                Id = int.Parse(fields[0]),
+                Name = fields[1],
+                Age = int.Parse(fields[2]),
+                SubordinateIds = fields[3].Split(',').Select(int.Parse),
+            };
 
-                return result;
-            }
+            return employee;
         }
 
         //public IEmployee GetEmployeeById(int id)
