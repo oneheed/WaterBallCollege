@@ -2,18 +2,18 @@
 {
     internal class HpOver500Handler : OnePunchHandler
     {
-        public HpOver500Handler(OnePunchHandler handler) : base(handler)
+        public HpOver500Handler(OnePunchHandler? handler = null) : base(handler)
         {
         }
 
         protected override void Execute()
         {
-            throw new NotImplementedException();
+            _attacked!.Damage(_caster!, 300);
         }
 
         protected override bool Match()
         {
-            throw new NotImplementedException();
+            return _attacked!.HP >= 500;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace RpgBattleGame
 
         internal string Symbol { get; private set; }
 
-        internal List<Role> Roles { get; private set; } = new List<Role>();
+        internal List<Role> Roles { get; private set; }
 
         public Troop(string name, List<Role> roles)
         {
@@ -21,7 +21,7 @@ namespace RpgBattleGame
 
         internal bool Annihilate()
         {
-            return !this.Roles.Any(r => r.Alive());
+            return !this.Roles.Exists(r => r.Alive());
         }
 
         internal void Join(Role role)

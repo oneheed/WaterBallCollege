@@ -9,6 +9,7 @@ namespace RpgBattleGame.Skills
 
         internal override int MP => 50;
 
+        // 所有敵軍
         internal override int TargetNumber => 99;
 
         internal override TroopType TroopType => TroopType.Enemy;

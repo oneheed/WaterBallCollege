@@ -69,8 +69,6 @@ namespace RpgBattleGame.States
             => _timeLimit--;
 
         internal virtual bool CanAction()
-        {
-            return true;
-        }
+            => true;
     }
 }

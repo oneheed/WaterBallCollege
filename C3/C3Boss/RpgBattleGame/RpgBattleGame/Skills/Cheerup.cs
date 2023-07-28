@@ -4,7 +4,7 @@ using RpgBattleGame.States;
 
 namespace RpgBattleGame.Skills
 {
-    internal class Cheerup : Skill
+    internal class CheerUp : Skill
     {
         internal override string Name => "鼓舞";
 
@@ -19,7 +19,7 @@ namespace RpgBattleGame.Skills
         {
             foreach (var target in targets)
             {
-                target.ChangeState(new CheerupState(target));
+                target.ChangeState(new CheerUpState(target));
             }
 
             var text = string.Join(", ", targets.Select(r => $"{r.Name}"));

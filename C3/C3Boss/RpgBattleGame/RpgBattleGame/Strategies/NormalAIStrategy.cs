@@ -22,11 +22,11 @@ namespace RpgBattleGame.Strategies
 
         internal override IEnumerable<Role> ChangTargets(Skill skill, IEnumerable<Role> roles)
         {
-            var indexs = Enumerable.Range(seed, skill.TargetNumber).Select(i => i % roles.Count());
+            var indexes = Enumerable.Range(seed, skill.TargetNumber).Select(i => i % roles.Count());
 
             seed++;
 
-            return roles.Where((r, i) => indexs.Contains(i));
+            return roles.Where((r, i) => indexes.Contains(i));
         }
     }
 }

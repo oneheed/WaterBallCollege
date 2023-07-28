@@ -18,7 +18,7 @@ namespace RpgBattleGame.Skills
         {
             foreach (var target in targets)
             {
-                target.SetDeadStrategy(new CurseStrategy(caster));
+                target.SubscribeDeadNotify(new CurseDeadSubscriber(caster));
             }
 
             var text = string.Join(", ", targets.Select(r => $"{r.Name}"));

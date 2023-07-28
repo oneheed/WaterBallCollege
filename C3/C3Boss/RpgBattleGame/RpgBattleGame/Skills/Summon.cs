@@ -21,7 +21,7 @@ namespace RpgBattleGame.Skills
             var troop = caster.GetTroop();
 
             var slime = new Role(100, 0, 50, "Slime", new List<Skill> { });
-            slime.SetDeadStrategy(new SummonStrategy(caster));
+            slime.SubscribeDeadNotify(new SummonDeadSubscriber(caster));
             troop.Join(slime);
 
             caster.ConsumeMP(MP);

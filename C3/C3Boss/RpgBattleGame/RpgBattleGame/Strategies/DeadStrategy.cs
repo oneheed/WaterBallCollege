@@ -2,45 +2,44 @@
 
 namespace RpgBattleGame.Strategies
 {
-    internal abstract class DeadStrategy
+    internal interface IDeadSubscriber
     {
-        protected List<Role> _caster = new List<Role>();
-
-        protected DeadStrategy(Role caster)
-        {
-            this._caster.Add(caster);
-        }
-
-        internal abstract void Execute(Role self);
+        void Behavior(Role deader);
     }
 
-    internal class CurseStrategy : DeadStrategy
+    internal abstract class BaseDeadSubscriber : IDeadSubscriber
     {
-        public CurseStrategy(Role caster) : base(caster)
+        protected readonly Role _caster;
+
+        protected BaseDeadSubscriber(Role caster)
+        {
+            _caster = caster;
+        }
+
+        public abstract void Behavior(Role deader);
+    }
+
+    internal class CurseDeadSubscriber : BaseDeadSubscriber
+    {
+        public CurseDeadSubscriber(Role caster) : base(caster)
         {
         }
 
-        internal override void Execute(Role self)
+        public override void Behavior(Role deader)
         {
-            foreach (Role role in _caster.Where(c => c.Alive()))
-            {
-                role.Healing(self.MP);
-            }
+            _caster.Healing(deader.MP);
         }
     }
 
-    internal class SummonStrategy : DeadStrategy
+    internal class SummonDeadSubscriber : BaseDeadSubscriber
     {
-        public SummonStrategy(Role caster) : base(caster)
+        public SummonDeadSubscriber(Role caster) : base(caster)
         {
         }
 
-        internal override void Execute(Role self)
+        public override void Behavior(Role deader)
         {
-            foreach (Role role in _caster.Where(c => c.Alive()))
-            {
-                role.Healing(30);
-            }
+            _caster.Healing(30);
         }
     }
 }

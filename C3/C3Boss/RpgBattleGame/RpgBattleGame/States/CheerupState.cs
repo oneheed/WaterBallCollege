@@ -2,11 +2,11 @@
 
 namespace RpgBattleGame.States
 {
-    internal class CheerupState : State
+    internal class CheerUpState : State
     {
         internal override string Name => "受到鼓舞";
 
-        public CheerupState(Role role) : base(role)
+        public CheerUpState(Role role) : base(role)
         {
             this._timeLimit = 3;
             this._finishedState = new NormalState(role);

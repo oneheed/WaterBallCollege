@@ -4,18 +4,21 @@ namespace RpgBattleGame.Handlers
 {
     internal abstract class OnePunchHandler
     {
-        private OnePunchHandler? _next;
+        private readonly OnePunchHandler? _next;
 
-        private Role attacked;
+        protected Role? _caster;
 
-        public OnePunchHandler(OnePunchHandler handler)
+        protected Role? _attacked;
+
+        protected OnePunchHandler(OnePunchHandler? handler = null)
         {
             _next = handler;
         }
 
-        public void Attack(Role role)
+        public void Attack(Role caster, Role attacked)
         {
-            this.attacked = role;
+            _caster = caster;
+            _attacked = attacked;
 
             if (this.Match())
             {
@@ -23,7 +26,7 @@ namespace RpgBattleGame.Handlers
             }
             else if (this._next != null)
             {
-                this._next.Attack(role);
+                this._next.Attack(caster, attacked);
             }
         }
 

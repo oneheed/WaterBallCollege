@@ -14,18 +14,18 @@ namespace RpgBattleGame.Roles
 
         public virtual int STR { get; private set; }
 
-        private string _name;
+        private readonly string _name;
+
         public string Name
         {
-            get => $"{this._troop.Symbol}{this._name}";
-            private set => _name = value;
+            get => $"{this._troop?.Symbol}{this._name}";
         }
 
         public State State { get; private set; }
 
         protected AIStrategy _aiStrategy;
 
-        protected DeadStrategy _deadStrategy;
+        protected readonly List<IDeadSubscriber> _deadObservers = new();
 
         public List<Skill> Skills { get; } = new List<Skill>
         {
@@ -37,10 +37,10 @@ namespace RpgBattleGame.Roles
             this.HP = hp;
             this.MP = mp;
             this.STR = str;
-            this.Name = name;
+            this._name = name;
             this.State = new NormalState(this);
 
-            this._aiStrategy = this._aiStrategy ?? new NormalAIStrategy(this);
+            this._aiStrategy ??= new NormalAIStrategy(this);
 
             this.Skills.AddRange(skills);
         }
@@ -52,12 +52,14 @@ namespace RpgBattleGame.Roles
 
         internal Troop GetTroop()
         {
-            return this._troop;
+            return this._troop!;
         }
 
         public bool Dead() => this.HP <= 0;
 
         public bool Alive() => !this.Dead();
+
+        public bool CanAction() => this.Alive() && this.State.CanAction();
 
         public void Damage(Role caster, int unit)
         {
@@ -75,11 +77,7 @@ namespace RpgBattleGame.Roles
 
             if (Dead())
             {
-                if (this._deadStrategy != null)
-                {
-                    _deadStrategy.Execute(this);
-                }
-
+                DeadNotify();
                 Console.WriteLine($"{this.Name} 死亡。");
             }
         }
@@ -87,6 +85,7 @@ namespace RpgBattleGame.Roles
         internal void Suicide()
         {
             this.HP = 0;
+            DeadNotify();
             Console.WriteLine($"{this.Name} 死亡。");
         }
 
@@ -114,12 +113,22 @@ namespace RpgBattleGame.Roles
             return this._aiStrategy.ChangeAction();
         }
 
-        internal void SetDeadStrategy(DeadStrategy deadStrategy)
+        internal void SetAIStrategy(AIStrategy aiStrategy)
         {
-            this._deadStrategy = deadStrategy;
+            this._aiStrategy = aiStrategy;
         }
 
-        public IEnumerable<Role> ChangTargets(Skill skill, IEnumerable<Role> roles)
+        internal void SubscribeDeadNotify(IDeadSubscriber casters)
+        {
+            this._deadObservers.Add(casters);
+        }
+
+        internal void DeadNotify()
+        {
+            this._deadObservers.ForEach(o => o.Behavior(this));
+        }
+
+        public virtual IEnumerable<Role> ChangTargets(Skill skill, IEnumerable<Role> roles)
         {
             return this._aiStrategy.ChangTargets(skill, roles);
         }
