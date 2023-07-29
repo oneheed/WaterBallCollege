@@ -1,4 +1,5 @@
 ﻿using RpgBattleGame.Enums;
+using RpgBattleGame.Observers;
 using RpgBattleGame.Roles;
 
 namespace RpgBattleGame.Skills
@@ -18,7 +19,7 @@ namespace RpgBattleGame.Skills
             var troop = caster.GetTroop();
 
             var slime = new Role(100, 0, 50, "Slime", new List<Skill> { });
-            slime.SubscribeDeadNotify(new SummonDeadSubscriber(caster));
+            slime.SubscribeDeadNotify(new SummonDeadObserver(caster));
 
             troop.Join(slime);
         }

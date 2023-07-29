@@ -9,7 +9,6 @@ namespace RpgBattleGame.States
         public PoisonedState(Role role) : base(role)
         {
             this._timeLimit = 3;
-            this._finishedState = new NormalState(role);
         }
 
         internal override void BeforeSelectAction()

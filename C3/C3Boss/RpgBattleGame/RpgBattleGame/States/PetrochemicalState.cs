@@ -9,7 +9,6 @@ namespace RpgBattleGame.States
         public PetrochemicalState(Role role) : base(role)
         {
             this._timeLimit = 3;
-            this._finishedState = new NormalState(role);
         }
 
         internal override bool CanAction()
