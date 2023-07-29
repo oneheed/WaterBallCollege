@@ -30,8 +30,7 @@ namespace RpgBattleGame.Utilities
                     var mp = int.Parse(roleData[2]);
                     var str = int.Parse(roleData[3]);
                     var skills = roleData.Length >= 5 ? ConvertSkills(string.Join(' ', roleData[4..])) : new List<Skill>();
-                    var role = groupIndex == 0 && i == 0 ?
-                        new Hero(hp, mp, str, roleData[0], skills) : new Role(hp, mp, str, roleData[0], skills);
+                    var role = new Role(hp, mp, str, roleData[0], skills);
 
                     troop.Join(role);
                 }

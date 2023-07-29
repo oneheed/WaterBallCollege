@@ -27,7 +27,7 @@ namespace RpgBattleGame.Roles
 
         protected AIStrategy _aiStrategy;
 
-        protected readonly List<IDeadSubscriber> _deadObservers = new();
+        protected readonly List<IDeadObserver> _deadObservers = new();
 
         public List<Skill> Skills { get; } = new List<Skill>
         {
@@ -110,7 +110,7 @@ namespace RpgBattleGame.Roles
             this.State.EnterState();
         }
 
-        public Skill ChangeAction()
+        public Skill SelectAction()
         {
             return this._aiStrategy.ChangeAction();
         }
@@ -120,7 +120,7 @@ namespace RpgBattleGame.Roles
             this._aiStrategy = aiStrategy;
         }
 
-        internal void SubscribeDeadNotify(IDeadSubscriber casters)
+        internal void SubscribeDeadNotify(IDeadObserver casters)
         {
             this._deadObservers.Add(casters);
         }
@@ -130,7 +130,7 @@ namespace RpgBattleGame.Roles
             this._deadObservers.ForEach(o => o.Behavior(this));
         }
 
-        public virtual IEnumerable<Role> ChangTargets(Skill skill, IEnumerable<Role> roles)
+        public virtual IEnumerable<Role> SelectTargets(Skill skill, IEnumerable<Role> roles)
         {
             return this._aiStrategy.ChangTargets(skill, roles);
         }

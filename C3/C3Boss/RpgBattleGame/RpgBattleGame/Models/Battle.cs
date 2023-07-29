@@ -75,14 +75,14 @@ namespace RpgBattleGame.Models
                 do
                 {
                     Console.WriteLine($"選擇行動： {string.Join(" ", caster.Skills.Select((s, i) => $"({i}) {s.Name}"))}");
-                    action = caster.ChangeAction();
+                    action = caster.SelectAction();
 
-                    if (caster.MP < action.MP)
+                    if (!action.CheckMP(caster))
                     {
                         Console.WriteLine("你缺乏 MP，不能進行此行動。");
                     }
                 }
-                while (caster.MP < action.MP);
+                while (!action.CheckMP(caster));
             }
 
             return action;
@@ -102,9 +102,9 @@ namespace RpgBattleGame.Models
 
                     targets = selectTroop!.Roles.Where(r => r.Alive() && !r.Equals(caster)).ToList();
 
-                    if (targets.Count > action.TargetNumber)
+                    if (action.IsSelectTargets(targets))
                     {
-                        targets = caster.ChangTargets(action, targets).ToList();
+                        targets = caster.SelectTargets(action, targets).ToList();
                     }
                 }
                 else if (action.TroopType == TroopType.Self)
@@ -124,7 +124,7 @@ namespace RpgBattleGame.Models
         {
             if (caster.CanAction())
             {
-                action.Execute(caster, targets);
+                action.Effect(caster, targets);
             }
         }
 

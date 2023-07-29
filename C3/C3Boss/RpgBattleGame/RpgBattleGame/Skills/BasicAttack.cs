@@ -21,7 +21,7 @@ namespace RpgBattleGame.Skills
             }
         }
 
-        internal override void Effect(Role caster, IEnumerable<Role> targets)
+        internal override void Execute(Role caster, IEnumerable<Role> targets)
         {
             var damage = caster.STR;
 

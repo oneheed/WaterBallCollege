@@ -2,7 +2,7 @@
 
 namespace RpgBattleGame.Interfaces
 {
-    internal interface IDeadSubscriber
+    internal interface IDeadObserver
     {
         void Behavior(Role deader);
     }

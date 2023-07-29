@@ -1,6 +1,6 @@
 ﻿using RpgBattleGame.Enums;
+using RpgBattleGame.Observers;
 using RpgBattleGame.Roles;
-using RpgBattleGame.Subscribes;
 
 namespace RpgBattleGame.Skills
 {
@@ -14,11 +14,11 @@ namespace RpgBattleGame.Skills
 
         internal override TroopType TroopType => TroopType.Enemy;
 
-        internal override void Effect(Role caster, IEnumerable<Role> targets)
+        internal override void Execute(Role caster, IEnumerable<Role> targets)
         {
             foreach (var target in targets)
             {
-                target.SubscribeDeadNotify(new CurseDeadSubscriber(caster));
+                target.SubscribeDeadNotify(new CurseDeadObserver(caster));
             }
         }
     }

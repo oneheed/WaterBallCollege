@@ -1,13 +1,13 @@
 ﻿using RpgBattleGame.Interfaces;
 using RpgBattleGame.Roles;
 
-namespace RpgBattleGame.Subscribes
+namespace RpgBattleGame.Observers
 {
-    internal abstract class BaseDeadSubscriber : IDeadSubscriber
+    internal abstract class BaseDeadObserver : IDeadObserver
     {
         protected readonly Role _caster;
 
-        protected BaseDeadSubscriber(Role caster)
+        protected BaseDeadObserver(Role caster)
         {
             _caster = caster;
         }

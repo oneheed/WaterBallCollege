@@ -25,6 +25,12 @@ namespace RpgBattleGame.Strategies
 
         internal override IEnumerable<Role> ChangTargets(Skill skill, IEnumerable<Role> roles)
         {
+            if (skill.TargetNumber != -1)
+            {
+                var text = string.Join(" ", roles.Select((r, i) => $"({i}) {r.Name}"));
+                Console.WriteLine($"選擇 {skill.TargetNumber} 位目標: {text}");
+            }
+
             var indexes = changeActions[seed].Split(", ").Select(x => int.Parse(x)).ToList();
 
             seed++;

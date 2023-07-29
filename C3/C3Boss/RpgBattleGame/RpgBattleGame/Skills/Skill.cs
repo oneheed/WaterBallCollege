@@ -18,9 +18,9 @@ namespace RpgBattleGame.Skills
             return role.MP >= this.MP;
         }
 
-        internal bool CheckChangTargets(IEnumerable<Role> targets)
+        internal bool IsSelectTargets(IEnumerable<Role> targets)
         {
-            return targets.Count() <= this.TargetNumber;
+            return targets.Count() > this.TargetNumber;
         }
 
         internal virtual void ShowExecuteMessage(Role caster, IEnumerable<Role> targets)
@@ -35,15 +35,15 @@ namespace RpgBattleGame.Skills
             Console.WriteLine($"{caster.Name} {multiText} 使用了 {this.Name}。");
         }
 
-        internal void Execute(Role caster, IEnumerable<Role> targets)
+        internal void Effect(Role caster, IEnumerable<Role> targets)
         {
             ShowExecuteMessage(caster, targets);
 
-            Effect(caster, targets);
-
             caster.ConsumeMP(MP);
+
+            Execute(caster, targets);
         }
 
-        internal abstract void Effect(Role caster, IEnumerable<Role> targets);
+        internal abstract void Execute(Role caster, IEnumerable<Role> targets);
     }
 }

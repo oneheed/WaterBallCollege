@@ -25,6 +25,21 @@ namespace RpgBattleGame.States
         {
         }
 
+        /// <summary>
+        /// 狀態結束
+        /// </summary>
+        internal void StateFinished()
+        {
+            if (_finishedState != null)
+            {
+                _role.ChangeState(_finishedState);
+            }
+            else
+            {
+                _role.ChangeState(new NormalState(this._role));
+            }
+        }
+
         internal virtual void BeforeSelectAction()
         {
         }
@@ -35,21 +50,9 @@ namespace RpgBattleGame.States
 
             if (_timeLimit <= 0)
             {
-                Finished();
+                StateFinished();
             }
         }
-
-        /// <summary>
-        /// 狀態結束
-        /// </summary>
-        internal void Finished()
-        {
-            if (_finishedState != null)
-            {
-                _role.ChangeState(_finishedState);
-            }
-        }
-
 
         internal virtual int CalDamage(int unit)
             => unit;

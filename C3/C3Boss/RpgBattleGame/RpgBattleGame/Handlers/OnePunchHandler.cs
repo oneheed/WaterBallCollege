@@ -15,7 +15,7 @@ namespace RpgBattleGame.Handlers
             _next = handler;
         }
 
-        public void Attack(Role caster, Role attacked)
+        public void Effect(Role caster, Role attacked)
         {
             _caster = caster;
             _attacked = attacked;
@@ -26,12 +26,12 @@ namespace RpgBattleGame.Handlers
             }
             else if (this._next != null)
             {
-                this._next.Attack(caster, attacked);
+                this._next.Effect(caster, attacked);
             }
         }
 
-        protected abstract void Execute();
-
         protected abstract bool Match();
+
+        protected abstract void Execute();
     }
 }

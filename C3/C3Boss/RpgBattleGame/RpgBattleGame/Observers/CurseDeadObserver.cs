@@ -1,10 +1,10 @@
 ﻿using RpgBattleGame.Roles;
 
-namespace RpgBattleGame.Subscribes
+namespace RpgBattleGame.Observers
 {
-    internal class CurseDeadSubscriber : BaseDeadSubscriber
+    internal class CurseDeadObserver : BaseDeadObserver
     {
-        public CurseDeadSubscriber(Role caster) : base(caster)
+        public CurseDeadObserver(Role caster) : base(caster)
         {
         }
 
