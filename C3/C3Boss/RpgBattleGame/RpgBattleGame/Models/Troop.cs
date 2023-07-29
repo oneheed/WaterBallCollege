@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using RpgBattleGame.Roles;
 
-namespace RpgBattleGame
+namespace RpgBattleGame.Models
 {
     internal class Troop
     {
@@ -13,22 +13,22 @@ namespace RpgBattleGame
 
         public Troop(string name, List<Role> roles)
         {
-            this.Name = name;
+            Name = name;
             var regex = new Regex(@"\d+");
-            this.Symbol = $"[{regex.Match(name).Value}]";
-            this.Roles = roles;
+            Symbol = $"[{regex.Match(name).Value}]";
+            Roles = roles;
         }
 
         internal bool Annihilate()
         {
-            return !this.Roles.Exists(r => r.Alive());
+            return !Roles.Exists(r => r.Alive());
         }
 
         internal void Join(Role role)
         {
             role.SetTroop(this);
 
-            this.Roles.Add(role);
+            Roles.Add(role);
         }
     }
 }

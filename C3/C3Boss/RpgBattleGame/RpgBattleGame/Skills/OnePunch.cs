@@ -15,14 +15,9 @@ namespace RpgBattleGame.Skills
 
         internal override TroopType TroopType => TroopType.Enemy;
 
-        internal override void Execute(Role caster, IEnumerable<Role> targets)
+        internal override void Effect(Role caster, IEnumerable<Role> targets)
         {
-            var target = targets.FirstOrDefault();
-
-            var text = string.Join(", ", targets.Select(r => $"{r.Name}"));
-            Console.WriteLine($"{caster.Name} 對 {text} 使用了 {this.Name}。");
-
-            if (target != null)
+            foreach (var target in targets)
             {
                 var onePunchHandler = new HpOver500Handler(
                     new PoisonedOrPetrochemicalStateHandler(
@@ -31,8 +26,6 @@ namespace RpgBattleGame.Skills
 
                 onePunchHandler.Attack(caster, target);
             }
-
-            caster.ConsumeMP(MP);
         }
     }
 }

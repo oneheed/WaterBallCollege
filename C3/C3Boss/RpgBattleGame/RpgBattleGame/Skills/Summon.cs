@@ -1,6 +1,6 @@
 ﻿using RpgBattleGame.Enums;
 using RpgBattleGame.Roles;
-using RpgBattleGame.Strategies;
+using RpgBattleGame.Subscribes;
 
 namespace RpgBattleGame.Skills
 {
@@ -12,19 +12,15 @@ namespace RpgBattleGame.Skills
 
         internal override int TargetNumber => -1;
 
-        internal override TroopType TroopType => TroopType.None;
+        internal override TroopType TroopType => TroopType.Self;
 
-        internal override void Execute(Role caster, IEnumerable<Role> targets)
+        internal override void Effect(Role caster, IEnumerable<Role> targets)
         {
-            Console.WriteLine($"{caster.Name} 使用了 {this.Name}。");
-
             var troop = caster.GetTroop();
 
             var slime = new Role(100, 0, 50, "Slime", new List<Skill> { });
             slime.SubscribeDeadNotify(new SummonDeadSubscriber(caster));
             troop.Join(slime);
-
-            caster.ConsumeMP(MP);
         }
     }
 }

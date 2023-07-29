@@ -13,17 +13,22 @@ namespace RpgBattleGame.Skills
 
         internal override TroopType TroopType => TroopType.Enemy;
 
-
-        internal override void Execute(Role caster, IEnumerable<Role> targets)
+        internal override void ShowExecuteMessage(Role caster, IEnumerable<Role> targets)
         {
-            var damage = caster.STR;
             foreach (var target in targets)
             {
                 Console.WriteLine($"{caster.Name} 攻擊 {target.Name}。");
+            }
+        }
+
+        internal override void Effect(Role caster, IEnumerable<Role> targets)
+        {
+            var damage = caster.STR;
+
+            foreach (var target in targets)
+            {
                 target.Damage(caster, damage);
             }
-
-            caster.ConsumeMP(MP);
         }
     }
 }

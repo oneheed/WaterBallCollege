@@ -3,7 +3,7 @@ using RpgBattleGame.Roles;
 
 namespace RpgBattleGame.Skills
 {
-    internal class Waterball : Skill
+    internal class WaterBall : Skill
     {
         internal override string Name => "水球";
 
@@ -13,17 +13,12 @@ namespace RpgBattleGame.Skills
 
         internal override TroopType TroopType => TroopType.Enemy;
 
-        internal override void Execute(Role caster, IEnumerable<Role> targets)
+        internal override void Effect(Role caster, IEnumerable<Role> targets)
         {
-            var text = string.Join(", ", targets.Select(r => $"{r.Name}"));
-            Console.WriteLine($"{caster.Name} 對 {text} 使用了 {this.Name}。");
-
             foreach (var target in targets)
             {
                 target.Damage(caster, 120);
             }
-
-            caster.ConsumeMP(MP);
         }
     }
 }

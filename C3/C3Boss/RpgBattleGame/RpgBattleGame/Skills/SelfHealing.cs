@@ -13,16 +13,12 @@ namespace RpgBattleGame.Skills
 
         internal override TroopType TroopType => TroopType.Self;
 
-        internal override void Execute(Role caster, IEnumerable<Role> targets)
+        internal override void Effect(Role caster, IEnumerable<Role> targets)
         {
-            Console.WriteLine($"{caster.Name} 使用了 {this.Name}。");
-
             foreach (var target in targets)
             {
                 target.Healing(150);
             }
-
-            caster.ConsumeMP(MP);
         }
     }
 }

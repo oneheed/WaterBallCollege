@@ -12,7 +12,7 @@ namespace RpgBattleGame.States
             this._finishedState = new NormalState(role);
         }
 
-        internal override void ChangAction()
+        internal override void BeforeSelectAction()
         {
             this._role.Damage(null, 30);
         }

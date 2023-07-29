@@ -10,7 +10,7 @@ namespace RpgBattleGame.States
         {
         }
 
-        internal override void DoState()
+        internal override void ActionFinished()
         {
             // Method intentionally left empty.
         }

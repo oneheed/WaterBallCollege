@@ -17,23 +17,19 @@ namespace RpgBattleGame.States
             this._role = role;
         }
 
-        internal virtual void ChangAction()
-        {
-        }
-
-        internal virtual void ChangTargets()
-        {
-        }
-
-        internal virtual void ExcuteAction()
-        {
-        }
-
         internal virtual void EnterState()
         {
         }
 
-        internal virtual void DoState()
+        internal virtual void ExitState()
+        {
+        }
+
+        internal virtual void BeforeSelectAction()
+        {
+        }
+
+        internal virtual void ActionFinished()
         {
             this.ReduceTimeLimit();
 
@@ -41,10 +37,6 @@ namespace RpgBattleGame.States
             {
                 Finished();
             }
-        }
-
-        internal virtual void ExitState()
-        {
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using RpgBattleGame.Models;
 using RpgBattleGame.Roles;
 using RpgBattleGame.Skills;
 using RpgBattleGame.Strategies;
@@ -60,7 +61,7 @@ namespace RpgBattleGame.Utilities
             new SelfExplosion(),
             new SelfHealing(),
             new Summon(),
-            new Waterball(),
+            new WaterBall(),
         };
 
         private static List<Skill> ConvertSkills(string skillText)

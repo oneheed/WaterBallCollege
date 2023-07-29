@@ -1,4 +1,6 @@
-﻿using RpgBattleGame.Skills;
+﻿using RpgBattleGame.Interfaces;
+using RpgBattleGame.Models;
+using RpgBattleGame.Skills;
 using RpgBattleGame.States;
 using RpgBattleGame.Strategies;
 

@@ -1,11 +1,12 @@
 ﻿namespace RpgBattleGame.Enums
 {
+    [Flags]
     internal enum TroopType
     {
         /// <summary>
         /// 無
         /// </summary>
-        None = -1,
+        None = 0,
 
         /// <summary>
         /// 全部

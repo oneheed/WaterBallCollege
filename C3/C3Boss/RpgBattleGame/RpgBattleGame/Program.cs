@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using RpgBattleGame;
 using RpgBattleGame.Utilities;
 
 //var battle = TestCaseUtility.ConvertBattleByFile("Sources/cheerup.in");
@@ -9,8 +10,9 @@ using RpgBattleGame.Utilities;
 //var battle = TestCaseUtility.ConvertBattleByFile("Sources/poison.in");
 //var battle = TestCaseUtility.ConvertBattleByFile("Sources/self-explosion.in");
 //var battle = TestCaseUtility.ConvertBattleByFile("Sources/self-healing.in");
-var battle = TestCaseUtility.ConvertBattleByFile("Sources/summon.in");
-//var battle = TestCaseUtility.ConvertBattleByFile("Sources/waterball-and-fireball-1v2.in");
+//var battle = TestCaseUtility.ConvertBattleByFile("Sources/summon.in");
+var battle = TestCaseUtility.ConvertBattleByFile("Sources/waterball-and-fireball-1v2.in");
 
-battle.BattleStart();
+var rpgGame = new RpgGame(battle);
+rpgGame.Start();
 
