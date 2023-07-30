@@ -16,21 +16,18 @@ var stopWatch = new Stopwatch();
 stopWatch.Start();
 
 var tasks = new List<Task>();
-var models = new List<IModel>();
 for (var i = 0; i < 10; i++)
 {
     tasks.Add(Task.Run(() =>
     {
-        var reflection = new ComputationModels().CreateModel("Reflection");
-        models.Add(reflection);
-        var reflectionResult = reflection.Calculate(target);
-        //reflectionResult.Print();
+        var models = new LazyComputationModelsProxy();
+        var model = models.CreateModel("Reflection");
+        var result = model.Calculate(target);
+        //result.Print();
     }));
 }
 
 await Task.WhenAll(tasks);
-Console.WriteLine(models[3].Equals(models[4]));
-Console.WriteLine(models[0].Source.Equals(models[1].Source));
 stopWatch.Stop();
 
 Console.WriteLine(stopWatch.ElapsedMilliseconds / 1000);

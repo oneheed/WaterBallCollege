@@ -2,31 +2,26 @@
 {
     internal class ComputationModels : IModels
     {
-        private readonly static Dictionary<string, IModel> _models = new();
+        public static ComputationModels Instance { get; } = new();
 
-        private readonly static object _lock = new();
-
-        public IModel? CreateModel(string modelName)
+        private ComputationModels()
         {
-            lock (_lock)
-            {
-                if (_models.TryGetValue(modelName, out var model))
-                {
-                    return model;
-                }
-                else
-                {
-                    model = new ComputationModel(this, modelName);
-                    _models.TryAdd(modelName, model);
-
-                    return model;
-                }
-            }
+            Console.WriteLine($"Create {nameof(ComputationModels)} models");
         }
 
-        public double[,] LazyLoad(string modelName)
+        public IModel CreateModel(string modelName)
         {
+            var matrix = Load(modelName);
+
+            return new ComputationModel(matrix);
+        }
+
+        private double[,] Load(string modelName)
+        {
+            Console.WriteLine($"Create {modelName} model");
+
             var filePath = $"Resources\\{modelName}.mat";
+
             if (File.Exists(filePath))
             {
                 var rows = File.ReadAllLines(filePath);
