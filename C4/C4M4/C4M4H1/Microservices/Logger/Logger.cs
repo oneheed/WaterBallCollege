@@ -23,12 +23,6 @@
             this._layout = layout;
         }
 
-        public static Logger? GetLogger(string loggerName)
-        {
-            return _loggers.TryGetValue(loggerName, out var logger) ? logger : default;
-        }
-
-
         public void Trace(string message) => Write(LevelType.TRACE, message);
 
         public void Info(string message) => Write(LevelType.INFO, message);
@@ -38,7 +32,6 @@
         public void Warn(string message) => Write(LevelType.WARN, message);
 
         public void Error(string message) => Write(LevelType.ERROR, message);
-
 
         private void Write(LevelType levelType, string message)
         {
@@ -51,6 +44,11 @@
 
                 exporter.Export(convertMessage);
             }
+        }
+
+        public static Logger? GetLogger(string loggerName)
+        {
+            return _loggers.TryGetValue(loggerName, out var logger) ? logger : default;
         }
 
         public static void DeclareLoggers(params Logger[] loggers)
