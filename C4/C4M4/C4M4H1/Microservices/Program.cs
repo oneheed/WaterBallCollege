@@ -3,6 +3,7 @@
 using C4M4H1;
 using Microservices.Logger;
 
+// (1)
 var root = new Logger(LevelType.DEBUG, exporter: new ConsoleExporter(), layout: new StandardLayout());
 
 // 定義 app.game 日誌器，繼承根日誌器並覆寫分級門檻和輸出器
@@ -18,6 +19,10 @@ var aiLogger = new Logger(LevelType.TRACE, parent: gameLogger, name: "app.game.a
 // 配置剛定義好的三個日誌器
 Logger.DeclareLoggers(root, gameLogger, aiLogger);
 
+//// (2)
+//Logger.GenerateFormConfig("appsettings.json");
+
 // 創建遊戲物件，並執行遊戲
 var game = new Game();
 game.Start();
+
