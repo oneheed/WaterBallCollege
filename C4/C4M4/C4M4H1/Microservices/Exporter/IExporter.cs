@@ -1,4 +1,4 @@
-﻿namespace Microservices.Logger
+﻿namespace Microservices.Exporter
 {
     internal interface IExporter
     {

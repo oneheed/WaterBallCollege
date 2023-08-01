@@ -1,4 +1,7 @@
-﻿namespace Microservices.Logger
+﻿using Microservices.Exporter;
+using Microservices.Layout;
+
+namespace Microservices.Logger
 {
     internal class Logger
     {

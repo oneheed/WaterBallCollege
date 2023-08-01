@@ -1,4 +1,6 @@
-﻿namespace Microservices.Logger
+﻿using Microservices.Logger;
+
+namespace Microservices.Layout
 {
     internal interface ILayout
     {
