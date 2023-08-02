@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // 定義根日誌器
-using C4M4H1;
-using Microservices.Logger;
+using LoggingFramework;
+using LoggingFramework.Loggers;
 
 // (1)
 var root = new Logger(LevelType.DEBUG, exporter: new ConsoleExporter(), layout: new StandardLayout());

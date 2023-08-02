@@ -1,6 +1,6 @@
-﻿using Microservices.Logger;
+﻿using LoggingFramework.Loggers;
 
-namespace Microservices.Layout
+namespace LoggingFramework.Layouts
 {
     internal interface ILayout
     {

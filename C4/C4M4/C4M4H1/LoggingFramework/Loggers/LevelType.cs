@@ -1,4 +1,4 @@
-﻿namespace Microservices.Logger
+﻿namespace LoggingFramework.Loggers
 {
     [Flags]
     internal enum LevelType

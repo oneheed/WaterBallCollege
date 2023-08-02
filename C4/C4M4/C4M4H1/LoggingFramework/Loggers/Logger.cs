@@ -1,9 +1,9 @@
-﻿using Microservices.Exporter;
-using Microservices.Layout;
+﻿using LoggingFramework.Exporter;
+using LoggingFramework.Layouts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microservices.Logger
+namespace LoggingFramework.Loggers
 {
     internal class Logger
     {

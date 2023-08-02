@@ -1,4 +1,4 @@
-﻿namespace C4M4H1
+﻿namespace LoggingFramework
 {
     internal class Player
     {
