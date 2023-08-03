@@ -1,18 +1,16 @@
-﻿namespace Microservices
+﻿using Microservices.Http;
+
+namespace Microservices
 {
     internal class FakeHttpClient : IHttpMessage
     {
-        public string Process(List<string> urls)
+        public HttpResponse SendRequest(HttpRequest httpRequest)
         {
-            throw new NotImplementedException();
-        }
+            var result = new Random().Next(10) <= 6 ? HttpStatus.Success : HttpStatus.Fail;
 
-        public string SendRequest(HttpRequest httpRequest)
-        {
-            var test = new Random().Next(2);
-            var result = test == 1 ? "Success" : "Fail";
+            Console.WriteLine($"{httpRequest.Url} {result}");
 
-            return result;
+            return new HttpResponse(result);
         }
     }
 }
