@@ -4,12 +4,12 @@ namespace Microservices.Processor
 {
     internal class BlacklistProcessor : HttpMessageProcessor
     {
-        private List<string> _map = new()
+        private readonly List<string> _map = new()
         {
             //"35.0.0.3",
         };
 
-        public BlacklistProcessor(IHttpMessage process) : base(process)
+        public BlacklistProcessor(IHttpClient process) : base(process)
         {
         }
 

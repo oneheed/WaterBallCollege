@@ -2,11 +2,11 @@
 
 namespace Microservices.Processor
 {
-    internal abstract class HttpMessageProcessor : IHttpMessage
+    internal abstract class HttpMessageProcessor : IHttpClient
     {
-        private readonly IHttpMessage? next;
+        private readonly IHttpClient? next;
 
-        protected HttpMessageProcessor(IHttpMessage process)
+        protected HttpMessageProcessor(IHttpClient process)
         {
             next = process;
         }

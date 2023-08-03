@@ -6,9 +6,9 @@ namespace Microservices.Http
     {
         public HttpMethod HttpMethod { get; private set; }
 
-        public string Url => $"{Schema}://{Host}{Path}";
+        public string Url => $"{Scheme}://{Host}{Path}";
 
-        public string Schema { get; private set; }
+        public string Scheme { get; private set; }
 
         public string Host { get; set; }
 
@@ -20,7 +20,7 @@ namespace Microservices.Http
 
             var urlMatch = Regex.Match(url, "^(http|https):\\/\\/([^\\/]+)(\\/[^?#]+)?(\\?[^#]*)?(#.*)?$");
 
-            Schema = urlMatch.Groups[1].Value;
+            Scheme = urlMatch.Groups[1].Value;
             Host = urlMatch.Groups[2].Value;
             Path = urlMatch.Groups[3].Value;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Microservices.Http
 {
-    internal interface IHttpMessage
+    internal interface IHttpClient
     {
         HttpResponse SendRequest(HttpRequest httpRequest);
     }
