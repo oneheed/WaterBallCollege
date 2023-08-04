@@ -20,15 +20,15 @@ namespace TreasureMap.Strategies.Move
 
             if (direction == Direction.Up || direction == Direction.Down)
             {
-                var offest = direction == Direction.Up ? -1 : 1;
-                toIndex = map.GetMapIndexByOffset(this._mover, (0, offest));
+                var offset = direction == Direction.Up ? -1 : 1;
+                toIndex = map.GetMapIndexByOffset(this._mover, (0, offset));
 
                 bound = (boundData.UpBoundIndex, boundData.DownBoundIndex);
             }
             else
             {
-                var offest = direction == Direction.Left ? -1 : 1;
-                toIndex = map.GetMapIndexByOffset(this._mover, (offest, 0));
+                var offset = direction == Direction.Left ? -1 : 1;
+                toIndex = map.GetMapIndexByOffset(this._mover, (offset, 0));
 
                 bound = (boundData.LeftBoundIndex, boundData.RightBoundIndex);
             }
