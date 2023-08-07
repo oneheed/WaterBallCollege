@@ -6,25 +6,103 @@
     public string Category { get; set; }
 }
 
-public class Individual
+Individual
+
+class Sample1 : Population<Product>
 {
-    public double Fitness;
+    private static readonly List<Product> products = new()
+    {
+        new Product { Id = 1, Price = 100, Weight = 2, Category = "A" },
+        new Product { Id = 2, Price = 200, Weight = 3, Category = "A" },
+        new Product { Id = 3, Price = 150, Weight = 5, Category = "B" },
+        new Product { Id = 4, Price = 300, Weight = 4, Category = "B" },
+        new Product { Id = 5, Price = 180, Weight = 6, Category = "C" },
+        new Product { Id = 6, Price = 250, Weight = 7, Category = "C" }
+    };
+
+    private static Dictionary<string, decimal> preferences = new()
+    {
+        { "A", 0.8m },
+        { "B", 0.6m },
+        { "C", 0.2m }
+    };
+
+    private const decimal budget = 700;
+    private const int capacity = 15;
+
+    private int genesCount = 0;
+
+    public Sample1()
+    {
+        var budgetCount = products.Select(p => (int)(budget / p.Price)).Max();
+        var capacityCount = products.Select(p => capacity / p.Weight).Max();
+
+        this.genesCount = Math.Max(budgetCount, capacityCount);
+    }
+
+    public override Individual<Product> GenerateInstance()
+    {
+        var result = new Individual<Product>();
+        var remainBudget = budget;
+        var remainCapacity = capacity;
+
+        while (remainBudget > 0 && remainCapacity > 0)
+        {
+            var index = new Random().Next(products.Count);
+            var product = products[index];
+
+            remainBudget -= product.Price;
+            remainCapacity -= product.Weight;
+
+            result.Values.Add(products[index]);
+        }
+
+        result.Fitness = CalFitness(result);
+
+        return result;
+    }
+
+    public override Product GenerateInstance1()
+    {
+        var index = new Random().Next(products.Count);
+
+        return products[index];
+    }
+
+    public override decimal CalFitness(Individual<Product> individual)
+    {
+        if (individual.Values.Sum(i => i.Price) > budget || individual.Values.Sum(i => i.Weight) > capacity)
+        {
+            return -1;
+        }
+        else
+        {
+            return individual.Values.Sum(p => preferences[p.Category] * (budget / p.Price + capacity / p.Weight) / 2);
+        }
+    }
 }
 
-class Population
+class Individual<T> where T : new()
 {
-    public List<Individual> Individuals { get; set; } = new();
+    public List<T> Values { get; set; } = new List<T>();
 
-    public Population Init(int populationSize)
+    public decimal Fitness;
+}
+
+class Population<T> where T : new()
+{
+    public List<Individual<T>> Individuals { get; set; } = new();
+
+    public Population<T> Init(int populationSize)
     {
-        var individuals = Enumerable.Range(0, populationSize).Select(i => new Individual());
+        var individuals = Enumerable.Range(0, populationSize).Select(i => GenerateInstance()).ToList();
 
-        this.Individuals.AddRange(individuals); // Todo:
+        this.Individuals.AddRange(individuals);
 
         return this;
     }
 
-    public Individual GetIndividualByIndex(int index)
+    public Individual<T> GetIndividualByIndex(int index)
     {
         var result = this.Individuals[index];
 
@@ -33,83 +111,115 @@ class Population
         return result;
     }
 
-    public void AddIndividual(Individual individual)
+    public void AddIndividual(Individual<T> individual)
     {
+        individual.Fitness = CalFitness(individual);
+
         this.Individuals.Add(individual);
+
+        this.Individuals = this.Individuals.OrderByDescending(i => i.Fitness).ToList();
     }
 
-    internal void AddIndividuals(List<Individual> individuals)
+    public void AddIndividuals(List<Individual<T>> individuals)
     {
+        individuals.ForEach(i => i.Fitness = CalFitness(i));
+
         this.Individuals.AddRange(individuals);
+
+        this.Individuals = this.Individuals.OrderByDescending(i => i.Fitness).ToList();
+    }
+
+    public virtual Individual<T> GenerateInstance()
+    {
+        return default;
+    }
+
+    public virtual T GenerateInstance1()
+    {
+        return default;
+    }
+
+    public virtual decimal CalFitness(Individual<T> individual)
+    {
+        return 1;
     }
 }
 
 
-class GeneticAlgorithm
+class GeneticAlgorithm<T, T1>
+    where T : Population<T1>, new()
+    where T1 : new()
 {
-    private List<Product> products;
-    private decimal budget;
-    private int capacity;
-    private Dictionary<string, decimal> preferences;
-
-    public GeneticAlgorithm(List<Product> products, decimal budget, int capacity, Dictionary<string, decimal> preferences)
+    public Individual<T1> GenerateRecommendations()
     {
-        this.products = products;
-        this.budget = budget;
-        this.capacity = capacity;
-        this.preferences = preferences;
-    }
+        var result = default(Individual<T1>);
 
-    public List<Product> GenerateRecommendations()
-    {
-        // 初始化種群
-        var population = new Population().Init(10);
-
-        // 進行多個世代的演化
-        for (var generation = 0; generation < 10; generation++)
+        try
         {
-            // 選擇交配池
-            var matingPool = SelectMatingPool(population);
+            // 初始化種群
+            var population = new T();
+            population.Init(10);
 
-            // 交配和突變
-            var offspring = Crossover(matingPool);
-
-            // 生成新的種群
-            population.AddIndividuals(offspring.Individuals);
-        }
-
-        // 選擇最優解
-        var maxFitness = decimal.MinValue;
-        var maxIndex = -1;
-
-        for (int i = 0; i < population.Count; i++)
-        {
-            var fitness = CalculateFitnessValue(population[i]);
-
-            if (fitness > maxFitness)
+            // 進行多個世代的演化
+            for (var generation = 0; generation < 100; generation++)
             {
-                maxFitness = fitness;
-                maxIndex = i;
+                // 選擇交配池
+                var matingPool = SelectMatingPool(population);
+
+                // 交配
+                var offspring = Crossover(matingPool);
+
+                // 突變
+                offspring = Mutation(offspring);
+
+                // 生成新的種群
+                population.AddIndividuals(offspring.Individuals);
+
+                //var count = (int)(population.Individuals.Count * 0.2);
+                //population.Individuals.RemoveRange(population.Individuals.Count - count, count);
+
+                population.Individuals.RemoveAll(i => i.Fitness == -1);
+
+                if (result == default || result.Fitness < population.Individuals.First().Fitness)
+                {
+                    var best = population.Individuals.First();
+                    result = new Individual<T1>
+                    {
+                        Values = new List<T1>(best.Values),
+                        Fitness = best.Fitness,
+                    };
+                }
+
+                Console.WriteLine($"Fitness:{result.Fitness}");
             }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw;
         }
 
-        return population[maxIndex];
+        return result;
     }
 
-    private Population SelectMatingPool(Population population)
+    private T SelectMatingPool(T population)
     {
-        var matingPool = new Population();
+        var clonePopulation = new T();
+        clonePopulation.AddIndividuals(population.Individuals);
+
+        var matingPool = new T();
         var random = new Random();
 
         if (random.Next(1) == 0)
         {
             // Tournament Selection
-            var count = population.Individuals.Count / 2;
+            var count = clonePopulation.Individuals.Count / 2;
 
             for (int i = 0; i < count; i++)
             {
-                var candidate1 = population.GetIndividualByIndex(random.Next(0, population.Individuals.Count - 1));
-                var candidate2 = population.GetIndividualByIndex(random.Next(0, population.Individuals.Count - 1));
+                var candidate1 = clonePopulation.GetIndividualByIndex(random.Next(clonePopulation.Individuals.Count));
+                var candidate2 = clonePopulation.GetIndividualByIndex(random.Next(clonePopulation.Individuals.Count));
 
                 var winner = candidate1.Fitness > candidate2.Fitness ? candidate1 : candidate2;
 
@@ -119,169 +229,105 @@ class GeneticAlgorithm
         else
         {
             // Rank Selection
-            matingPool.AddIndividuals(population.Individuals.OrderBy(i => i.Fitness).Take(2).ToList());
+            matingPool.AddIndividuals(clonePopulation.Individuals.OrderBy(i => i.Fitness).Take(2).ToList());
         }
 
         return matingPool;
     }
 
 
-    private Population Crossover(Population matingPool)
+    private T Crossover(T matingPool)
     {
-        var population = new Population();
+        var offspring = new T();
         var random = new Random();
-        var index = random.Next(2);
+        var index = random.Next(3);
 
-        if (index == 0)
+        var count = matingPool.Individuals.Count / 2;
+        for (var i = 0; i < count; i++)
         {
-            // Single-Point Crossover
-        }
-        else if (index == 1)
-        {
-            // Two-Point Crossover
-        }
-        else
-        {
-            // Uniform Crossover
-        }
-    }
+            var parent1 = matingPool.GetIndividualByIndex(random.Next(matingPool.Individuals.Count));
+            var parent2 = matingPool.GetIndividualByIndex(random.Next(matingPool.Individuals.Count));
+            var minCount = Math.Min(parent1.Values.Count, parent2.Values.Count);
+            var maxCount = Math.Max(parent1.Values.Count, parent2.Values.Count);
 
-
-    private int RouletteWheelSelection(List<decimal> fitnessValues)
-    {
-        var totalFitness = 0m;
-
-        foreach (var fitness in fitnessValues)
-        {
-            totalFitness += fitness;
-        }
-
-        var randomValue = (decimal)(new Random().NextDouble()) * totalFitness;
-        var partialSum = 0m;
-
-        for (var i = 0; i < fitnessValues.Count; i++)
-        {
-            partialSum += fitnessValues[i];
-
-            if (partialSum >= randomValue)
+            if (index == 0)
             {
-                return i;
+                // Single-Point Crossover
+                var crossoverIndex = random.Next(minCount);
+                var temp = parent1.Values[crossoverIndex];
+                parent1.Values[crossoverIndex] = parent2.Values[crossoverIndex];
+                parent2.Values[crossoverIndex] = temp;
+
+                offspring.AddIndividual(parent1);
+                offspring.AddIndividual(parent2);
             }
-        }
-
-        return fitnessValues.Count - 1;
-    }
-
-    private List<List<Product>> Breed(List<List<Product>> matingPool)
-    {
-        List<List<Product>> offspring = new List<List<Product>>();
-
-        try
-        {
-            for (int i = 0; i < matingPool.Count - 1; i += 2)
+            else if (index == 1)
             {
-                List<Product> parent1 = matingPool[i];
-                List<Product> parent2 = matingPool[i + 1];
+                // Two-Point Crossover
+                var crossoverIndex = random.Next(minCount);
+                var temp = parent1.Values[crossoverIndex];
+                parent1.Values[crossoverIndex] = parent2.Values[crossoverIndex];
+                parent2.Values[crossoverIndex] = temp;
 
-                // 使用交叉操作產生子代
-                List<Product> child = Crossover(parent1, parent2);
+                var tempIndex = 0;
+                do
+                {
+                    tempIndex = random.Next(minCount);
+                }
+                while (crossoverIndex == tempIndex);
 
-                // 使用突變操作引入變異
-                Mutate(child);
+                crossoverIndex = tempIndex;
+                temp = parent1.Values[crossoverIndex];
+                parent1.Values[crossoverIndex] = parent2.Values[crossoverIndex];
+                parent2.Values[crossoverIndex] = temp;
 
-                offspring.Add(child);
+                offspring.AddIndividual(parent1);
+                offspring.AddIndividual(parent2);
             }
-        }
-        catch (Exception)
-        {
-            throw;
+            else
+            {
+                // Uniform Crossover
+                for (var crossoverIndex = 0; crossoverIndex < minCount; crossoverIndex++)
+                {
+                    var probability = random.Next(2);
+
+                    if (probability == 1)
+                    {
+                        var temp = parent1.Values[crossoverIndex];
+                        parent1.Values[crossoverIndex] = parent2.Values[crossoverIndex];
+                        parent2.Values[crossoverIndex] = temp;
+                    }
+                }
+
+                offspring.AddIndividual(parent1);
+                offspring.AddIndividual(parent2);
+            }
         }
 
         return offspring;
     }
 
-    private List<Product> Crossover(List<Product> parent1, List<Product> parent2)
+    private T Mutation(T offspring)
     {
-        int crossoverPoint = new Random().Next(1, Math.Min(parent1.Count, parent2.Count));
-        List<Product> child = new List<Product>();
+        var random = new Random();
+        var index = random.Next(2);
 
-        for (int i = 0; i < crossoverPoint; i++)
+        foreach (var individual in offspring.Individuals)
         {
-            child.Add(parent1[i]);
-        }
-
-        for (int i = crossoverPoint; i < parent2.Count; i++)
-        {
-            if (!child.Contains(parent2[i]) && IsInBudget(child, parent2[i]) && IsWithinCapacity(child, parent2[i]))
+            if (index == 0)
             {
-                child.Add(parent2[i]);
+                // Random Replacement
+                var mutationIndex = random.Next(individual.Values.Count);
+
+                individual.Values[mutationIndex] = offspring.GenerateInstance1();
+            }
+            else
+            {
+                // Inversion Mutation
+                //individual.
             }
         }
 
-        return child;
-    }
-
-    private void Mutate(List<Product> individual)
-    {
-        double mutationRate = 0.1;
-
-        for (int i = 0; i < individual.Count; i++)
-        {
-            double randomValue = new Random().NextDouble();
-
-            if (randomValue < mutationRate)
-            {
-                Product mutatedProduct = products[new Random().Next(products.Count)];
-
-                if (!individual.Contains(mutatedProduct) && IsInBudget(individual, mutatedProduct) && IsWithinCapacity(individual, mutatedProduct))
-                {
-                    individual[i] = mutatedProduct;
-                }
-            }
-        }
-    }
-
-    private List<List<Product>> CreateNewPopulation(List<List<Product>> population, List<List<Product>> offspring)
-    {
-        List<List<Product>> newPopulation = new List<List<Product>>();
-
-        newPopulation.AddRange(population);
-        newPopulation.AddRange(offspring);
-
-        return newPopulation;
-    }
-
-    private bool IsInBudget(List<Product> individual, Product product)
-    {
-        decimal totalCost = 0;
-
-        foreach (Product p in individual)
-        {
-            totalCost += p.Price;
-        }
-
-        return totalCost + product.Price <= budget;
-    }
-
-    private bool IsWithinCapacity(List<Product> individual, Product product)
-    {
-        int totalWeight = 0;
-
-        foreach (Product p in individual)
-        {
-            totalWeight += p.Weight;
-        }
-
-        return totalWeight + product.Weight <= capacity;
-    }
-
-    private decimal GetPreference(Product product)
-    {
-        if (preferences.ContainsKey(product.Category))
-        {
-            return preferences[product.Category];
-        }
-
-        return 0;
+        return offspring;
     }
 }
