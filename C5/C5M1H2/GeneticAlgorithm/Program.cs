@@ -38,3 +38,36 @@
 //}
 
 //Console.ReadLine();
+
+using System.Collections;
+
+List<Product> products = new()
+{
+    new Product { Id = 1, Price = 100, Weight = 2, Category = "A" },
+    new Product { Id = 2, Price = 200, Weight = 3, Category = "A" },
+    new Product { Id = 3, Price = 150, Weight = 5, Category = "B" },
+    new Product { Id = 4, Price = 300, Weight = 4, Category = "B" },
+    new Product { Id = 5, Price = 180, Weight = 6, Category = "C" },
+    new Product { Id = 6, Price = 250, Weight = 7, Category = "C" }
+};
+
+Dictionary<string, decimal> preferences = new()
+{
+    { "A", 0.8m },
+    { "B", 0.6m },
+    { "C", 0.2m }
+};
+
+var geneticAlgorithm = new GeneticAlgorithm();
+var test = geneticAlgorithm.GenerateRecommendations();
+Console.ReadLine();
+
+
+
+BitArray bitArray = new BitArray(5);
+int[] array = new int[1];
+bitArray.CopyTo(array, 0);
+int result = array[0];
+
+
+Console.ReadLine();
